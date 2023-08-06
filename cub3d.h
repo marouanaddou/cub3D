@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/06 15:06:37 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/06 19:42:38 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@
 typedef struct s_parser 
 {
     char **map;
-    int cnt_map;
-    int cnt_elmt;
     char **element;
     char **file;
+    int cnt_map;
+    int cnt_elmt;
 } t_parser;
 
 typedef struct s_cub
@@ -40,8 +40,9 @@ typedef struct s_cub
 
 void    check_file_ext(char *name);
 void	check_file(int fd);
-void    check_map(char *map, t_cub *cub);
-int	    map_len(char *map);
+void    check_map(t_cub *cub);
+void    map_len(char *map, t_cub *cub);
 void	load_map(char *map ,t_cub *cub);
+void    check_map_element(t_cub *cub);
 //-----------------------end parsing-------------------------//
 #endif
