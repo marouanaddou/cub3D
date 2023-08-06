@@ -6,41 +6,62 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 16:16:36 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/06 14:12:48 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/06 15:07:00 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-void map_number(t_cub *cub)
+int	map_len(char *map)
 {
-    int i;
-    int j;
-    char **x;
+	int		fd;
+	int		count;
+	char	*line;
 
-}
-
-void    check_map(char *map, t_cub *cub)
-{
-    int	i;
-	char buffer[100000];
-
-	i = 0;
-	cub->par.fd = open(map, O_RDWR);
-	if (cub->par.fd == -1)
+	count = 0;
+	fd = open(map, O_RDWR);
+	if (fd == -1)
 	{
 		perror("Error opening file");
 		exit(1);
 	}
-	read(cub->par.fd, buffer, 100000);
-	cub->par.map = ft_split(buffer, '\n');
-	if (!cub->par.map)
+	while (1)
 	{
-		close(cub->par.fd);
-		perror("Error loading Map\n");
+		line = get_next_line(fd);
+		if (!line)
+			break ;
+		count++;
+		free(line);
+	}
+	close(fd);
+	return (count);
+}
+
+void	load_map(char *map ,t_cub *cub)
+{
+	int	i;
+    int fd;
+
+	i = 0;
+	fd = open(map, O_RDWR);
+	if (fd  == -1)
+	{
+		perror("Error opening file");
 		exit(1);
 	}
+    
+	while (1)
+	{
+		cub->par.file[i] = get_next_line(fd );
+        
+		if (cub->par.file[i++] == NULL)
+			break ;
+	}
     i = 0;
-    map_number(cub);
-	close(cub->par.fd);
+    while(cub->par.file[i] != NULL)
+    {
+        printf("%s", cub->par.file[i]);
+        i++;
+    }
+	close(fd);
 }
