@@ -39,7 +39,8 @@ SRC =   ft_memmove.c \
 		ft_memcmp.c \
 		ft_strlcpy.c \
 		ft_strlcat.c \
-		ft_strjoin.c 
+		ft_strjoin.c \
+		ft_strcmp.c
 OBJ = $(SRC:.c=.o)
 NAME = libft.a
 

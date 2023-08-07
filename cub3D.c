@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/06 19:45:26 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/07 20:20:31 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,6 @@ int main(int ac, char **av)
         check_file_ext(av[1]);
 		load_map(av[1], &cub);
 		// check_map(&cub);
-		check_map_element(&cub);
+		// check_map_element(&cub);
     }
 }

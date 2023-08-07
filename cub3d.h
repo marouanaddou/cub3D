@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/06 19:42:38 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/07 15:13:41 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,22 @@
 # include "libft/libft.h"
 # include "get_next_line/get_next_line.h"
 
+typedef struct s_elem
+{
+    char *path;
+    char *direction;
+} t_elem;
+
 typedef struct s_parser 
 {
     char **map;
     char **element;
     char **file;
     int cnt_map;
+    t_elem *elm;
     int cnt_elmt;
 } t_parser;
+
 
 typedef struct s_cub
 {
@@ -35,6 +43,9 @@ typedef struct s_cub
     int j;
     t_parser par;
 } t_cub;
+
+void free_double_pointer(char **result);
+
 
 //-----------------------start parsing-------------------------//.
 
@@ -44,5 +55,6 @@ void    check_map(t_cub *cub);
 void    map_len(char *map, t_cub *cub);
 void	load_map(char *map ,t_cub *cub);
 void    check_map_element(t_cub *cub);
+
 //-----------------------end parsing-------------------------//
 #endif

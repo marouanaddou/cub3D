@@ -71,6 +71,7 @@ void	load_map(char *map ,t_cub *cub)
         cub->par.file[cub->i] = get_next_line(fd);
         if (cub->i < cub->par.cnt_elmt)
             cub->par.element[cub->i] = ft_strdup(cub->par.file[cub->i]);
+        // printf ("%s", cub->par.element[cub->i]);
         else if (cub->j < cub->par.cnt_map)
         {
             cub->par.element[cub->par.cnt_elmt] = NULL;
