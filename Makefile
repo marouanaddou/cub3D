@@ -1,22 +1,25 @@
+NAME = cub3D
 CC = gcc
-FLAGC = -Wall  -Wextra -Werror -I./libft -fsanitize=address
+FLAGC = -Wall  -Wextra -Werror -I./libft
 SRC = cub3D.c free_all.c parsing/check_file.c parsing/load_map.c parsing/check_map_element.c\
 	libft/ft_split.c libft/ft_substr.c  libft/ft_strlen.c libft/ft_strjoin.c libft/ft_strchr.c libft/ft_strdup.c libft/ft_isdigit.c\
 	libft/ft_calloc.c libft/ft_putchar_fd.c libft/ft_putstr_fd.c libft/ft_strnstr.c libft/ft_strtrim.c libft/ft_strcmp.c libft/ft_atoi.c\
 	get_next_line/get_next_line.c get_next_line/get_next_line_utils.c 
 OBJ = $(SRC:.c=.o)
-NAME = cub3D
 
-all:$(NAME)
+all: mlx $(NAME)
+
+mlx:
+	make -C mlx42
 
 $(NAME):$(OBJ)
-	$(CC) $(FLAGC) $(SRC) -o $(NAME)
+	$(CC) $(FLAGC) $(SRC) ./mlx42/libmlx42.a ~/lib/libglfw3.a -o $(NAME) 
 
 %.o:%.c 
 	$(CC) $(FLAGC) -c $< -o $@
 
 clean:
 	rm -rf $(OBJ)
-fclean: clean	
-	rm -rf $(NAME)
+fclean: clean
+	rm -rf $(NAME) ./mlx42/libmlx42.a
 re: fclean all

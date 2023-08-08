@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/07 20:20:31 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/08 19:54:49 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "mlx42/include/MLX42/MLX42.h"
+#include <stdlib.h>
 
 void allocation_map(t_cub *cub, char *map)
 {
@@ -37,7 +39,8 @@ void allocation_map(t_cub *cub, char *map)
 
 int main(int ac, char **av)
 {
-    t_cub cub;
+    t_cub	cub;
+	t_mlx	mlx;
     (void)cub;
     if (ac == 2)
     {
@@ -46,5 +49,14 @@ int main(int ac, char **av)
 		load_map(av[1], &cub);
 		// check_map(&cub);
 		// check_map_element(&cub);
-    }
+		mlx.init_ptr = mlx_init(WIDTH, HEIGHT, "cub3D", 0);
+		mlx.img_ptr = mlx_new_image(mlx.init_ptr, 320, 200);
+		if (!(mlx.init_ptr || mlx.img_ptr))
+			return (EXIT_FAILURE);
+		mlx_put_pixel(mlx.img_ptr, 10, 10, 0xFFF);
+		mlx_loop(mlx.init_ptr);
+		mlx_terminate(mlx.init_ptr);
+	}
+	return (0);
 }
+

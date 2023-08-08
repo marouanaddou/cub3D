@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/07 15:13:41 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/08 18:46:15 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,18 @@
 # include <fcntl.h>
 # include "libft/libft.h"
 # include "get_next_line/get_next_line.h"
+#include "mlx42/include/MLX42/MLX42.h"
+
+#define WIDTH 1200
+#define HEIGHT 900
+
+typedef struct s_mlx
+{
+	int		width;
+	int		height;
+    void    *init_ptr;
+    void    *img_ptr;
+}			t_mlx;
 
 typedef struct s_elem
 {
