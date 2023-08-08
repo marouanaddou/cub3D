@@ -6,9 +6,10 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/08 18:46:15 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/08 20:02:43 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef CUB3D_H
 #define CUB3D_H
@@ -66,7 +67,8 @@ void	check_file(int fd);
 void    check_map(t_cub *cub);
 void    map_len(char *map, t_cub *cub);
 void	load_map(char *map ,t_cub *cub);
-void    check_map_element(t_cub *cub);
+void    check_information(t_cub *cub);
+void    print_error(char *str);
 
 //-----------------------end parsing-------------------------//
 #endif
