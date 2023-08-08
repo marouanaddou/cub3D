@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_map_element.c                                        :+:      :+:    :+:   */
+/*   check_information.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,69 +11,6 @@
 /* ************************************************************************** */
 
 #include "../cub3d.h"
-
-
-// void check_element(t_cub *cub)
-// {
-//     int x;
-
-//     cub->i = 0;
-//     cub->j = 0;
-//     x = 0;
-//     while (cub->par.element[cub->i] != NULL)
-//     {
-//         if(cub->par.element[cub->i][0] == 'N')
-//         {
-//             if(cub->par.element[cub->i][1] != 'O')
-//             {
-//                 printf ("ERROR: element\n");
-//                 exit(1);
-//             }
-//         }
-//         else if(cub->par.element[cub->i][0] == 'S')
-//         {
-//             if(cub->par.element[cub->i][1] != 'O')
-//             {
-//                 printf ("ERROR: element\n");
-//                 exit(1);
-//             }
-//         }
-//         else if(cub->par.element[cub->i][0] == 'W')
-//         {
-//             if(cub->par.element[cub->i][1] != 'E')
-//             {
-//                 printf ("ERROR: element\n");
-//                 exit(1);
-//             }
-//         }
-//         else if(cub->par.element[cub->i][0] == 'E')
-//         {
-//             if(cub->par.element[cub->i][1] != 'A')
-//             {
-//                 printf ("ERROR: element\n");
-//                 exit(1);
-//             }
-//         }
-//         else if(cub->par.element[cub->i][0] == 'F')
-//         {
-//             if(cub->par.element[cub->i][1] != ' ')
-//             {
-//                 printf ("ERROR: element\n");
-//                 exit(1);
-//             }
-//         }
-//         else if(cub->par.element[cub->i][0] == 'C')
-//         {
-//             if(cub->par.element[cub->i][1] != ' ')
-//             {
-//                 printf ("ERROR: element\n");
-//                 exit(1);
-//             }
-//         }
-//         if (cub->par.element[cub->i][0] != '\n')
-//             x++;
-//     }
-// }
 
 char	*ft_copier(char add, char *new_data)
 {
@@ -102,7 +39,7 @@ char	*ft_copier(char add, char *new_data)
 	return (new);
 }
 
-void fill_element(t_cub *cub)
+void fill_information(t_cub *cub)
 {
     int c;
 
@@ -117,7 +54,7 @@ void fill_element(t_cub *cub)
             if (c == 0 && cub->par.element[cub->i][cub->j] != ' ')
                 cub->par.elm[cub->i].direction  = ft_copier(cub->par.element[cub->i][cub->j], 
                 cub->par.elm[cub->i].direction);
-            else if (c == 0 && (cub->par.element[cub->i][cub->j] == ' ' || cub->par.element[cub->i][cub->j] == '\t'))
+            else if (c == 0 && cub->par.element[cub->i][cub->j] == ' ')
                 c = 1;
             else if (c == 1)
                 cub->par.elm[cub->i].path = ft_copier(cub->par.element[cub->i][cub->j], 
@@ -134,12 +71,10 @@ char **number_element_without_newlen(t_cub *cub, char **result)
     cub->par.cnt_elmt = 0;
     while(cub->par.element[cub->i] != NULL)
     {
-        printf ("%s", cub->par.element[cub->i]);
         if (cub->par.element[cub->i][0] != '\n')
             cub->par.cnt_elmt++;
         cub->i++;
     }
-    printf ("%d\n", cub->par.cnt_elmt);
     if (cub->par.cnt_elmt != 6) // hna khasna free .....!
     {
         printf ("ERROR: information\n");
@@ -151,7 +86,7 @@ char **number_element_without_newlen(t_cub *cub, char **result)
     return (result);
 }
 
-void    split_newline_element(t_cub *cub)
+void    split_newline_information(t_cub *cub)
 {
     char **result;
 
@@ -177,7 +112,6 @@ void    split_newline_element(t_cub *cub)
 void    comparaison(char *direction, t_cub *cub)
 {
     (void)cub;
-    printf ("%s", direction);
     if (ft_strcmp(direction, "NO") != 0 
         && ft_strcmp(direction, "WE")!= 0
         && ft_strcmp(direction, "SO") != 0 
@@ -253,6 +187,19 @@ void    check_rgb(char **color, t_cub *cub, char *tream, int atoi)
     }
 }
 
+void    check_double_coma(t_cub *cub, char *color)
+{
+    cub->i = 0;
+    if (color[0] == ',')
+        print_error("ERROR: color\n");
+    while(color[cub->i] != '\0')
+    {
+        if (color[cub->i] == ',' && color[cub->i + 1] == ',')
+            print_error("ERROR: color\n");
+        cub->i++;
+    }
+}
+
 void    check_color(t_cub *cub, int i)
 {
     char    **color;
@@ -261,6 +208,7 @@ void    check_color(t_cub *cub, int i)
 
     atoi = 0;
     tream = NULL;
+    check_double_coma(cub, cub->par.elm[i].path);
     color = ft_split(cub->par.elm[i].path, ',');
     check_rgb(color, cub, tream, atoi);
     if (cub->j != 3)
@@ -278,11 +226,10 @@ void    tream_path(t_cub *cub, int i)
     tream = ft_strdup(ft_strtrim(cub->par.elm[i].path, " "));
     free(cub->par.elm[i].path);
     cub->par.elm[i].path = ft_strdup(tream);
-    printf ("%s", cub->par.elm[i].path);
     free(tream);
 }
 
-void    check_error_in_element(t_cub *cub)
+void    check_error_information(t_cub *cub)
 {
     cub->i = 0;
     cub->j = 0;
@@ -299,9 +246,11 @@ void    check_error_in_element(t_cub *cub)
     }
 }
 
-void    check_map_element(t_cub *cub)
+void    check_information(t_cub *cub)
 {
-    split_newline_element(cub);
-    fill_element(cub);
-    check_error_in_element(cub);
+    split_newline_information(cub);
+    fill_information(cub);
+    check_error_information(cub);
+    cub->i = 0;
+    cub->j = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/07 15:13:41 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/08 16:14:08 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ void	check_file(int fd);
 void    check_map(t_cub *cub);
 void    map_len(char *map, t_cub *cub);
 void	load_map(char *map ,t_cub *cub);
-void    check_map_element(t_cub *cub);
+void    check_information(t_cub *cub);
+void    print_error(char *str);
 
 //-----------------------end parsing-------------------------//
 #endif
