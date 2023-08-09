@@ -6,11 +6,12 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 11:52:24 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/08 16:13:22 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/09 13:05:54 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+#include <stdlib.h>
 
 void    print_error(char *str)
 {
@@ -114,10 +115,25 @@ void    check_double_element(t_cub *cub)
 
 void    check_map(t_cub *cub)
 {
-    (void)cub;
+    char *tream;
+    
     check_start_end_line(cub);
     check_body_map(cub);
     check_double_element(cub);
     cub->i = 0;
-    cub->j = 0;
+    cub->mlx.width = 0;
+    while(cub->par.map[cub->i] != NULL)
+    {
+        tream = ft_strtrim(cub->par.map[cub->i], "\n");
+        free(cub->par.map[cub->i]);
+        cub->par.map[cub->i] = ft_strdup(tream);
+        free(tream);
+        cub->j = 0;
+        while(cub->par.map[ cub->i][cub->j] != '\0')    
+            cub->j++;
+        if (cub->j > cub->mlx.width)
+            cub->mlx.width = cub->j;
+        cub->i++;
+    }
+    cub->mlx.height = cub->par.cnt_map;
 }
