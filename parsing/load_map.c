@@ -58,6 +58,32 @@ void	map_len(char *map, t_cub *cub)
 	close(fd);
 }
 
+void    check_line(char *line, t_cub *cub)
+{
+    int i;
+    (void)cub;
+
+    i = 0;
+    if (line[i] == '\n')
+        print_error("ERROR");
+    while(line[i] != '\0' && line[i] == ' ')
+    {
+        if(line[i + 1] == '\n' || line[i + 1] == '\0')
+            print_error("ERROR"); //freee ......!!!!
+        i++;
+    }
+    i = 0;
+    while(line[i] != '\0')
+    {
+        if (line[i] == 'N' || line[i] == 'W' || line[i] == 'S' || line[i] == 'E')
+        {
+            cub->par.x = i * 30 + 5;
+            cub->par.y = cub->j * 30 + 5;
+        }
+        i++;
+    }
+}
+
 void	load_map(char *map ,t_cub *cub)
 {
     int fd;
@@ -74,8 +100,7 @@ void	load_map(char *map ,t_cub *cub)
         else if (cub->j < cub->par.cnt_map)
         {
             cub->par.element[cub->par.cnt_elmt] = NULL;
-            if (cub->par.file[cub->i][0] == '\n')
-                print_error("ERROR: newlin");
+            check_line(cub->par.file[cub->i], cub);
             cub->par.map[cub->j++] = ft_strdup(cub->par.file[cub->i]);
         }
 		if (cub->par.file[cub->i] == NULL)

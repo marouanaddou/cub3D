@@ -6,11 +6,9 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/09 20:04:41 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/10 19:48:19 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "cub3d.h"
 #include "mlx42/include/MLX42/MLX42.h"
@@ -73,6 +71,7 @@ void    draw_wall_in_image(t_cub *cub)
 void    draw_white_in_image(t_cub *cub)
 {
     cub->i = 0;
+    cub->j = 0;
     while(cub->i < (cub->mlx.width * 30))
     {
         cub->j = 0;
@@ -114,39 +113,135 @@ void    draw_white_in_image(t_cub *cub)
 //     }
 // }
 
-void    draw_player_in_image(t_cub *cub)
+void    player(t_cub *cub)
 {
-    cub->i = 0;
-    while(cub->par.map[cub->i] != NULL)
+    cub->par.y = 0;
+    while(cub->par.map[cub->par.y] != NULL)
     {
-        cub->j = 0;
-        while(cub->par.map[cub->i][cub->j] != '\0')
+        cub->par.x = 0;
+        while(cub->par.map[cub->par.y][cub->par.x] != '\0')
         {
-            if (cub->par.map[cub->i][cub->j] == 'N')
+            if (cub->par.map[cub->par.y][cub->par.x] == 'N')
                 break;
-            cub->j++;
+            cub->par.x++;
         }
-        if (cub->par.map[cub->i][cub->j] == 'N')
+        if (cub->par.map[cub->par.y][cub->par.x] == 'N')
             break;
-        cub->i++;
+        cub->par.y++;
     }
-    // int x = cub->i;
-    // int y = cub->j;
-    for (int y = -30; y < 30; y++) {
-    for (int x = -30; x < 30; x++) {
-        if (x*x + y*y < 30*30) {
-            mlx_put_pixel(cub->mlx.img_ptr,  ((cub->j * 30) + 15) + x  , ((cub->i *30) + 15) + y, 0xC41E3A);
+}
+
+void    draw_player_in_image(t_cub *cub, int i, int j)
+{
+    int x;
+    int y;
+    
+    // cub->i = 0;
+    x = -5;
+    // while(cub->par.map[cub->i] != NULL)
+    // {
+    //     cub->j = 0;
+    //     while(cub->par.map[cub->i][cub->j] != '\0')
+    //     {
+    //         if (cub->par.map[cub->i][cub->j] == 'N')
+    //             break;
+    //         cub->j++;
+    //     }
+    //     if (cub->par.map[cub->i][cub->j] == 'N')
+    //         break;
+    //     cub->i++;
+    // }
+    // player(cub, i ,j);
+    while(x < 5)
+    {
+        y = -5;
+        while(y < 5)
+        {
+            if (x*x + y*y < 5*5)
+                mlx_put_pixel(cub->mlx.img_ptr,  (cub->par.x + i) + x, (cub->par.y + j) + y , 0xC41E3A);
+            y++;
         }
+        x++;
     }
-     }
-   
+    cub->par.x += i;
+    cub->par.y += j;
+}
+
+int check_wall(t_cub *cub, int i)
+{
+    int x;
+
+    x = 0;
+    if (i == MLX_KEY_A)
+    {
+        x = (cub->par.x - 5 - 1) / 30;
+        if (cub->par.map[cub->par.y / 30][x] == '1')
+            return (0);
     }
-    // draw_player(cub);
+    else if (i == MLX_KEY_W)
+    {
+        x = (cub->par.y - 5 - 1) / 30;
+        if (cub->par.map[x][cub->par.x / 30] == '1')
+            return (0);
+    }
+    else if (i == MLX_KEY_D)
+    {
+        x = (cub->par.x + 5) / 30;
+        if (cub->par.map[cub->par.y / 30][x] == '1')
+            return (0);
+    }
+    else if (i == MLX_KEY_S)
+    {
+        x = (cub->par.y + 5) / 30;
+        if (cub->par.map[x][cub->par.x / 30] == '1')
+            return (0);
+    }
+    return (1);
+}
+void    key_hook(mlx_key_data_t data, void *cub)
+{
+    t_cub *cu = (t_cub *)cub;
+    if(data.key == MLX_KEY_A && data.action == MLX_PRESS)
+    {
+        draw_white_in_image(cu);
+        draw_wall_in_image(cu);
+        if (check_wall(cub, MLX_KEY_A) == 1)
+            draw_player_in_image(cub, -5, 0);
+        else  
+            draw_player_in_image(cub, 0, 0);
+    }
+    else if(data.key == MLX_KEY_W && data.action == MLX_PRESS)
+    {
+        draw_white_in_image(cu);
+        draw_wall_in_image(cu);
+        if (check_wall(cub, MLX_KEY_W) == 1)
+            draw_player_in_image(cub, 0, -5);
+        else  
+            draw_player_in_image(cub, 0, 0);
+    }
+    else if(data.key == MLX_KEY_D && data.action == MLX_PRESS)
+    {
+        draw_white_in_image(cu);
+        draw_wall_in_image(cu);
+        if (check_wall(cub, MLX_KEY_D) == 1)
+            draw_player_in_image(cub, 5, 0);
+        else  
+            draw_player_in_image(cub, 0, 0);
+    }
+    else if(data.key == MLX_KEY_S && data.action == MLX_PRESS)
+   {;
+        draw_white_in_image(cu);
+        draw_wall_in_image(cu);
+        if (check_wall(cub, MLX_KEY_S) == 1)
+            draw_player_in_image(cub, 0, 5);
+        else  
+            draw_player_in_image(cub, 0, 0);
+    }
+}
 
 int main(int ac, char **av)
 {
     t_cub	cub;
-    
     if (ac == 2)
     {
         allocation_map(&cub, av[1]);
@@ -161,13 +256,18 @@ int main(int ac, char **av)
 			return (EXIT_FAILURE);
         draw_white_in_image(&cub);
         draw_wall_in_image(&cub);
-        draw_player_in_image(&cub);
-		// mlx_put_pixel(cub.mlx.img_ptr, 100, 100, 0xEF0000FF);
+        draw_player_in_image(&cub, 0, 0);
+        mlx_key_hook(cub.mlx.init_ptr, key_hook, &cub);
 		mlx_loop(cub.mlx.init_ptr);
 		mlx_terminate(cub.mlx.init_ptr);
 	}
 	return (0);
 }
+
+
+
+
+
 
 // #include "mlx42/include/MLX42/MLX42.h"
 // #include <stdlib.h>

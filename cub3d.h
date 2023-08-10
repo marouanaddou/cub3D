@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/09 12:01:10 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/10 14:47:56 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_mlx
 	int		height;
     void    *init_ptr;
     void    *img_ptr;
+    mlx_t   *mlx;
 }			t_mlx;
 
 typedef struct s_elem
@@ -42,6 +43,10 @@ typedef struct s_elem
 typedef struct s_parser 
 {
     char **map;
+    int x;
+    int y;
+    int pxp;
+    int pyp;
     char **element;
     char **file;
     int cnt_map;
