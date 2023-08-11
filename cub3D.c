@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/10 19:48:19 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/11 08:30:12 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,33 +86,6 @@ void    draw_white_in_image(t_cub *cub)
     cub->j = 0;
 }
 
-// void    draw_player(t_cub *cub)
-// {
-//     int        x;
-//     int        y;
-//     int        dx;
-//     int        dy;
-//     int        radius;
-//     int        distance_squared;
-
-//     radius = 5;
-//     x = 0;
-//     while (x < ((cub->j *30) + radius))
-//     {
-//         y = 0;
-//         while (y < ((cub->i *30) + radius))
-//         {
-//             dx = x - (cub->j *30);
-//             dy = y - (cub->i *30);
-//             distance_squared = dx * dx + dy * dy;
-//             if (distance_squared < (radius * radius))
-//                 mlx_put_pixel(cub->mlx.img_ptr, x + 15, y + 15, 0xC41E3A);
-//             y++;
-//         }
-//         x++;
-//     }
-// }
-
 void    player(t_cub *cub)
 {
     cub->par.y = 0;
@@ -130,39 +103,76 @@ void    player(t_cub *cub)
         cub->par.y++;
     }
 }
+void    draw_line(t_cub *cub , int i, int j)
+{
+    // DDA ALGORITHME ...mzal makamlch hdchi...
+    int x_end;
+    int y_end;
+    int dx;
+    int dy;
+    float slope;
+    float in;
+    float jn;
+
+    x_end = cub->par.x + i + 30;
+    y_end = cub->par.y + j + 10;
+    dx = abs(x_end -(cub->par.x + i));
+    dy = abs(y_end - (cub->par.y + j));
+    in = cub->par.x + i;
+    jn = cub->par.y + j;
+    slope = 0;
+    if (dx > 0)
+        slope = (float)dy / dx;
+    while (in <= x_end || jn <= y_end)
+    {
+        mlx_put_pixel(cub->mlx.img_ptr, in, jn, 0xC41E3A);
+        if (in > x_end) // if slope = infinite (ex :7/0) decrement 'in' so that it wont change ... only 'jn' increment by 1 (VERTICAL)
+            in--;
+            
+        if (jn > y_end) // if slope = 0 (ex:0/7) decrement 'jn' so that it wont change ... only 'in' increment by 1 (HORIZONTAL)
+            jn--;
+        
+        if (slope < 1 && slope != 0) //if slope < 1 and slope != 0 'in' will increment by 1 ... 'jn' will increment by adding the slope.... im decrementing 'jn' to maintain it without a change
+        {
+            jn = jn + slope;
+            jn--;
+        }
+        if (slope > 1) //if slope > 1 'jn' will increment by 1 ... 'jn' will increment by adding the slope ... im decrementing 'in' to maintain it without a change
+        {
+            in = in + (1 / slope);
+            in--;
+        }
+        in++;
+        jn++;
+    }
+}
+
+
+
+
+
+
 
 void    draw_player_in_image(t_cub *cub, int i, int j)
 {
     int x;
     int y;
+    int radian;
     
-    // cub->i = 0;
-    x = -5;
-    // while(cub->par.map[cub->i] != NULL)
-    // {
-    //     cub->j = 0;
-    //     while(cub->par.map[cub->i][cub->j] != '\0')
-    //     {
-    //         if (cub->par.map[cub->i][cub->j] == 'N')
-    //             break;
-    //         cub->j++;
-    //     }
-    //     if (cub->par.map[cub->i][cub->j] == 'N')
-    //         break;
-    //     cub->i++;
-    // }
-    // player(cub, i ,j);
-    while(x < 5)
+    radian = 5;
+    x = -1 * radian;
+    while(x < radian)
     {
-        y = -5;
-        while(y < 5)
+        y = -1 * radian;
+        while(y < radian)
         {
-            if (x*x + y*y < 5*5)
+            if (x*x + y*y < radian*radian)
                 mlx_put_pixel(cub->mlx.img_ptr,  (cub->par.x + i) + x, (cub->par.y + j) + y , 0xC41E3A);
             y++;
         }
         x++;
     }
+    draw_line(cub, i , j);
     cub->par.x += i;
     cub->par.y += j;
 }
@@ -208,7 +218,7 @@ void    key_hook(mlx_key_data_t data, void *cub)
         if (check_wall(cub, MLX_KEY_A) == 1)
             draw_player_in_image(cub, -5, 0);
         else  
-            draw_player_in_image(cub, 0, 0);
+            draw_player_in_image(cub, 0, 0);   
     }
     else if(data.key == MLX_KEY_W && data.action == MLX_PRESS)
     {
@@ -216,7 +226,7 @@ void    key_hook(mlx_key_data_t data, void *cub)
         draw_wall_in_image(cu);
         if (check_wall(cub, MLX_KEY_W) == 1)
             draw_player_in_image(cub, 0, -5);
-        else  
+        else
             draw_player_in_image(cub, 0, 0);
     }
     else if(data.key == MLX_KEY_D && data.action == MLX_PRESS)
@@ -229,7 +239,7 @@ void    key_hook(mlx_key_data_t data, void *cub)
             draw_player_in_image(cub, 0, 0);
     }
     else if(data.key == MLX_KEY_S && data.action == MLX_PRESS)
-   {;
+    {
         draw_white_in_image(cu);
         draw_wall_in_image(cu);
         if (check_wall(cub, MLX_KEY_S) == 1)
@@ -258,6 +268,7 @@ int main(int ac, char **av)
         draw_wall_in_image(&cub);
         draw_player_in_image(&cub, 0, 0);
         mlx_key_hook(cub.mlx.init_ptr, key_hook, &cub);
+        // mlx_loop_hook(cub.mlx.init_ptr, key_release, &cub);
 		mlx_loop(cub.mlx.init_ptr);
 		mlx_terminate(cub.mlx.init_ptr);
 	}

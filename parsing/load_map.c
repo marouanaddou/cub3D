@@ -51,7 +51,7 @@ void	map_len(char *map, t_cub *cub)
 	{
 		line = get_next_line(fd);
 		if (!line)
-			break ;
+			break;
         cont(cub, &bol, line);
 		free(line);
 	}
@@ -95,6 +95,8 @@ void	load_map(char *map ,t_cub *cub)
 	while (1)
 	{
         cub->par.file[cub->i] = get_next_line(fd);
+        if (cub->par.file[0] == NULL)
+            print_error("ERROR");
         if (cub->i < cub->par.cnt_elmt)
             cub->par.element[cub->i] = ft_strdup(cub->par.file[cub->i]);
         else if (cub->j < cub->par.cnt_map)
