@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+#include <unistd.h>
 
 void cont(t_cub *cub, int *bol, char *line)
 {
@@ -55,6 +56,11 @@ void	map_len(char *map, t_cub *cub)
         cont(cub, &bol, line);
 		free(line);
 	}
+    if (cub->par.cnt_elmt == 0 || cub->par.cnt_map == 0)
+    {
+        close(fd);
+        print_error("ERROR: not complet information");
+    }
 	close(fd);
 }
 
@@ -77,8 +83,9 @@ void    check_line(char *line, t_cub *cub)
     {
         if (line[i] == 'N' || line[i] == 'W' || line[i] == 'S' || line[i] == 'E')
         {
-            cub->par.x = i * 30 + 5;
-            cub->par.y = cub->j * 30 + 5;
+            printf ("%d %d %c\n", i, cub->j, line[i]);
+            cub->par.x = (i * 30) + 5;
+            cub->par.y = (cub->j * 30) + 5;
         }
         i++;
     }
@@ -101,7 +108,6 @@ void	load_map(char *map ,t_cub *cub)
             cub->par.element[cub->i] = ft_strdup(cub->par.file[cub->i]);
         else if (cub->j < cub->par.cnt_map)
         {
-            cub->par.element[cub->par.cnt_elmt] = NULL;
             check_line(cub->par.file[cub->i], cub);
             cub->par.map[cub->j++] = ft_strdup(cub->par.file[cub->i]);
         }
@@ -110,5 +116,6 @@ void	load_map(char *map ,t_cub *cub)
         cub->i++;
 	}
     cub->par.map[cub->j] = NULL;
+    cub->par.element[cub->par.cnt_elmt] = NULL;
 	close(fd);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/11 00:29:11 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/12 13:06:51 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ typedef struct s_mlx
     mlx_t   *mlx;
 }			t_mlx;
 
+typedef struct s_point{
+    double x;
+    double y;
+} t_point;
+
 typedef struct s_elem
 {
     char *path;
@@ -59,9 +64,10 @@ typedef struct s_cub
 {
     int i;
     int j;
+    t_point point[360];
     t_parser par;
     t_mlx mlx;
-    mlx_key_data_t keydata;
+    // mlx_key_data_t keydata;
 } t_cub;
 
 void free_double_pointer(char **result);
@@ -76,6 +82,7 @@ void    map_len(char *map, t_cub *cub);
 void	load_map(char *map ,t_cub *cub);
 void    check_information(t_cub *cub);
 void    print_error(char *str);
+void    player(t_cub *cub);
 
 //-----------------------end parsing-------------------------//
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/11 08:30:12 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/12 15:16:25 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,19 +88,19 @@ void    draw_white_in_image(t_cub *cub)
 
 void    player(t_cub *cub)
 {
-    cub->par.y = 0;
-    while(cub->par.map[cub->par.y] != NULL)
+    cub->par.pyp = 0;
+    while(cub->par.map[cub->par.pyp] != NULL)
     {
-        cub->par.x = 0;
-        while(cub->par.map[cub->par.y][cub->par.x] != '\0')
+        cub->par.pxp = 0;
+        while(cub->par.map[cub->par.pyp][cub->par.pxp] != '\0')
         {
-            if (cub->par.map[cub->par.y][cub->par.x] == 'N')
+            if (cub->par.map[cub->par.pyp][cub->par.pxp] == 'N')
                 break;
-            cub->par.x++;
+            cub->par.pxp++;
         }
-        if (cub->par.map[cub->par.y][cub->par.x] == 'N')
+        if (cub->par.map[cub->par.pyp][cub->par.pxp] == 'N')
             break;
-        cub->par.y++;
+        cub->par.pyp++;
     }
 }
 void    draw_line(t_cub *cub , int i, int j)
@@ -114,9 +114,9 @@ void    draw_line(t_cub *cub , int i, int j)
     float in;
     float jn;
 
-    x_end = cub->par.x + i + 30;
+    x_end = cub->par.x + i + 10;
     y_end = cub->par.y + j + 10;
-    dx = abs(x_end -(cub->par.x + i));
+    dx = abs(x_end - (cub->par.x + i));
     dy = abs(y_end - (cub->par.y + j));
     in = cub->par.x + i;
     jn = cub->par.y + j;
@@ -147,11 +147,45 @@ void    draw_line(t_cub *cub , int i, int j)
     }
 }
 
-
-
-
-
-
+void    draw_direction_line(t_cub *cub)
+{
+    cub->i = 0;
+    if (cub->par.map[cub->par.y / 30][cub->par.x / 30] == 'N')
+    {
+        while(cub->i < 30)
+        {
+            mlx_put_pixel(cub->mlx.img_ptr, cub->par.x, cub->par.y - cub->i, 0x00000000);
+            cub->i++;
+        }
+    }
+    else if (cub->par.map[cub->par.y / 30][cub->par.x /30] == 'E')
+    {
+        cub->i = 0;
+        while(cub->i < 30)
+        {
+            mlx_put_pixel(cub->mlx.img_ptr, cub->par.x + cub->i, cub->par.y, 0x00000000);
+            cub->i++;
+        }
+    }
+    else if (cub->par.map[cub->par.y / 30][cub->par.x / 30] == 'S')
+    {
+        cub->i = 0;
+        while(cub->i < 30)
+        {
+            mlx_put_pixel(cub->mlx.img_ptr, cub->par.x, cub->par.y + cub->i, 0x00000000);
+            cub->i++;
+        }
+    }
+    else if (cub->par.map[cub->par.y / 30][cub->par.x / 30] == 'W')
+    {
+        cub->i = 0;
+        while(cub->i < 30)
+        {
+            mlx_put_pixel(cub->mlx.img_ptr, cub->par.x - cub->i, cub->par.y, 0x00000000);
+            cub->i++;
+        }
+    }
+}
 
 void    draw_player_in_image(t_cub *cub, int i, int j)
 {
@@ -160,6 +194,7 @@ void    draw_player_in_image(t_cub *cub, int i, int j)
     int radian;
     
     radian = 5;
+    printf ("%d %d\n", cub->par.x / 30,cub->par.y / 30);
     x = -1 * radian;
     while(x < radian)
     {
@@ -172,6 +207,8 @@ void    draw_player_in_image(t_cub *cub, int i, int j)
         }
         x++;
     }
+    
+    // if (cub->par.map[cub->par.pyp][cub->par.pxp] == )
     draw_line(cub, i , j);
     cub->par.x += i;
     cub->par.y += j;
@@ -249,6 +286,20 @@ void    key_hook(mlx_key_data_t data, void *cub)
     }
 }
 
+void    find_point(t_cub *cub)
+{
+    double angle_increment = 2.0 * M_PI / 360;
+    double angle = 0.0;
+    for (int i = 0; i < 360; i++) {
+        cub->point[i].x = cub->par.x + 30 * cos(angle);
+        cub->point[i].y = cub->par.y + 30 * sin(angle);
+        angle += angle_increment;
+    }
+    // mlx_put_pixel(cub->mlx.img_ptr, cub->point[i].x, cub->point[i].y, 0x00000000);
+    int j;
+    j = 0;
+}
+
 int main(int ac, char **av)
 {
     t_cub	cub;
@@ -267,6 +318,8 @@ int main(int ac, char **av)
         draw_white_in_image(&cub);
         draw_wall_in_image(&cub);
         draw_player_in_image(&cub, 0, 0);
+        draw_direction_line(&cub);
+        find_point(&cub);
         mlx_key_hook(cub.mlx.init_ptr, key_hook, &cub);
         // mlx_loop_hook(cub.mlx.init_ptr, key_release, &cub);
 		mlx_loop(cub.mlx.init_ptr);

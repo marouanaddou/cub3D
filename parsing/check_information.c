@@ -69,6 +69,7 @@ char **number_element_without_newlen(t_cub *cub, char **result)
 {
     cub->i = 0;
     cub->par.cnt_elmt = 0;
+
     while(cub->par.element[cub->i] != NULL)
     {
         if (cub->par.element[cub->i][0] != '\n')
