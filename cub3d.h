@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/11 00:29:11 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/12 23:14:12 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,14 @@ typedef struct s_mlx
     mlx_t   *mlx;
 }			t_mlx;
 
+typedef struct s_point{
+    double x_end;
+    double y_end;
+    double angle_increment;
+    double angle;
+    double degree;
+} t_point;
+
 typedef struct s_elem
 {
     char *path;
@@ -59,9 +67,10 @@ typedef struct s_cub
 {
     int i;
     int j;
+    t_point point[1000]; //allocate the exact size of points each time
     t_parser par;
     t_mlx mlx;
-    mlx_key_data_t keydata;
+    // mlx_key_data_t keydata;
 } t_cub;
 
 void free_double_pointer(char **result);
@@ -76,6 +85,7 @@ void    map_len(char *map, t_cub *cub);
 void	load_map(char *map ,t_cub *cub);
 void    check_information(t_cub *cub);
 void    print_error(char *str);
+void    player(t_cub *cub);
 
 //-----------------------end parsing-------------------------//
 #endif

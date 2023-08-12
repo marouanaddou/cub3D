@@ -6,14 +6,16 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/12 14:59:26 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/12 23:30:16 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "cub3d.h"
 #include "mlx42/include/MLX42/MLX42.h"
 #include <stdlib.h>
 #include <math.h>
+#include <sys/syslimits.h>
 
 void allocation_map(t_cub *cub, char *map)
 {
@@ -88,95 +90,56 @@ void    draw_white_in_image(t_cub *cub)
 
 void    player(t_cub *cub)
 {
-    cub->par.y = 0;
-    while(cub->par.map[cub->par.y] != NULL)
+    cub->par.pyp = 0;
+    while(cub->par.map[cub->par.pyp] != NULL)
     {
-        cub->par.x = 0;
-        while(cub->par.map[cub->par.y][cub->par.x] != '\0')
+        cub->par.pxp = 0;
+        while(cub->par.map[cub->par.pyp][cub->par.pxp] != '\0')
         {
-            if (cub->par.map[cub->par.y][cub->par.x] == 'N')
+            if (cub->par.map[cub->par.pyp][cub->par.pxp] == 'N')
                 break;
-            cub->par.x++;
+            cub->par.pxp++;
         }
-        if (cub->par.map[cub->par.y][cub->par.x] == 'N')
+        if (cub->par.map[cub->par.pyp][cub->par.pxp] == 'N')
             break;
-        cub->par.y++;
+        cub->par.pyp++;
     }
 }
-// void    draw_line(t_cub *cub , int i, int j)
-// {
-//     // DDA ALGORITHME ...mzal makamlch hdchi...
-//     int x_end;
-//     int y_end;
-//     int dx;
-//     int dy;
-//     float slope;
-//     float in;
-//     float jn;
 
-//     x_end = cub->par.x + i + 20;
-//     y_end = cub->par.y + j + 0;
-//     dx = abs(x_end -(cub->par.x + i));
-//     dy = abs(y_end - (cub->par.y + j));
-//     in = cub->par.x + i;
-//     jn = cub->par.y + j;
-//     slope = 0;
-//     if (dx > 0)
-//         slope = (float)dy / dx;
-//     while (in <= x_end || jn <= y_end)
-//     {
-//         mlx_put_pixel(cub->mlx.img_ptr, in, jn, 0xC41E3A);
-//         if (in > x_end) // if slope = infinite (ex :7/0) decrement 'in' so that it wont change ... only 'jn' increment by 1 (VERTICAL)
-//             in--;
-            
-//         if (jn > y_end) // if slope = 0 (ex:0/7) decrement 'jn' so that it wont change ... only 'in' increment by 1 (HORIZONTAL)
-//             jn--;
-        
-//         if (slope < 1 && slope != 0) //if slope < 1 and slope != 0 'in' will increment by 1 ... 'jn' will increment by adding the slope.... im decrementing 'jn' to maintain it without a change
-//         {
-//             jn = jn + slope;
-//             jn--;
-//         }
-//         if (slope > 1) //if slope > 1 'jn' will increment by 1 ... 'jn' will increment by adding the slope ... im decrementing 'in' to maintain it without a change
-//         {
-//             in = in + (1 / slope);
-//             in--;
-//         }
-//         in++;
-//         jn++;
-//     }
-// }
-
-void draw_line(t_cub *cub, int i, int j) {
-    int x_end, y_end;
-    int dx, dy;
-    // float slope;
-    
-    x_end = cub->par.x + i - 20;
-    y_end = cub->par.y + j - 10;
-    dx = x_end - (cub->par.x + i);
-    dy = y_end - (cub->par.y + j);
-    
+void draw_line(t_cub *cub, int i, int j)
+{
+    double dx, dy;
+    float x_increment;
+    float y_increment;
+    float x;
+    float y;
     float steps;
-    if (abs(dx) > abs(dy)) {
-        steps = abs(dx);
-    } else {
-        steps = abs(dy);
-    }
-    float x_increment = dx / steps;
-    float y_increment = dy / steps;
+    int   l;
     
-    float x = cub->par.x + i;
-    float y = cub->par.y + j;
-    
-    for (float k = 0; k <= steps; k++) {
-        mlx_put_pixel(cub->mlx.img_ptr, x, y, 0xC41E3A);
-        x += x_increment;
-        y += y_increment;
+    l = 0;
+    while(l < cub->point->degree / cub->point->angle_increment)
+    {
+        dx = cub->point[l].x_end - (cub->par.x + i);
+        dy = cub->point[l].y_end - (cub->par.y + j);
+        if (fabs(dx) > fabs(dy))
+            steps = fabs(dx);
+        else
+            steps = fabs(dy);
+        x_increment = dx / steps;
+        y_increment = dy / steps;
+        x = cub->par.x + i;
+        y = cub->par.y + j;
+        while (1)
+        {
+            mlx_put_pixel(cub->mlx.img_ptr, x, y, 0xAA4A44);
+            if (cub->par.map[(int)y / 30][(int)x / 30] == '1')
+                break;
+            x += x_increment;
+            y += y_increment;
+        }
+        l++;
     }
 }
-
-
 
 void    draw_player_in_image(t_cub *cub, int i, int j)
 {
@@ -274,6 +237,24 @@ void    key_hook(mlx_key_data_t data, void *cub)
     }
 }
 
+void    find_point(t_cub *cub)
+{
+    
+    int i;
+
+    i = 0;
+    cub->point->degree = (60 * M_PI / 180);
+    cub->point->angle_increment = (cub->point->degree / (cub->mlx.width * 30));
+    cub->point->angle = 0;
+    while(cub->point->angle <= cub->point->degree)
+    {
+        cub->point[i].x_end = (cub->par.x) * cos(cub->point->angle);
+        cub->point[i].y_end = (cub->par.y)* sin(cub->point->angle);
+        cub->point->angle += cub->point->angle_increment;
+        i++;
+    }
+}
+
 int main(int ac, char **av)
 {
     t_cub	cub;
@@ -291,6 +272,7 @@ int main(int ac, char **av)
 			return (EXIT_FAILURE);
         draw_white_in_image(&cub);
         draw_wall_in_image(&cub);
+        find_point(&cub);
         draw_player_in_image(&cub, 0, 0);
         mlx_key_hook(cub.mlx.init_ptr, key_hook, &cub);
         // mlx_loop_hook(cub.mlx.init_ptr, key_release, &cub);
@@ -299,53 +281,3 @@ int main(int ac, char **av)
 	}
 	return (0);
 }
-
-
-
-
-
-
-// #include "mlx42/include/MLX42/MLX42.h"
-// #include <stdlib.h>
-// #include <stdio.h>
-// #include <unistd.h>
-// #include <memory.h>
-// #define WIDTH 256
-// #define HEIGHT 256
-
-// static mlx_image_t	*g_img;
-
-// void	hook(void* param)
-// {
-// 	mlx_t* mlx;
-
-// 	mlx = param;
-// 	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
-// 		mlx_close_window(mlx);
-// 	if (mlx_is_key_down(mlx, MLX_KEY_P))
-// 		mlx_delete_image(mlx, g_img);
-// 	for (int x = 0; x < (int)g_img->width; x++)
-// 		for(int y= 0; y < (int)g_img->height; y++)
-// 			mlx_put_pixel(g_img, x, y, rand() % RAND_MAX);
-// }
-
-// int32_t	main(void)
-// {
-// 	mlx_t*    mlx;
-
-// 	mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
-// 	if (!mlx)
-// 		exit(EXIT_FAILURE);
-// 	g_img = mlx_new_image(mlx, WIDTH, HEIGHT);
-// 	mlx_image_to_window(mlx, g_img, 0, 0);
-//     for(int i = 0;i<100;i++)
-//     {
-//         for(int j = 0;j< 100;j++)
-// 			mlx_put_pixel(g_img, i, j, 0xEF0000FF);
-
-//     }
-// 	// mlx_loop_hook(mlx, &hook, mlx);
-// 	mlx_loop(mlx);
-// 	mlx_terminate(mlx);
-// 	return (EXIT_SUCCESS);
-// }
