@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/11 08:30:12 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/12 14:59:26 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,53 +103,78 @@ void    player(t_cub *cub)
         cub->par.y++;
     }
 }
-void    draw_line(t_cub *cub , int i, int j)
-{
-    // DDA ALGORITHME ...mzal makamlch hdchi...
-    int x_end;
-    int y_end;
-    int dx;
-    int dy;
-    float slope;
-    float in;
-    float jn;
+// void    draw_line(t_cub *cub , int i, int j)
+// {
+//     // DDA ALGORITHME ...mzal makamlch hdchi...
+//     int x_end;
+//     int y_end;
+//     int dx;
+//     int dy;
+//     float slope;
+//     float in;
+//     float jn;
 
-    x_end = cub->par.x + i + 30;
-    y_end = cub->par.y + j + 10;
-    dx = abs(x_end -(cub->par.x + i));
-    dy = abs(y_end - (cub->par.y + j));
-    in = cub->par.x + i;
-    jn = cub->par.y + j;
-    slope = 0;
-    if (dx > 0)
-        slope = (float)dy / dx;
-    while (in <= x_end || jn <= y_end)
-    {
-        mlx_put_pixel(cub->mlx.img_ptr, in, jn, 0xC41E3A);
-        if (in > x_end) // if slope = infinite (ex :7/0) decrement 'in' so that it wont change ... only 'jn' increment by 1 (VERTICAL)
-            in--;
+//     x_end = cub->par.x + i + 20;
+//     y_end = cub->par.y + j + 0;
+//     dx = abs(x_end -(cub->par.x + i));
+//     dy = abs(y_end - (cub->par.y + j));
+//     in = cub->par.x + i;
+//     jn = cub->par.y + j;
+//     slope = 0;
+//     if (dx > 0)
+//         slope = (float)dy / dx;
+//     while (in <= x_end || jn <= y_end)
+//     {
+//         mlx_put_pixel(cub->mlx.img_ptr, in, jn, 0xC41E3A);
+//         if (in > x_end) // if slope = infinite (ex :7/0) decrement 'in' so that it wont change ... only 'jn' increment by 1 (VERTICAL)
+//             in--;
             
-        if (jn > y_end) // if slope = 0 (ex:0/7) decrement 'jn' so that it wont change ... only 'in' increment by 1 (HORIZONTAL)
-            jn--;
+//         if (jn > y_end) // if slope = 0 (ex:0/7) decrement 'jn' so that it wont change ... only 'in' increment by 1 (HORIZONTAL)
+//             jn--;
         
-        if (slope < 1 && slope != 0) //if slope < 1 and slope != 0 'in' will increment by 1 ... 'jn' will increment by adding the slope.... im decrementing 'jn' to maintain it without a change
-        {
-            jn = jn + slope;
-            jn--;
-        }
-        if (slope > 1) //if slope > 1 'jn' will increment by 1 ... 'jn' will increment by adding the slope ... im decrementing 'in' to maintain it without a change
-        {
-            in = in + (1 / slope);
-            in--;
-        }
-        in++;
-        jn++;
+//         if (slope < 1 && slope != 0) //if slope < 1 and slope != 0 'in' will increment by 1 ... 'jn' will increment by adding the slope.... im decrementing 'jn' to maintain it without a change
+//         {
+//             jn = jn + slope;
+//             jn--;
+//         }
+//         if (slope > 1) //if slope > 1 'jn' will increment by 1 ... 'jn' will increment by adding the slope ... im decrementing 'in' to maintain it without a change
+//         {
+//             in = in + (1 / slope);
+//             in--;
+//         }
+//         in++;
+//         jn++;
+//     }
+// }
+
+void draw_line(t_cub *cub, int i, int j) {
+    int x_end, y_end;
+    int dx, dy;
+    // float slope;
+    
+    x_end = cub->par.x + i - 20;
+    y_end = cub->par.y + j - 10;
+    dx = x_end - (cub->par.x + i);
+    dy = y_end - (cub->par.y + j);
+    
+    float steps;
+    if (abs(dx) > abs(dy)) {
+        steps = abs(dx);
+    } else {
+        steps = abs(dy);
+    }
+    float x_increment = dx / steps;
+    float y_increment = dy / steps;
+    
+    float x = cub->par.x + i;
+    float y = cub->par.y + j;
+    
+    for (float k = 0; k <= steps; k++) {
+        mlx_put_pixel(cub->mlx.img_ptr, x, y, 0xC41E3A);
+        x += x_increment;
+        y += y_increment;
     }
 }
-
-
-
-
 
 
 
