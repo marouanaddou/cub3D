@@ -83,9 +83,8 @@ void    check_line(char *line, t_cub *cub)
     {
         if (line[i] == 'N' || line[i] == 'W' || line[i] == 'S' || line[i] == 'E')
         {
-            printf ("%d %d %c\n", i, cub->j, line[i]);
-            cub->par.x = (i * 30) + 5;
-            cub->par.y = (cub->j * 30) + 5;
+            cub->par.x = (i * 30);
+            cub->par.y = (cub->j * 30);
         }
         i++;
     }

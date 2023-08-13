@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 11:52:24 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/12 10:59:12 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/13 11:35:32 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,8 +163,8 @@ void    check_valid_path(t_cub *cub)
     
     map = NULL;
     map = copy_map(cub, map);
-    i = (cub->par.x - 5) / 30;
-    j = (cub->par.y - 5) / 30;
+    i = (cub->par.x) / 30;
+    j = (cub->par.y) / 30;
     cub->i = 0;
     player(cub);
     valid_path(cub, map, j, i);

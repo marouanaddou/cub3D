@@ -14,7 +14,7 @@ mlx:
 $(NAME):$(OBJ)
 	$(CC) $(FLAGC) -framework Cocoa -framework OpenGL -framework IOKit $(SRC) ./mlx42/libmlx42.a ~/lib/libglfw3.a -o $(NAME) 
 
-%.o:%.c 
+%.o:%.c cub3d.h
 	$(CC) $(FLAGC) -c $< -o $@
 
 clean:
