@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/13 18:53:07 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/13 19:50:26 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ void    draw_player_in_image(t_cub *cub, int i, int j)
         }
         x++;
     }
-    draw_line(cub, i , j);
+    // draw_line(cub, i , j);
     cub->par.x += i;
     cub->par.y += j;
 }
@@ -196,42 +196,43 @@ int check_wall(t_cub *cub, int i)
     }
     return (1);
 }
-void    key_hook(mlx_key_data_t data, void *cub)
+void    loop_hook( void *cub)
 {
     t_cub *cu = (t_cub *)cub;
-    if(data.key == MLX_KEY_A && data.action == MLX_PRESS)
+    if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_A))
     {
+        printf("HELLO\n");
         draw_white_in_image(cu);
         draw_wall_in_image(cu);
         if (check_wall(cub, MLX_KEY_A) == 1)
-            draw_player_in_image(cub, -5, 0);
+            draw_player_in_image(cub, -1, 0);
         else  
             draw_player_in_image(cub, 0, 0);  
     }
-    else if(data.key == MLX_KEY_W && data.action == MLX_PRESS)
+    else if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_W))
     {
         draw_white_in_image(cu);
         draw_wall_in_image(cu);
         if (check_wall(cub, MLX_KEY_W) == 1)
-            draw_player_in_image(cub, 0, -5);
+            draw_player_in_image(cub, 0, -1);
         else
             draw_player_in_image(cub, 0, 0);
     }
-    else if(data.key == MLX_KEY_D && data.action == MLX_PRESS)
+    else if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_D))
     {
         draw_white_in_image(cu);
         draw_wall_in_image(cu);
         if (check_wall(cub, MLX_KEY_D) == 1)
-            draw_player_in_image(cub, 5, 0);
+            draw_player_in_image(cub, 1, 0);
         else  
             draw_player_in_image(cub, 0, 0);
     }
-    else if(data.key == MLX_KEY_S && data.action == MLX_PRESS)
+    else if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_S))
     {
         draw_white_in_image(cu);
         draw_wall_in_image(cu);
         if (check_wall(cub, MLX_KEY_S) == 1)
-            draw_player_in_image(cub, 0, 5);
+            draw_player_in_image(cub, 0, 1);
         else  
             draw_player_in_image(cub, 0, 0);
     }
@@ -255,6 +256,21 @@ void    find_point(t_cub *cub)
     }
 }
 
+void    draw_direction_player(t_cub *cub)
+{
+    double x;
+    double y;
+    
+    cub->i = 0;
+    while(cub->i < 30)
+    {
+        x = cub->i * (cos(cub->par.first_angle));
+        y = cub->i * (sin(cub->par.first_angle));
+        mlx_put_pixel(cub->mlx.img_ptr,cub->par.x + x, cub->par.y + y, 0x00000000);
+        cub->i++;
+    }
+}
+
 int main(int ac, char **av)
 {
     t_cub	cub;
@@ -274,8 +290,9 @@ int main(int ac, char **av)
         draw_wall_in_image(&cub);
         find_point(&cub);
         draw_player_in_image(&cub, 0, 0);
-        mlx_key_hook(cub.mlx.init_ptr, key_hook, &cub);
-        // mlx_loop_hook(cub.mlx.init_ptr, key_release, &cub);
+        // mlx_key_hook(cub.mlx.init_ptr, key_hook, &cub);
+        draw_direction_player(&cub);
+        mlx_loop_hook(cub.mlx.init_ptr, loop_hook, &cub);
 		mlx_loop(cub.mlx.init_ptr);
 		mlx_terminate(cub.mlx.init_ptr);
 	}

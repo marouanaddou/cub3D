@@ -82,10 +82,29 @@ void    check_line(char *line, t_cub *cub)
     i = 0;
     while(line[i] != '\0')
     {
-        if (line[i] == 'N' || line[i] == 'W' || line[i] == 'S' || line[i] == 'E')
+        if (line[i] == 'N')
         {
             cub->par.x = (i * 30);
             cub->par.y = (cub->j * 30);
+            cub->par.first_angle = (-(3.14/2));
+        }
+        else if (line[i] == 'W')
+        {
+            cub->par.x = (i * 30);
+            cub->par.y = (cub->j * 30);
+            cub->par.first_angle = 3.14;
+        }
+        else if (line[i] == 'S')
+        {
+            cub->par.x = (i * 30);
+            cub->par.y = (cub->j * 30);
+            cub->par.first_angle = (3.14/2);
+        }
+        else if (line[i] == 'E')
+        {
+            cub->par.x = (i * 30);
+            cub->par.y = (cub->j * 30);
+            cub->par.first_angle = (0);
         }
         i++;
     }
