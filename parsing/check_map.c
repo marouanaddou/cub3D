@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 11:52:24 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/13 11:35:32 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/13 18:53:42 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,31 +128,19 @@ char    **copy_map(t_cub *cub, char **map)
 
 void    valid_path(t_cub *cub, char **map, int y, int x)
 {
-    if (map[y][x] != '1' && x == 0) {
+    if (map[y][x] != '1' && (x == 0 || y == 0 || y == cub->mlx.height - 1))
         print_error("FOUND ERROR\n");
+    if ((unsigned int)y == ft_strlen(map[y]) - 1 && map[y][ft_strlen(map[x]) - 1] != '1')
+        print_error("FOUND ERRR OUT 1BOUND\n");
+    if (map[y][x] < 32) 
+        print_error("FOUND ERRR OUT 9BOUND\n");
+    if (map[y][x] == '1' || map[y][x] == 'Z')
         return ;
-    }
-    if ((unsigned int)y == ft_strlen(map[y]) - 1 && map[y][ft_strlen(map[x]) - 1] != '1') {
-        print_error("FOUND ERRR OUT BOUND\n");
-    }
-    if (map[y][x] <= 32) {
-         print_error("FOUND ERRR OUT BOUND\n");  
-    }
-    if (map[y][x] == '1')
-        return ;
-    map[y][x] = '1';
+    map[y][x] = 'Z';
 	valid_path(cub, map, y, x + 1);
 	valid_path(cub, map, y, x - 1);
 	valid_path(cub, map, y - 1, x);
 	valid_path(cub, map, y + 1, x);
-        cub->i = 0;
-    // printf ("---------\n");
-    // while(map[cub->i] != NULL)
-    // {
-    //     printf ("%s", map[cub->i]);
-    //     cub->i++;
-    // }
-    // printf ("---------\n");
 }
 
 void    check_valid_path(t_cub *cub)
@@ -173,11 +161,9 @@ void    check_valid_path(t_cub *cub)
 void    check_map(t_cub *cub)
 {
     char *tream;
-    
-    // check_start_end_line(cub);
+
     check_valid_path(cub);
     check_double_element(cub);
-    // check_body_map(cub);
     cub->i = 0;
     cub->mlx.width = 0;
     while(cub->par.map[cub->i] != NULL)
