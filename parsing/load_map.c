@@ -47,6 +47,7 @@ void	map_len(char *map, t_cub *cub)
     cub->par.cnt_elmt = 0;
     cub->par.cnt_map = 0;
     fd = 0;
+    cub->mlx.height = 0;
 	fd = open_file(map, fd);
 	while (1)
 	{
@@ -83,7 +84,6 @@ void    check_line(char *line, t_cub *cub)
     {
         if (line[i] == 'N' || line[i] == 'W' || line[i] == 'S' || line[i] == 'E')
         {
-            printf ("%d %d %c\n", i, cub->j, line[i]);
             cub->par.x = (i * 30) + 5;
             cub->par.y = (cub->j * 30) + 5;
         }
@@ -99,6 +99,7 @@ void	load_map(char *map ,t_cub *cub)
     cub->j = 0;
     fd = 0;
 	fd = open_file(map, fd);
+    cub->mlx.height = 0;
 	while (1)
 	{
         cub->par.file[cub->i] = get_next_line(fd);
@@ -110,6 +111,7 @@ void	load_map(char *map ,t_cub *cub)
         {
             check_line(cub->par.file[cub->i], cub);
             cub->par.map[cub->j++] = ft_strdup(cub->par.file[cub->i]);
+            cub->mlx.height++;
         }
 		if (cub->par.file[cub->i] == NULL)
 			break ;

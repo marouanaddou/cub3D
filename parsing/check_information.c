@@ -51,6 +51,7 @@ void fill_information(t_cub *cub)
         cub->par.elm[cub->i].direction = NULL;
         while(cub->par.element[cub->i][cub->j] != '\0')
         {
+
             if (c == 0 && cub->par.element[cub->i][cub->j] != ' ')
                 cub->par.elm[cub->i].direction  = ft_copier(cub->par.element[cub->i][cub->j], 
                 cub->par.elm[cub->i].direction);
@@ -61,6 +62,7 @@ void fill_information(t_cub *cub)
                 cub->par.elm[cub->i].path);
             cub->j++; 
         }
+        // printf ("%s \n", cub->par.elm[cub->i].direction/*, cub->par.cnt_elmt, cub->par.elm[cub->i].path*/);
         cub->i++;
     }
 }
@@ -232,18 +234,22 @@ void    tream_path(t_cub *cub, int i)
 
 void    check_error_information(t_cub *cub)
 {
-    cub->i = 0;
+    int i;
+    
+    i = 0;
     cub->j = 0;
-    while(cub->i < cub->par.cnt_elmt)
+    while(i < cub->par.cnt_elmt )
     {
-        comparaison(cub->par.elm[cub->i].direction, cub);
-        check_double(cub, cub->i);
-        if (ft_strcmp(cub->par.elm[cub->i].direction, "F") == 0 
-            || ft_strcmp(cub->par.elm[cub->i].direction, "C") == 0)
-            check_color(cub, cub->i);
+        comparaison(cub->par.elm[i].direction, cub);
+        check_double(cub, i);
+        if (ft_strcmp(cub->par.elm[i].direction, "F") == 0 
+            || ft_strcmp(cub->par.elm[i].direction, "C") == 0)
+        {
+            check_color(cub, i);
+        }
         else 
-            tream_path(cub, cub->i);
-        cub->i++;
+            tream_path(cub, i);
+        i++;
     }
 }
 

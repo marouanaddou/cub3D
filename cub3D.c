@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/12 15:16:25 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/13 14:19:51 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,8 +291,8 @@ void    find_point(t_cub *cub)
     double angle_increment = 2.0 * M_PI / 360;
     double angle = 0.0;
     for (int i = 0; i < 360; i++) {
-        cub->point[i].x = cub->par.x + 30 * cos(angle);
-        cub->point[i].y = cub->par.y + 30 * sin(angle);
+        cub->point[i].x = cub->par.x + 5 * cos(angle);
+        cub->point[i].y = cub->par.y + 5 * sin(angle);
         angle += angle_increment;
     }
     // mlx_put_pixel(cub->mlx.img_ptr, cub->point[i].x, cub->point[i].y, 0x00000000);
