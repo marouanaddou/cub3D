@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/13 19:50:26 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/14 22:26:02 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ void    draw_player_in_image(t_cub *cub, int i, int j)
         }
         x++;
     }
-    // draw_line(cub, i , j);
+    draw_line(cub, i , j);
     cub->par.x += i;
     cub->par.y += j;
 }
@@ -201,7 +201,6 @@ void    loop_hook( void *cub)
     t_cub *cu = (t_cub *)cub;
     if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_A))
     {
-        printf("HELLO\n");
         draw_white_in_image(cu);
         draw_wall_in_image(cu);
         if (check_wall(cub, MLX_KEY_A) == 1)

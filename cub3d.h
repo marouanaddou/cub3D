@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/13 19:44:44 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/14 22:26:40 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,14 @@ typedef struct s_cub
 {
     int i;
     int j;
-    t_point *point; //allocate the exact size of points each time
+    t_point *point;
     double angle_increment;
     double angle;
     double degree;
     t_parser par;
     t_mlx mlx;
-    float d;
-    float anglel;
+    // float d;
+    // float anglel;
     // mlx_key_data_t keydata;
 } t_cub;
 
