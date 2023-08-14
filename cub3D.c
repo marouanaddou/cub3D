@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/13 19:50:26 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/14 22:29:11 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,20 @@ void draw_line(t_cub *cub, int i, int j)
     } 
 }
 
+void    draw_direction_player(t_cub *cub)
+{
+    double x;
+    double y;
+    
+    cub->i = 0;
+    while(cub->i < 30)
+    {
+        x = cub->i * (cos(cub->par.first_angle));
+        y = cub->i * (sin(cub->par.first_angle));
+        mlx_put_pixel(cub->mlx.img_ptr,cub->par.x + x, cub->par.y + y, 0x00000000);
+        cub->i++;
+    }
+}
 void    draw_player_in_image(t_cub *cub, int i, int j)
 {
     int x;
@@ -160,6 +174,8 @@ void    draw_player_in_image(t_cub *cub, int i, int j)
         }
         x++;
     }
+    
+    draw_direction_player(cub);
     // draw_line(cub, i , j);
     cub->par.x += i;
     cub->par.y += j;
@@ -236,6 +252,20 @@ void    loop_hook( void *cub)
         else  
             draw_player_in_image(cub, 0, 0);
     }
+    else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_LEFT))
+    {
+        cu->par.first_angle += 0.25;
+        draw_white_in_image(cu);
+        draw_wall_in_image(cu);
+        draw_player_in_image(cub, 0, 0);
+    }
+    else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_RIGHT))
+    {
+        cu->par.first_angle -= 0.25;
+        draw_white_in_image(cu);
+        draw_wall_in_image(cu);
+        draw_player_in_image(cub, 0, 0);
+    }
 }
 
 void    find_point(t_cub *cub)
@@ -256,20 +286,6 @@ void    find_point(t_cub *cub)
     }
 }
 
-void    draw_direction_player(t_cub *cub)
-{
-    double x;
-    double y;
-    
-    cub->i = 0;
-    while(cub->i < 30)
-    {
-        x = cub->i * (cos(cub->par.first_angle));
-        y = cub->i * (sin(cub->par.first_angle));
-        mlx_put_pixel(cub->mlx.img_ptr,cub->par.x + x, cub->par.y + y, 0x00000000);
-        cub->i++;
-    }
-}
 
 int main(int ac, char **av)
 {
