@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+#include <math.h>
 #include <unistd.h>
 
 void cont(t_cub *cub, int *bol, char *line)
@@ -86,25 +87,25 @@ void    check_line(char *line, t_cub *cub)
         {
             cub->par.x = (i * 30);
             cub->par.y = (cub->j * 30);
-            cub->par.first_angle = (-(3.14/2));
+            cub->par.first_angle = -(M_PI/2);
         }
         else if (line[i] == 'W')
         {
             cub->par.x = (i * 30);
             cub->par.y = (cub->j * 30);
-            cub->par.first_angle = 3.14;
+            cub->par.first_angle = M_PI;
         }
         else if (line[i] == 'S')
         {
             cub->par.x = (i * 30);
             cub->par.y = (cub->j * 30);
-            cub->par.first_angle = (3.14/2);
+            cub->par.first_angle = (M_PI/2);
         }
         else if (line[i] == 'E')
         {
             cub->par.x = (i * 30);
             cub->par.y = (cub->j * 30);
-            cub->par.first_angle = (0);
+            cub->par.first_angle = 0;
         }
         i++;
     }
