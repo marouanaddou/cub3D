@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/14 22:26:40 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/15 11:56:22 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,17 @@ typedef struct s_elem
     char *direction;
 } t_elem;
 
+typedef struct  s_rotation
+{
+    double  px_rot;
+    double  py_rot;
+    float   first_angle;
+
+} t_rot;
+
 typedef struct s_parser 
 {
     char **map;
-    float first_angle;
     int x;
     int y;
     int pxp;
@@ -66,6 +73,7 @@ typedef struct s_cub
     int i;
     int j;
     t_point *point;
+    t_rot   rot;
     double angle_increment;
     double angle;
     double degree;

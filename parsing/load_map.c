@@ -70,7 +70,6 @@ void    check_line(char *line, t_cub *cub)
 {
     int i;
     (void)cub;
-
     i = 0;
     if (line[i] == '\n')
         print_error("ERROR");
@@ -87,25 +86,25 @@ void    check_line(char *line, t_cub *cub)
         {
             cub->par.x = (i * 30);
             cub->par.y = (cub->j * 30);
-            cub->par.first_angle = -(M_PI/2);
+            cub->rot.first_angle  = -(M_PI/2);
         }
         else if (line[i] == 'W')
         {
             cub->par.x = (i * 30);
             cub->par.y = (cub->j * 30);
-            cub->par.first_angle = M_PI;
+            cub->rot.first_angle  = M_PI;
         }
         else if (line[i] == 'S')
         {
             cub->par.x = (i * 30);
             cub->par.y = (cub->j * 30);
-            cub->par.first_angle = (M_PI/2);
+            cub->rot.first_angle  = (M_PI/2);
         }
         else if (line[i] == 'E')
         {
             cub->par.x = (i * 30);
             cub->par.y = (cub->j * 30);
-            cub->par.first_angle = 0;
+            cub->rot.first_angle = 0;
         }
         i++;
     }

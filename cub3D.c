@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/14 22:46:51 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/15 19:18:54 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,55 +106,86 @@ void    player(t_cub *cub)
         cub->par.pyp++;
     }
 }
-
-void draw_line(t_cub *cub, int i, int j)
+int check_holes(t_cub *cub, float *x_hor, float *y_ver)
+{
+    if (cub->par.map[((int)(*y_ver / 30) - 1)][(int)*x_hor / 30] == '1'
+        && cub->par.map[(int)*y_ver / 30][(int)(*x_hor / 30) - 1] == '1')
+        return (1);
+    // if (cub->par.map[((int)(*y_ver / 30) - 1)][(int)*x_hor / 30] == '1'
+    //     && cub->par.map[(int)*y_ver / 30][(int)(*x_hor / 30) + 1] == '1')
+    //     return (1);
+    // if (cub->par.map[((int)(*y_ver / 30) + 1)][(int)*x_hor / 30] == '1'
+    //     && cub->par.map[(int)*y_ver / 30][(int)(*x_hor / 30) - 1] == '1')
+    //     return (1);
+    // if (cub->par.map[((int)(*y_ver / 30) + 1)][(int)*x_hor / 30] == '1'
+    //     && cub->par.map[(int)*y_ver / 30][(int)(*x_hor / 30) + 1] == '1')
+    //     return (1);
+    return (0);
+}
+void cast_rays(t_cub *cub)
 {
     double dx, dy;
     float x_increment;
     float y_increment;
-    float x;
-    float y;
+    float x_hor;
+    float y_ver;
     float steps;
     int   l;
-    
+
+
     l = 0;
     while(l < cub->degree / cub->angle_increment)
     {
-        dx = cub->point[l].x_end - (cub->par.x + i);
-        dy = cub->point[l].y_end - (cub->par.y + j);
+       
+        dx = cub->point[l].x_end - (cub->par.x);
+        dy = cub->point[l].y_end - (cub->par.y);
         if (fabs(dx) > fabs(dy))
             steps = fabs(dx);
         else
             steps = fabs(dy);
         x_increment = dx / steps;
         y_increment = dy / steps;
-        x = cub->par.x + i;
-        y = cub->par.y + j;
+        x_hor = cub->par.x;
+        y_ver = cub->par.y;
         while (1)
         {
-            mlx_put_pixel(cub->mlx.img_ptr, x, y, 0xAA4A44);
-            if (cub->par.map[(int)y / 30][(int)x / 30] == '1')
+            if (check_holes(cub, &x_hor, &y_ver) == 1)
+            {
                 break;
-            x += x_increment;
-            y += y_increment;
+            }
+            mlx_put_pixel(cub->mlx.img_ptr, x_hor, y_ver, 0xAA4A44);
+            if ( cub->par.map[((int)floor(y_ver)/ 30)][((int)floor(x_hor) / 30)] == '1')
+            {
+                if (cub->par.map[(int)floor(y_ver)/ 30][(int)floor(x_hor) / 30] == '1')
+                {
+                    // printf("%lf---%lf\n", x_hor/30, y_ver/30);
+                    break;
+                }
+            }
+            x_hor += x_increment;
+            y_ver += y_increment;
         }
+
         l++;
     } 
 }
-
-void    draw_direction_player(t_cub *cub)
+void    find_point(t_cub *cub)
 {
-    double x;
-    double y;
-    
-    cub->i = 0;
-    while(cub->i < 30)
+    int i;
+
+    i = 0;
+    cub->degree = 60 * (M_PI / 180);
+    cub->angle_increment = (cub->degree / (cub->mlx.width * 30));
+    cub->point = malloc(sizeof(t_point) * (cub->degree / cub->angle_increment) + 1);
+    cub->angle = 0;
+    while(cub->angle < cub->degree)
     {
-        x = cub->i * (cos(cub->par.first_angle));
-        y = cub->i * (sin(cub->par.first_angle));
-        mlx_put_pixel(cub->mlx.img_ptr,cub->par.x + x, cub->par.y + y, 0x00000000);
-        cub->i++;
+        cub->point[i].x_end = (cub->par.x) + (cos(cub->angle + (cub->rot.first_angle - (cub->degree / 2))));
+        cub->point[i].y_end = (cub->par.y) + (sin(cub->angle +(cub->rot.first_angle - (cub->degree / 2))));
+        cub->angle += cub->angle_increment;
+        i++;
     }
+
 }
 void    draw_player_in_image(t_cub *cub, int i, int j)
 {
@@ -175,7 +206,8 @@ void    draw_player_in_image(t_cub *cub, int i, int j)
         }
         x++;
     }
-    draw_line(cub, i , j);
+    find_point(cub);
+    cast_rays(cub);
     cub->par.x += i;
     cub->par.y += j;
 }
@@ -252,37 +284,20 @@ void    loop_hook( void *cub)
     }
     else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_LEFT))
     {
-        cu->par.first_angle += 0.25;
+        cu->rot.first_angle += 0.25;
         draw_white_in_image(cu);
         draw_wall_in_image(cu);
         draw_player_in_image(cub, 0, 0);
     }
     else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_RIGHT))
     {
-        cu->par.first_angle -= 0.25;
+        cu->rot.first_angle -= 0.25;
         draw_white_in_image(cu);
         draw_wall_in_image(cu);
         draw_player_in_image(cub, 0, 0);
     }
 }
 
-void    find_point(t_cub *cub)
-{
-    int i;
-
-    i = 0;
-    cub->degree = 60 * (M_PI / 180);
-    cub->angle_increment = (cub->degree / (cub->mlx.width * 30));
-    cub->point = malloc(sizeof(t_point) * (cub->degree / cub->angle_increment) + 1);
-    cub->angle = 0;
-    while(cub->angle < cub->degree)
-    {
-        cub->point[i].x_end = (cub->par.x) * (cos(cub->angle));
-        cub->point[i].y_end = (cub->par.y) * (sin(cub->angle));
-        cub->angle += cub->angle_increment;
-        i++;
-    }
-}
 
 
 int main(int ac, char **av)
@@ -302,10 +317,8 @@ int main(int ac, char **av)
 			return (EXIT_FAILURE);
         draw_white_in_image(&cub);
         draw_wall_in_image(&cub);
-        find_point(&cub);
         draw_player_in_image(&cub, 0, 0);
         // mlx_key_hook(cub.mlx.init_ptr, key_hook, &cub);
-        draw_direction_player(&cub);
         mlx_loop_hook(cub.mlx.init_ptr, loop_hook, &cub);
 		mlx_loop(cub.mlx.init_ptr);
 		mlx_terminate(cub.mlx.init_ptr);
