@@ -49,10 +49,13 @@ void	map_len(char *map, t_cub *cub)
     cub->par.cnt_map = 0;
     fd = 0;
     cub->mlx.height = 0;
+    cub->mlx.width = 0;
 	fd = open_file(map, fd);
 	while (1)
 	{
 		line = get_next_line(fd);
+        // if (cub->mlx.width < (int) ft_strlen(line))
+        //     cub->mlx.width = ft_strlen(line);
 		if (!line)
 			break;
         cont(cub, &bol, line);
