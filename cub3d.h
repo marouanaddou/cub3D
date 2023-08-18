@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/15 11:56:22 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/18 19:05:54 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include "get_next_line/get_next_line.h"
 #include "mlx42/include/MLX42/MLX42.h"
 
-#define WIDTH 1200
-#define HEIGHT 900
+#define WIDTH 1920
+#define HEIGHT 1440
 
 typedef struct s_mlx
 {
@@ -45,19 +45,20 @@ typedef struct s_elem
     char *direction;
 } t_elem;
 
-typedef struct  s_rotation
+typedef struct  s_ray
 {
-    double  px_rot;
-    double  py_rot;
-    float   first_angle;
-
-} t_rot;
+    float x_inc;
+    float y_inc;
+    float x_hor;
+    float y_ver;
+    double   first_angle;
+} t_ray;
 
 typedef struct s_parser 
 {
     char **map;
-    int x;
-    int y;
+    double  x;
+    double y;
     int pxp;
     int pyp;
     char **element;
@@ -67,21 +68,17 @@ typedef struct s_parser
     int cnt_elmt;
 } t_parser;
 
-
 typedef struct s_cub
 {
     int i;
     int j;
     t_point *point;
-    t_rot   rot;
+    t_ray   ray;
     double angle_increment;
     double angle;
     double degree;
     t_parser par;
     t_mlx mlx;
-    // float d;
-    // float anglel;
-    // mlx_key_data_t keydata;
 } t_cub;
 
 void free_double_pointer(char **result);
@@ -97,6 +94,6 @@ void	load_map(char *map ,t_cub *cub);
 void    check_information(t_cub *cub);
 void    print_error(char *str);
 void    player(t_cub *cub);
-
+char	*ft_copier(char add, char *new_data);
 //-----------------------end parsing-------------------------//
 #endif
