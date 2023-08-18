@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/13 19:44:44 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/17 12:54:55 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,18 @@
 
 #define WIDTH 1200
 #define HEIGHT 900
+typedef struct dline
+{
+    double    dx;
+    double    dy;
+    double    ste;
+    double    xi;
+    double    yi;
+    double    x;
+    double    y;
+    int        gx;
+    int        gy;
+}    t_line;
 
 typedef struct s_mlx
 {
@@ -45,10 +57,17 @@ typedef struct s_elem
     char *direction;
 } t_elem;
 
+typedef struct  s_rotation
+{
+    double  px_rot;
+    double  py_rot;
+    float   first_angle;
+
+} t_rot;
+
 typedef struct s_parser 
 {
     char **map;
-    float first_angle;
     int x;
     int y;
     int pxp;
@@ -65,14 +84,20 @@ typedef struct s_cub
 {
     int i;
     int j;
-    t_point *point; //allocate the exact size of points each time
+    t_point *point;
+    t_rot   rot;
     double angle_increment;
     double angle;
     double degree;
+    double ang[33 * 30];
+    double dx[33 * 30];
+    double dy[33 * 30];
+    double rx[33 * 30];
+    double ry[33 * 30];
     t_parser par;
     t_mlx mlx;
-    float d;
-    float anglel;
+    // float d;
+    // float anglel;
     // mlx_key_data_t keydata;
 } t_cub;
 
@@ -89,6 +114,6 @@ void	load_map(char *map ,t_cub *cub);
 void    check_information(t_cub *cub);
 void    print_error(char *str);
 void    player(t_cub *cub);
-
+char	*ft_copier(char add, char *new_data);
 //-----------------------end parsing-------------------------//
 #endif

@@ -54,13 +54,14 @@ void	map_len(char *map, t_cub *cub)
 	while (1)
 	{
 		line = get_next_line(fd);
-        // if (cub->mlx.width < (int) ft_strlen(line))
-        //     cub->mlx.width = ft_strlen(line);
 		if (!line)
 			break;
+        if (cub->mlx.width < (int) ft_strlen(line))
+            cub->mlx.width = ft_strlen(line);
         cont(cub, &bol, line);
 		free(line);
 	}
+    // printf ("%d\n",cub->mlx.width);
     if (cub->par.cnt_elmt == 0 || cub->par.cnt_map == 0)
     {
         close(fd);
@@ -73,7 +74,6 @@ void    check_line(char *line, t_cub *cub)
 {
     int i;
     (void)cub;
-
     i = 0;
     if (line[i] == '\n')
         print_error("ERROR");
@@ -90,30 +90,48 @@ void    check_line(char *line, t_cub *cub)
         {
             cub->par.x = (i * 30);
             cub->par.y = (cub->j * 30);
-            cub->par.first_angle = -(M_PI/2);
+            cub->rot.first_angle  = -(M_PI/2);
         }
         else if (line[i] == 'W')
         {
             cub->par.x = (i * 30);
             cub->par.y = (cub->j * 30);
-            cub->par.first_angle = M_PI;
+            cub->rot.first_angle  = M_PI;
         }
         else if (line[i] == 'S')
         {
             cub->par.x = (i * 30);
             cub->par.y = (cub->j * 30);
-            cub->par.first_angle = (M_PI/2);
+            cub->rot.first_angle  = (M_PI/2);
         }
         else if (line[i] == 'E')
         {
             cub->par.x = (i * 30);
             cub->par.y = (cub->j * 30);
-            cub->par.first_angle = 0;
+            cub->rot.first_angle = 0;
         }
         i++;
     }
 }
+void    fill_line(t_cub *cub)
+{
+    int j;
 
+    j = 0;
+    cub->par.map[cub->j] = NULL;
+    while(cub->par.file[cub->i][j] != '\0')
+    {
+        if (j != (int)ft_strlen(cub->par.file[cub->i]) - 1)
+            cub->par.map[cub->j] = ft_copier(cub->par.file[cub->i][j], cub->par.map[cub->j]);
+        j++;
+    }
+    while (j < cub->mlx.width)
+    {
+        cub->par.map[cub->j] = ft_copier(' ', cub->par.map[cub->j]);
+        j++;
+    }
+    cub->j++;
+}
 void	load_map(char *map ,t_cub *cub)
 {
     int fd;
@@ -133,7 +151,7 @@ void	load_map(char *map ,t_cub *cub)
         else if (cub->j < cub->par.cnt_map)
         {
             check_line(cub->par.file[cub->i], cub);
-            cub->par.map[cub->j++] = ft_strdup(cub->par.file[cub->i]);
+            fill_line(cub);
             cub->mlx.height++;
         }
 		if (cub->par.file[cub->i] == NULL)
