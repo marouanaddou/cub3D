@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/17 16:41:47 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/18 15:50:35 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,17 +135,11 @@ void cast_rays(t_cub *cub)
     float steps;
     int   l;
 
-
-    l = 0;
     while(l < cub->degree / cub->angle_increment)
     {
-       
-        dx = cub->point[l].x_end - (cub->par.x);
-        dy = cub->point[l].y_end - (cub->par.y);
-        if (fabs(dx) > fabs(dy))
-            steps = fabs(dx);
-        else
-            steps = fabs(dy);
+        dx = cub->point[l].x_end;
+        dy = cub->point[l].y_end;
+        steps = fabs(dy) + fabs(dx);
         x_increment = dx / steps;
         y_increment = dy / steps;
         x_hor = cub->par.x;
@@ -162,7 +156,6 @@ void cast_rays(t_cub *cub)
             y_ver += y_increment;
             cub->point[l].y_end = y_ver;
         }
-        printf ("%lf-----%lf\n", cub->point[l].x_end, cub->point[l].y_end);
         l++;
     } 
 }
@@ -177,8 +170,8 @@ void    find_point(t_cub *cub)
     cub->angle = 0;
     while(cub->angle < cub->degree)
     {
-        cub->point[i].x_end = (cub->par.x) + (cos(cub->angle + (cub->rot.first_angle - (cub->degree / 2))));
-        cub->point[i].y_end = (cub->par.y) + (sin(cub->angle + (cub->rot.first_angle - (cub->degree / 2))));
+        cub->point[i].x_end = (cos(cub->angle + (cub->rot.first_angle - (cub->degree / 2))));
+        cub->point[i].y_end = (sin(cub->angle + (cub->rot.first_angle - (cub->degree / 2))));
         cub->angle += cub->angle_increment;
         i++;
     }

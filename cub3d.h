@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/17 12:54:55 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/18 15:48:55 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,6 @@
 
 #define WIDTH 1200
 #define HEIGHT 900
-typedef struct dline
-{
-    double    dx;
-    double    dy;
-    double    ste;
-    double    xi;
-    double    yi;
-    double    x;
-    double    y;
-    int        gx;
-    int        gy;
-}    t_line;
 
 typedef struct s_mlx
 {
@@ -89,16 +77,8 @@ typedef struct s_cub
     double angle_increment;
     double angle;
     double degree;
-    double ang[33 * 30];
-    double dx[33 * 30];
-    double dy[33 * 30];
-    double rx[33 * 30];
-    double ry[33 * 30];
     t_parser par;
     t_mlx mlx;
-    // float d;
-    // float anglel;
-    // mlx_key_data_t keydata;
 } t_cub;
 
 void free_double_pointer(char **result);
