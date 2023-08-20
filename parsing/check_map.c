@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 11:52:24 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/17 12:55:01 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/19 16:43:23 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,10 @@ char    **copy_map(t_cub *cub, char **map)
 void    valid_path(t_cub *cub, char **map, int y, int x)
 {
     if (map[y][x] != '1' && (x == 0 || y == 0 || y == cub->mlx.height - 1))
+    {
+        printf("%d--%d... %c\n", x , y, map[y][x]);
         print_error("FOUND ERROR\n");
+    }
     if ((unsigned int)y == ft_strlen(map[y]) - 1 && map[y][ft_strlen(map[x]) - 1] != '1')
         print_error("FOUND ERRR OUT 1BOUND\n");
     if (map[y][x] < 32) 
