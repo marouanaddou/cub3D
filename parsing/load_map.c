@@ -61,7 +61,6 @@ void	map_len(char *map, t_cub *cub)
         cont(cub, &bol, line);
 		free(line);
 	}
-    // printf ("%d\n",cub->mlx.width);
     if (cub->par.cnt_elmt == 0 || cub->par.cnt_map == 0)
     {
         close(fd);
@@ -90,25 +89,25 @@ void    check_line(char *line, t_cub *cub)
         {
             cub->par.x = (i * 30);
             cub->par.y = (cub->j * 30);
-            cub->rot.first_angle  = -(M_PI/2);
+            cub->ray.first_angle  = -(M_PI / 2);
         }
         else if (line[i] == 'W')
         {
             cub->par.x = (i * 30);
             cub->par.y = (cub->j * 30);
-            cub->rot.first_angle  = M_PI;
+            cub->ray.first_angle  = M_PI;
         }
         else if (line[i] == 'S')
         {
             cub->par.x = (i * 30);
             cub->par.y = (cub->j * 30);
-            cub->rot.first_angle  = (M_PI/2);
+            cub->ray.first_angle  = (M_PI / 2);
         }
         else if (line[i] == 'E')
         {
             cub->par.x = (i * 30);
             cub->par.y = (cub->j * 30);
-            cub->rot.first_angle = 0;
+            cub->ray.first_angle = 0;
         }
         i++;
     }

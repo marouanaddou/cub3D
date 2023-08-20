@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/18 15:48:55 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/19 15:02:21 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include "get_next_line/get_next_line.h"
 #include "mlx42/include/MLX42/MLX42.h"
 
-#define WIDTH 1200
-#define HEIGHT 900
+#define WIDTH 1920
+#define HEIGHT 1440
 
 typedef struct s_mlx
 {
@@ -45,19 +45,20 @@ typedef struct s_elem
     char *direction;
 } t_elem;
 
-typedef struct  s_rotation
+typedef struct  s_ray
 {
-    double  px_rot;
-    double  py_rot;
-    float   first_angle;
-
-} t_rot;
+    float x_inc;
+    float y_inc;
+    float x_hor;
+    float y_ver;
+    double   first_angle;
+} t_ray;
 
 typedef struct s_parser 
 {
     char **map;
-    int x;
-    int y;
+    double  x;
+    double y;
     int pxp;
     int pyp;
     char **element;
@@ -67,13 +68,12 @@ typedef struct s_parser
     int cnt_elmt;
 } t_parser;
 
-
 typedef struct s_cub
 {
     int i;
     int j;
     t_point *point;
-    t_rot   rot;
+    t_ray   ray;
     double angle_increment;
     double angle;
     double degree;
