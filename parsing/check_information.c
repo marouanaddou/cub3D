@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 18:51:35 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/20 10:41:25 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/20 11:43:22 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,9 +244,7 @@ void    check_error_information(t_cub *cub)
         check_double(cub, i);
         if (ft_strcmp(cub->par.elm[i].direction, "F") == 0 
             || ft_strcmp(cub->par.elm[i].direction, "C") == 0)
-        {
             check_color(cub, i);
-        }
         else 
             tream_path(cub, i);
         i++;

@@ -6,13 +6,14 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/19 19:20:17 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/20 14:01:36 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
 #include "cub3d.h"
+#include "libft/libft.h"
 #include "mlx42/include/MLX42/MLX42.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -109,9 +110,11 @@ void    player(t_cub *cub)
 }
 int check_holes(t_cub *cub, float prev_x, float prev_y)
 {
-    
-    if (cub->par.map[((int)(cub->ray.y_ver / 30))][(int)prev_x / 30] == '1'
-        && cub->par.map[(int)prev_y / 30][(int)(cub->ray.x_hor / 30)] == '1')
+
+    if ((cub->par.map[((int)(cub->ray.y_ver / 30))][(int)prev_x / 30] == '1'
+        && cub->par.map[(int)prev_y / 30][(int)(cub->ray.x_hor / 30)] == '1') 
+        || cub->par.map[(int)floor(cub->ray.y_ver)/ 30][(int)floor(cub->ray.x_hor) / 30] 
+        == '1')
             return (1);
     return (0);
 }
@@ -140,8 +143,6 @@ void    cast_rays(t_cub *cub)
         cub->ray.y_ver = cub->par.y;
         while (1)
         {
-            if (cub->par.map[(int)floor(cub->ray.y_ver)/ 30][(int)floor(cub->ray.x_hor) / 30] == '1')
-                break;
             if (check_holes(cub, cub->ray.x_hor - cub->ray.x_inc, cub->ray.y_ver - cub->ray.y_inc) == 1)
                 break;
             mlx_put_pixel(cub->mlx.img_ptr, MINIMAP_SCALE_FACTOR * cub->ray.x_hor, MINIMAP_SCALE_FACTOR * cub->ray.y_ver, 0xAA4A44);
@@ -175,6 +176,7 @@ int check_wall(t_cub *cub, double x, double y)
     if (cub->par.map[(int)y/30][(int)x/30] == '1')
         return (0);
     return (1);
+
 }
 void    key_ad(t_cub *cub ,int sign)
 {
@@ -239,8 +241,46 @@ void    loop_hook( void *cub)
     if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_ESCAPE))
         mlx_close_window(cu->mlx.init_ptr);
 }
+int     rgb_convert(char *path, char c)
+{
+    char **color;
+    c = 0;
+    color = ft_split(path, ',');
+        if (c == 'f')
+            return (255 << 24 | atoi(color[0]) << 16 | atoi(color[1]) << 8 | atoi(color[2]));
+        else if (c == 'c')
+            return (255 << 24 | atoi(color[0]) << 16 | atoi(color[1]) << 8 | atoi(color[2]));
+    return (0);
+}
+void    draw_map(void *cub)
+{
+    t_cub *cu = (t_cub *)cub;
+    cu->i = 0;
+    cu->j = 0;
+    char **color = ft_split(cu->par.elm[4].path, ',');
+    int    x = 255 << 24 | atoi(color[0]) << 16 | atoi(color[1]) << 8 | atoi(color[2]);
+    printf ("%d ", x);
+    color = ft_split(cu->par.elm[5].path, ',');
+     int b= (255 << 24 | atoi(color[0]) << 16 | atoi(color[1]) << 8 | atoi(color[2]));
+    while(cu->i < WIDTH)
+    {
+        cu->j = 0;
+        while(cu->j < HEIGHT)
+        {
+            if (cu->j < HEIGHT / 2)
+                mlx_put_pixel(cu->mlx.img_ptr, cu->i, cu->j, x);
+            else
+                mlx_put_pixel(cu->mlx.img_ptr, cu->i, cu->j, b);
 
-void    draw_map (void *cub)
+            cu->j++;
+        }
+        cu->i++;
+    }
+    cu->i = 0;
+    cu->j = 0;
+}
+
+void    draw_minimap (void *cub)
 {
     t_cub *cu;
 
@@ -262,12 +302,15 @@ int main(int ac, char **av)
         check_information(&cub);
         check_map(&cub);
 		cub.mlx.init_ptr = mlx_init(WIDTH, HEIGHT, "cub3D", 1);
-		cub.mlx.img_ptr = mlx_new_image(cub.mlx.init_ptr, cub.mlx.width * 30 * MINIMAP_SCALE_FACTOR, cub.mlx.height * 30 * MINIMAP_SCALE_FACTOR);
+		cub.mlx.img_ptr = mlx_new_image(cub.mlx.init_ptr, WIDTH, HEIGHT);
+        // cub.mlx.fullimg_ptr = mlx_new_image(cub.mlx.init_ptr, WIDTH, HEIGHT);
 		mlx_image_to_window(cub.mlx.init_ptr,cub.mlx.img_ptr,0,0);
+        // mlx_image_to_window(cub.mlx.init_ptr,cub.mlx.fullimg_ptr,0,0);
         if (!(cub.mlx.init_ptr || cub.mlx.img_ptr))
 			return (EXIT_FAILURE);
-        mlx_loop_hook(cub.mlx.init_ptr, loop_hook, &cub);
         mlx_loop_hook(cub.mlx.init_ptr, draw_map, &cub);
+        mlx_loop_hook(cub.mlx.init_ptr, loop_hook, &cub);
+        mlx_loop_hook(cub.mlx.init_ptr, draw_minimap, &cub);
 		mlx_loop(cub.mlx.init_ptr);
 		mlx_terminate(cub.mlx.init_ptr);
 	}

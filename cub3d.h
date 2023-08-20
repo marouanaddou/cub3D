@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/19 19:54:26 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/20 12:59:43 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_mlx
 	int		height;
     void    *init_ptr;
     void    *img_ptr;
+    void    *fullimg_ptr;
     mlx_t   *mlx;
 }			t_mlx;
 
