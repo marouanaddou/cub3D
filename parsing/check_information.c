@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   check_information.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 18:51:35 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/13 18:51:40 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/20 10:41:25 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+#include <stdio.h>
 
 char	*ft_copier(char add, char *new_data)
 {
@@ -62,7 +63,6 @@ void fill_information(t_cub *cub)
                 cub->par.elm[cub->i].path);
             cub->j++; 
         }
-        // printf ("%s \n", cub->par.elm[cub->i].direction/*, cub->par.cnt_elmt, cub->par.elm[cub->i].path*/);
         cub->i++;
     }
 }
@@ -208,7 +208,6 @@ void    check_color(t_cub *cub, int i)
     char    **color;
     char    *tream;
     int     atoi; 
-
     atoi = 0;
     tream = NULL;
     check_double_coma(cub, cub->par.elm[i].path);
@@ -219,6 +218,7 @@ void    check_color(t_cub *cub, int i)
         printf ("ERROR: color\n");
         exit(1);
     }
+    
     cub->j = 0;
 }
 

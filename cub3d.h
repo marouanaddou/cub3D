@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/18 19:05:54 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/19 19:54:26 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@
 #include "mlx42/include/MLX42/MLX42.h"
 
 #define WIDTH 1920
-#define HEIGHT 1440
+#define HEIGHT 1300
+#define DEGREE 60 * (M_PI / 180)
+#define ANGLE_INCREMENT (DEGREE / WIDTH)
+#define MINIMAP_SCALE_FACTOR 0.4
 
 typedef struct s_mlx
 {
@@ -65,6 +68,8 @@ typedef struct s_parser
     char **file;
     int cnt_map;
     t_elem *elm;
+    char *hexfloor;
+    char *hexceiling;
     int cnt_elmt;
 } t_parser;
 
