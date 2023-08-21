@@ -6,14 +6,16 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/20 14:42:15 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/20 20:51:59 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
 #include "cub3d.h"
+#include "libft/libft.h"
 #include "mlx42/include/MLX42/MLX42.h"
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -60,7 +62,7 @@ void    draw_wall_in_image(t_cub *cub)
                     put2 = 0;
                     while(put2 < 30)
                     {
-                        mlx_put_pixel(cub->mlx.img_ptr, MINIMAP_SCALE_FACTOR * ((cub->j * 30) + put1), MINIMAP_SCALE_FACTOR *((cub->i * 30) +put2) ,0x00000000);
+                        mlx_put_pixel(cub->mlx.img_ptr, MINIMAP_SCALE_FACTOR * ((cub->j * 30) + put1), MINIMAP_SCALE_FACTOR *((cub->i * 30) +put2) ,0x6a0a0a00);
                         put2++;
                     }
                     put1++;
@@ -109,9 +111,11 @@ void    player(t_cub *cub)
 }
 int check_holes(t_cub *cub, float prev_x, float prev_y)
 {
-    
-    if (cub->par.map[((int)(cub->ray.y_ver / 30))][(int)prev_x / 30] == '1'
-        && cub->par.map[(int)prev_y / 30][(int)(cub->ray.x_hor / 30)] == '1')
+
+    if ((cub->par.map[((int)(cub->ray.y_ver / 30))][(int)prev_x / 30] == '1'
+        && cub->par.map[(int)prev_y / 30][(int)(cub->ray.x_hor / 30)] == '1') 
+        || cub->par.map[(int)floor(cub->ray.y_ver)/ 30][(int)floor(cub->ray.x_hor) / 30] 
+        == '1')
             return (1);
     return (0);
 }
@@ -133,15 +137,13 @@ void    cast_rays(t_cub *cub)
     int   i;
 
     i = 0;
-    while(i < DEGREE / ANGLE_INCREMENT)
+    while(i < 1000)
     {
         calculate_slope(i, cub);
         cub->ray.x_hor = cub->par.x;
         cub->ray.y_ver = cub->par.y;
         while (1)
         {
-            if (cub->par.map[(int)floor(cub->ray.y_ver)/ 30][(int)floor(cub->ray.x_hor) / 30] == '1')
-                break;
             if (check_holes(cub, cub->ray.x_hor - cub->ray.x_inc, cub->ray.y_ver - cub->ray.y_inc) == 1)
                 break;
             mlx_put_pixel(cub->mlx.img_ptr, MINIMAP_SCALE_FACTOR * cub->ray.x_hor, MINIMAP_SCALE_FACTOR * cub->ray.y_ver, 0xAA4A44);
@@ -159,7 +161,7 @@ void    find_point(t_cub *cub)
     double angle;
 
     i = 0;
-    cub->point = malloc(sizeof(t_point) * ((DEGREE / ANGLE_INCREMENT) + 1));
+    cub->point = malloc(sizeof(t_point) * WIDTH);
     angle = 0;
     while(i < WIDTH)
     {
@@ -175,6 +177,7 @@ int check_wall(t_cub *cub, double x, double y)
     if (cub->par.map[(int)y/30][(int)x/30] == '1')
         return (0);
     return (1);
+
 }
 void    key_ad(t_cub *cub ,int sign)
 {
@@ -240,7 +243,93 @@ void    loop_hook( void *cub)
         mlx_close_window(cu->mlx.init_ptr);
 }
 
-void    draw_map (void *cub)
+void    draw_fc(t_cub *cub)
+{
+    cub->i = 0;
+    cub->j = 0;
+    while(cub->i < WIDTH)
+    {
+        cub->j = 0;
+        while(cub->j < HEIGHT)
+        {
+            if (cub->j < HEIGHT / 2)
+                mlx_put_pixel(cub->mlx.img_ptr, cub->i, cub->j, cub->par.ceiling);
+            else
+                mlx_put_pixel(cub->mlx.img_ptr, cub->i, cub->j, cub->par.floor);
+            cub->j++;
+        }
+        cub->i++;
+    }
+    cub->i = 0;
+    cub->j = 0;
+}
+
+void	pixel_draw(int x0, int y0, t_cub *game, int color)
+{
+	if (x0 >= 0 && x0 < WIDTH && y0 >= 0 && y0 < HEIGHT)
+		mlx_put_pixel(game->mlx.img_ptr, x0, y0, color);
+}
+
+int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
+{
+    return (r << 24 | g << 16 | b << 8 | a);
+}
+
+void	drawline(int x0, int y0, int x1, int y1, t_cub *game)
+{
+	int		dx;
+	int		dy;
+	int		i;
+	int		steps;
+    int     x_inc, y_inc;
+
+	i = 0;
+	dx = x1 - x0;
+	dy = y1 - y0;
+	if (abs(dx) > abs(dy))
+		steps = abs(dx);
+	else
+		steps = abs(dy);
+	x_inc = dx / (float)steps;
+	y_inc = dy / (float)steps;
+	while (i <= steps)
+	{
+		pixel_draw(x0, y0, game, ft_pixel(25, 50, 20, 1));
+		x0 += x_inc;
+		y0 += y_inc;
+		i++;
+	}
+}
+
+void    draw_view( t_cub *cub)
+{
+    double wallHeight;
+    double x;
+    double y;
+    double distance;
+
+    cub->i = 0;
+    cub->j = 0;
+    while (cub->i < WIDTH)
+    {
+        distance = sqrt((((cub->point[cub->i].x_end / 30) - (cub->par.x / 30)) * ((cub->point[cub->i].x_end  / 30)- (cub->par.x / 30))) + (((cub->point[cub->i].y_end/30) - (cub->par.y / 30)) * ((cub->point[cub->i].y_end/ 30) - (cub->par.y/ 30))));
+        wallHeight = floor((HEIGHT / 2) / distance);
+        x = (HEIGHT / 2) - wallHeight;
+        y = (HEIGHT / 2) + wallHeight;
+        drawline(cub->i, x, cub->i, HEIGHT / 2, cub);
+        drawline(cub->i, (HEIGHT / 2), cub->i, y, cub);
+         cub->i++;
+    }
+}
+
+void    draw_map(void *cu)
+{
+    t_cub *cub = (t_cub *)cu;
+    draw_fc(cub);
+    draw_view(cub);
+}
+
+void    draw_minimap (void *cub)
 {
     t_cub *cu;
 
@@ -262,12 +351,14 @@ int main(int ac, char **av)
         check_information(&cub);
         check_map(&cub);
 		cub.mlx.init_ptr = mlx_init(WIDTH, HEIGHT, "cub3D", 1);
-		cub.mlx.img_ptr = mlx_new_image(cub.mlx.init_ptr, cub.mlx.width * 30 * MINIMAP_SCALE_FACTOR, cub.mlx.height * 30 * MINIMAP_SCALE_FACTOR);
+		cub.mlx.img_ptr = mlx_new_image(cub.mlx.init_ptr, WIDTH, HEIGHT);
 		mlx_image_to_window(cub.mlx.init_ptr,cub.mlx.img_ptr,0,0);
         if (!(cub.mlx.init_ptr || cub.mlx.img_ptr))
 			return (EXIT_FAILURE);
         mlx_loop_hook(cub.mlx.init_ptr, loop_hook, &cub);
+        mlx_loop_hook(cub.mlx.init_ptr, draw_minimap, &cub);
         mlx_loop_hook(cub.mlx.init_ptr, draw_map, &cub);
+        mlx_loop_hook(cub.mlx.init_ptr, draw_minimap, &cub);
 		mlx_loop(cub.mlx.init_ptr);
 		mlx_terminate(cub.mlx.init_ptr);
 	}

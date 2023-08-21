@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_information.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 18:51:35 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/20 10:41:25 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/20 16:28:47 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,10 @@ void    check_color(t_cub *cub, int i)
 void    tream_path(t_cub *cub, int i)
 {
     char *tream;
-
+    tream = ft_strdup(ft_strtrim(cub->par.elm[i].path, "\n"));
+    free(cub->par.elm[i].path);
+    cub->par.elm[i].path = ft_strdup(tream);
+    free(tream);
     tream = ft_strdup(ft_strtrim(cub->par.elm[i].path, " "));
     free(cub->par.elm[i].path);
     cub->par.elm[i].path = ft_strdup(tream);
@@ -235,9 +238,11 @@ void    tream_path(t_cub *cub, int i)
 void    check_error_information(t_cub *cub)
 {
     int i;
+    char **color;
     
     i = 0;
     cub->j = 0;
+    color = NULL;
     while(i < cub->par.cnt_elmt )
     {
         comparaison(cub->par.elm[i].direction, cub);
@@ -245,7 +250,18 @@ void    check_error_information(t_cub *cub)
         if (ft_strcmp(cub->par.elm[i].direction, "F") == 0 
             || ft_strcmp(cub->par.elm[i].direction, "C") == 0)
         {
+            tream_path(cub, i);
             check_color(cub, i);
+            if (ft_strcmp(cub->par.elm[i].direction, "F") == 0)
+            {
+                color = ft_split(cub->par.elm[i].path, ',');
+                cub->par.floor =  (atoi(color[0]) << 24 | atoi(color[1]) << 16 | atoi(color[2]) >> 8|255 );
+            }
+            else  
+            {
+                color = ft_split(cub->par.elm[i].path, ',');
+                cub->par.ceiling =  (atoi(color[0]) << 24 | atoi(color[1]) << 16 | atoi(color[2]) << 8|255 );
+            }
         }
         else 
             tream_path(cub, i);

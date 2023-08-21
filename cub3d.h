@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/20 14:42:36 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/20 20:36:44 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@
 # include "get_next_line/get_next_line.h"
 #include "mlx42/include/MLX42/MLX42.h"
 
-#define WIDTH 1920
-#define HEIGHT 1300
+#define WIDTH 1000.0
+#define HEIGHT 500.0
 #define DEGREE 60 * (M_PI / 180)
 #define ANGLE_INCREMENT (DEGREE / WIDTH)
-#define MINIMAP_SCALE_FACTOR 0.4
+#define MINIMAP_SCALE_FACTOR 0.2
+#define PROJECT_PLANE  (WIDTH / tan(DEGREE / 2))
 
 typedef struct s_mlx
 {
@@ -34,6 +35,7 @@ typedef struct s_mlx
 	int		height;
     void    *init_ptr;
     void    *img_ptr;
+    void    *fullimg_ptr;
     mlx_t   *mlx;
 }			t_mlx;
 
@@ -59,9 +61,11 @@ typedef struct  s_ray
 
 typedef struct s_parser 
 {
+    int    floor;
+    int    ceiling;
     char **map;
     double  x;
-    double y;
+    double  y;
     int pxp;
     int pyp;
     char **element;
