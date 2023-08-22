@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/20 20:51:59 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/21 23:23:59 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,11 @@ void    calculate_slope( int i, t_cub *cub)
 
     dx = cub->point[i].x_end;
     dy = cub->point[i].y_end;
-    steps = fabs(dx) + fabs(dy);
+    if (fabs(dx) > fabs(dy))
+	    steps = fabs(dx);
+    else
+		steps = fabs(dy);
+    // steps = (fabs(dx) + fabs(dy)) * 0.08;
     cub->ray.x_inc = dx / steps;
     cub->ray.y_inc = dy / steps;
 }
@@ -208,9 +212,9 @@ void    key_ws(t_cub *cub ,int sign)
 void    key_lr(t_cub *cub ,int sign)
 {
     if (sign == 0)
-        cub->ray.first_angle += 0.10;
-    else  
         cub->ray.first_angle -= 0.10;
+    else  
+        cub->ray.first_angle += 0.10;
     if (cub->ray.first_angle > 2 * M_PI)
         cub->ray.first_angle -= 2 * M_PI;
     if (cub->ray.first_angle < 0)
@@ -300,28 +304,59 @@ void	drawline(int x0, int y0, int x1, int y1, t_cub *game)
 		i++;
 	}
 }
+int32_t pixelcolor(t_cub *cub)
+{
+    static int i;
+    int32_t color;
 
+    if(i >= WIDTH * 4)
+        i = 0;
+    color = ft_pixel(cub->txt->pixels[i], cub->txt->pixels[i + 1], cub->txt->pixels[i + 2], cub->txt->pixels[i + 3]);
+    i += 4;
+    return(color);
+    
+}
 void    draw_view( t_cub *cub)
 {
     double wallHeight;
     double x;
     double y;
     double distance;
+    double correctdistance;
+    int32_t color;
 
     cub->i = 0;
     cub->j = 0;
+    double rayangle = cub->ray.first_angle - (DEGREE / 2);
     while (cub->i < WIDTH)
     {
-        distance = sqrt((((cub->point[cub->i].x_end / 30) - (cub->par.x / 30)) * ((cub->point[cub->i].x_end  / 30)- (cub->par.x / 30))) + (((cub->point[cub->i].y_end/30) - (cub->par.y / 30)) * ((cub->point[cub->i].y_end/ 30) - (cub->par.y/ 30))));
-        wallHeight = floor((HEIGHT / 2) / distance);
+        distance = sqrt((pow((cub->point[cub->i].x_end / 30) - (cub->par.x / 30), 2)) + (pow((cub->point[cub->i].y_end/30) - (cub->par.y / 30), 2)));
+        correctdistance = distance * cos(rayangle - cub->ray.first_angle);
+        wallHeight = floor((HEIGHT / 2) / (correctdistance));
         x = (HEIGHT / 2) - wallHeight;
         y = (HEIGHT / 2) + wallHeight;
         drawline(cub->i, x, cub->i, HEIGHT / 2, cub);
         drawline(cub->i, (HEIGHT / 2), cub->i, y, cub);
-         cub->i++;
+        while (x <= y)
+        {
+            color = pixelcolor(cub);
+            mlx_put_pixel(cub->mlx.img_ptr, cub->i, x, color);
+            x++;
+        }
+        rayangle += ANGLE_INCREMENT;
+        cub->i++;
     }
 }
+void load_textures(t_cub *cub)
+{
 
+    cub->txt = mlx_load_png("textures/wall.png");
+    if (!cub->txt)
+        return;
+    cub->img = mlx_texture_to_image(cub->mlx.init_ptr, cub->txt);
+    if (!cub->img)
+        return; 
+}
 void    draw_map(void *cu)
 {
     t_cub *cub = (t_cub *)cu;
@@ -355,6 +390,7 @@ int main(int ac, char **av)
 		mlx_image_to_window(cub.mlx.init_ptr,cub.mlx.img_ptr,0,0);
         if (!(cub.mlx.init_ptr || cub.mlx.img_ptr))
 			return (EXIT_FAILURE);
+        load_textures(&cub);
         mlx_loop_hook(cub.mlx.init_ptr, loop_hook, &cub);
         mlx_loop_hook(cub.mlx.init_ptr, draw_minimap, &cub);
         mlx_loop_hook(cub.mlx.init_ptr, draw_map, &cub);
