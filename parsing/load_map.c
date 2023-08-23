@@ -11,15 +11,11 @@
 /* ************************************************************************** */
 
 #include "../cub3d.h"
-#include <math.h>
-#include <unistd.h>
 
 void cont(t_cub *cub, int *bol, char *line)
 {
     if ((line[0] != ' ' && line[0] != '1') && *bol == 0)
-    {
         cub->par.cnt_elmt++;
-    }
     else 
     { 
         *bol = 1;
@@ -38,18 +34,23 @@ int open_file(char *map, int fd)
     return(fd);
 }
 
+void    initialisation_varible(t_cub *cub, int *bol, int *fd)
+{
+    *bol = 0;
+    cub->par.cnt_elmt = 0;
+    cub->par.cnt_map = 0;
+    *fd = 0;
+    cub->mlx.height = 0;
+    cub->mlx.width = 0;
+}
+
 void	map_len(char *map, t_cub *cub)
 {
 	int		fd;
     int     bol;
 	char	*line;
 
-    bol = 0;
-    cub->par.cnt_elmt = 0;
-    cub->par.cnt_map = 0;
-    fd = 0;
-    cub->mlx.height = 0;
-    cub->mlx.width = 0;
+    initialisation_varible(cub, &bol, &fd);
 	fd = open_file(map, fd);
 	while (1)
 	{
@@ -69,68 +70,6 @@ void	map_len(char *map, t_cub *cub)
 	close(fd);
 }
 
-void    check_line(char *line, t_cub *cub)
-{
-    int i;
-    (void)cub;
-    i = 0;
-    if (line[i] == '\n')
-        print_error("ERROR");
-    while(line[i] != '\0' && line[i] == ' ')
-    {
-        if(line[i + 1] == '\n' || line[i + 1] == '\0')
-            print_error("ERROR"); //freee ......!!!!
-        i++;
-    }
-    i = 0;
-    while(line[i] != '\0')
-    {
-        if (line[i] == 'N')
-        {
-            cub->par.x = (i * 30);
-            cub->par.y = (cub->j * 30);
-            cub->ray.first_angle  = -(M_PI / 2);
-        }
-        else if (line[i] == 'W')
-        {
-            cub->par.x = (i * 30);
-            cub->par.y = (cub->j * 30);
-            cub->ray.first_angle  = M_PI;
-        }
-        else if (line[i] == 'S')
-        {
-            cub->par.x = (i * 30);
-            cub->par.y = (cub->j * 30);
-            cub->ray.first_angle  = (M_PI / 2);
-        }
-        else if (line[i] == 'E')
-        {
-            cub->par.x = (i * 30);
-            cub->par.y = (cub->j * 30);
-            cub->ray.first_angle = 0;
-        }
-        i++;
-    }
-}
-void    fill_line(t_cub *cub)
-{
-    int j;
-
-    j = 0;
-    cub->par.map[cub->j] = NULL;
-    while(cub->par.file[cub->i][j] != '\0')
-    {
-        if (j != (int)ft_strlen(cub->par.file[cub->i]) - 1)
-            cub->par.map[cub->j] = ft_copier(cub->par.file[cub->i][j], cub->par.map[cub->j]);
-        j++;
-    }
-    while (j < cub->mlx.width)
-    {
-        cub->par.map[cub->j] = ft_copier(' ', cub->par.map[cub->j]);
-        j++;
-    }
-    cub->j++;
-}
 void	load_map(char *map ,t_cub *cub)
 {
     int fd;

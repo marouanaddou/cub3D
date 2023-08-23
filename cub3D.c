@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/23 11:37:43 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/23 12:24:35 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void    draw_wall_in_image(t_cub *cub)
                     put2 = 0;
                     while(put2 < 30)
                     {
-                        mlx_put_pixel(cub->mlx.img_ptr, MINIMAP_SCALE_FACTOR * ((cub->j * 30) + put1), MINIMAP_SCALE_FACTOR *((cub->i * 30) +put2) ,0x6a0a0a00);
+                        mlx_put_pixel(cub->mlx.img_ptr, MINIMAP_SCALE_FACTOR * ((cub->j * 30) + put1), MINIMAP_SCALE_FACTOR *((cub->i * 30) +put2) ,0x6a);
                         put2++;
                     }
                     put1++;
@@ -119,7 +119,7 @@ int check_holes(t_cub *cub, float prev_x, float prev_y)
             return (1);
     return (0);
 }
-void    calculate_slope( int i, t_cub *cub)
+void    calculate_slope(int i, t_cub *cub)
 {
     double dx;
     double dy;
@@ -141,7 +141,7 @@ void    cast_rays(t_cub *cub)
     int   i;
 
     i = 0;
-    while(i < 1000)
+    while(i < WIDTH)
     {
         calculate_slope(i, cub);
         cub->ray.x_hor = cub->par.x;
@@ -414,6 +414,7 @@ void    draw_minimap (void *cub)
     find_point(cu);
     cast_rays(cu);
 }
+
 int main(int ac, char **av)
 {
     t_cub	cub;

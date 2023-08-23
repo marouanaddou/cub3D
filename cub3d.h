@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/21 15:54:46 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/23 12:12:01 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 # include <fcntl.h>
 # include "libft/libft.h"
 # include "get_next_line/get_next_line.h"
-#include "mlx42/include/MLX42/MLX42.h"
+# include "mlx42/include/MLX42/MLX42.h"
+# include <math.h>
 
 #define WIDTH 1000.0
 #define HEIGHT 500.0
@@ -95,7 +96,7 @@ typedef struct s_cub
 void free_double_pointer(char **result);
 
 
-//-----------------------start parsing-------------------------//.
+//-----------------------start parsing-------------------------//
 
 void    check_file_ext(char *name);
 void	check_file(int fd);
@@ -106,5 +107,8 @@ void    check_information(t_cub *cub);
 void    print_error(char *str);
 void    player(t_cub *cub);
 char	*ft_copier(char add, char *new_data);
+
+void    check_line(char *line, t_cub *cub);
+void    fill_line(t_cub *cub);
 //-----------------------end parsing-------------------------//
 #endif
