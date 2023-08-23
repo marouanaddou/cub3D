@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/21 10:55:53 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/23 12:12:01 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ typedef struct s_cub
     double degree;
     t_parser par;
     t_mlx mlx;
+    mlx_texture_t *txt;
+    mlx_image_t* img;
 } t_cub;
 
 void free_double_pointer(char **result);
