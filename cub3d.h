@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/20 20:36:44 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/21 10:55:53 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 # include <fcntl.h>
 # include "libft/libft.h"
 # include "get_next_line/get_next_line.h"
-#include "mlx42/include/MLX42/MLX42.h"
+# include "mlx42/include/MLX42/MLX42.h"
+# include <math.h>
 
 #define WIDTH 1000.0
 #define HEIGHT 500.0
@@ -93,7 +94,7 @@ typedef struct s_cub
 void free_double_pointer(char **result);
 
 
-//-----------------------start parsing-------------------------//.
+//-----------------------start parsing-------------------------//
 
 void    check_file_ext(char *name);
 void	check_file(int fd);
@@ -104,5 +105,8 @@ void    check_information(t_cub *cub);
 void    print_error(char *str);
 void    player(t_cub *cub);
 char	*ft_copier(char add, char *new_data);
+
+void    check_line(char *line, t_cub *cub);
+void    fill_line(t_cub *cub);
 //-----------------------end parsing-------------------------//
 #endif
