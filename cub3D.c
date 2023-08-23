@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/21 23:23:59 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/23 11:37:43 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,33 +220,6 @@ void    key_lr(t_cub *cub ,int sign)
     if (cub->ray.first_angle < 0)
         cub->ray.first_angle += 2 * M_PI;
 }
-void    loop_hook( void *cub)
-{
-    t_cub *cu = (t_cub *)cub;
-    if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_A)  
-        && check_wall(cub, cu->par.x + cos(cu->ray.first_angle -(M_PI / 2)), 
-            cu->par.y + sin(cu->ray.first_angle -(M_PI / 2))) != 0)
-        key_ad(cu, 0);
-    else if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_W) 
-        && check_wall(cub, cu->par.x + cos(cu->ray.first_angle),
-             cu->par.y + sin(cu->ray.first_angle)) != 0)
-        key_ws(cu, 0);
-    else if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_D) 
-        && check_wall(cub, cu->par.x - cos(cu->ray.first_angle 
-            -(M_PI / 2)), cu->par.y - sin(cu->ray.first_angle -(M_PI / 2))) != 0)
-        key_ad(cu, 1);
-    else if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_S) 
-        && check_wall(cub, cu->par.x - 
-            cos(cu->ray.first_angle), cu->par.y - sin(cu->ray.first_angle)) != 0)
-        key_ws(cu, 1);
-    else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_LEFT))
-        key_lr(cu, 0);
-    else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_RIGHT))
-        key_lr(cu, 1);
-    if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_ESCAPE))
-        mlx_close_window(cu->mlx.init_ptr);
-}
-
 void    draw_fc(t_cub *cub)
 {
     cub->i = 0;
@@ -267,17 +240,124 @@ void    draw_fc(t_cub *cub)
     cub->i = 0;
     cub->j = 0;
 }
-
 void	pixel_draw(int x0, int y0, t_cub *game, int color)
 {
 	if (x0 >= 0 && x0 < WIDTH && y0 >= 0 && y0 < HEIGHT)
 		mlx_put_pixel(game->mlx.img_ptr, x0, y0, color);
 }
-
 int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
 {
     return (r << 24 | g << 16 | b << 8 | a);
 }
+int32_t pixelcolor(t_cub *cub, double x, double y)
+{
+    static int i;
+    static unsigned int factor;
+    int32_t color;
+    
+    color = 0;
+    if (factor < cub->txt->width)
+    {
+        color = ft_pixel(cub->txt->pixels[i], cub->txt->pixels[i + 1], cub->txt->pixels[i + 2], cub->txt->pixels[i + 3]);
+        i += cub->txt->width * 4;
+        if (x == y)
+        {
+            i = factor;
+            factor += 4;
+        }
+    }
+    else
+    {
+        factor = 0;
+        i = 0;
+    }
+    return(color);
+    
+}
+void    draw_view( t_cub *cub)
+{
+    double wallHeight;
+    double x;
+    double y;
+    double distance;
+    double correctdistance;
+    int32_t color;
+
+    int i = 0;
+
+    double rayangle = cub->ray.first_angle - (DEGREE / 2);
+    while (i < WIDTH)
+    {
+        distance = sqrt((pow((cub->point[i].x_end / 30) - (cub->par.x / 30), 2)) + (pow((cub->point[i].y_end/30) - (cub->par.y / 30), 2)));
+        correctdistance = distance * cos(rayangle - cub->ray.first_angle);
+        wallHeight = floor((HEIGHT / 2) / (correctdistance));
+        x = (HEIGHT / 2) - wallHeight;
+        y = (HEIGHT / 2) + wallHeight;
+        // drawline(i, x, i, HEIGHT / 2, cub);
+        // drawline(i, (HEIGHT / 2), i, y, cub);
+        while (x <= y)
+        {
+            if (x > 0 && x < WIDTH)
+            {
+                color = pixelcolor(cub, x, y);
+                mlx_put_pixel(cub->mlx.img_ptr, i, x, color);}
+            x++;
+        }
+        rayangle += ANGLE_INCREMENT;
+        i++;
+    }
+}
+void    loop_hook( void *cub)
+{
+    t_cub *cu = (t_cub *)cub;
+    if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_A)  
+        && check_wall(cub, cu->par.x + cos(cu->ray.first_angle -(M_PI / 2)), 
+            cu->par.y + sin(cu->ray.first_angle -(M_PI / 2))) != 0)
+        {
+        key_ad(cu, 0);
+            draw_fc(cub);
+            draw_view(cub);
+        }
+    else if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_W) 
+        && check_wall(cub, cu->par.x + cos(cu->ray.first_angle),
+             cu->par.y + sin(cu->ray.first_angle)) != 0)
+            {
+        key_ws(cu, 0);
+        draw_fc(cub);
+            draw_view(cub);}
+    else if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_D) 
+        && check_wall(cub, cu->par.x - cos(cu->ray.first_angle 
+            -(M_PI / 2)), cu->par.y - sin(cu->ray.first_angle -(M_PI / 2))) != 0)
+            {
+        key_ad(cu, 1);
+        draw_fc(cub);
+            draw_view(cub);}
+    else if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_S) 
+        && check_wall(cub, cu->par.x - 
+            cos(cu->ray.first_angle), cu->par.y - sin(cu->ray.first_angle)) != 0)
+            {
+        key_ws(cu, 1);
+        draw_fc(cub);
+            draw_view(cub);}
+    else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_LEFT))
+    {
+        key_lr(cu, 0);
+        draw_fc(cub);
+            draw_view(cub);}
+    else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_RIGHT))
+    {
+        key_lr(cu, 1);
+        draw_fc(cub);
+            draw_view(cub);}
+    if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_ESCAPE))
+        mlx_close_window(cu->mlx.init_ptr);
+}
+
+
+
+
+
+
 
 void	drawline(int x0, int y0, int x1, int y1, t_cub *game)
 {
@@ -304,49 +384,8 @@ void	drawline(int x0, int y0, int x1, int y1, t_cub *game)
 		i++;
 	}
 }
-int32_t pixelcolor(t_cub *cub)
-{
-    static int i;
-    int32_t color;
 
-    if(i >= WIDTH * 4)
-        i = 0;
-    color = ft_pixel(cub->txt->pixels[i], cub->txt->pixels[i + 1], cub->txt->pixels[i + 2], cub->txt->pixels[i + 3]);
-    i += 4;
-    return(color);
-    
-}
-void    draw_view( t_cub *cub)
-{
-    double wallHeight;
-    double x;
-    double y;
-    double distance;
-    double correctdistance;
-    int32_t color;
 
-    cub->i = 0;
-    cub->j = 0;
-    double rayangle = cub->ray.first_angle - (DEGREE / 2);
-    while (cub->i < WIDTH)
-    {
-        distance = sqrt((pow((cub->point[cub->i].x_end / 30) - (cub->par.x / 30), 2)) + (pow((cub->point[cub->i].y_end/30) - (cub->par.y / 30), 2)));
-        correctdistance = distance * cos(rayangle - cub->ray.first_angle);
-        wallHeight = floor((HEIGHT / 2) / (correctdistance));
-        x = (HEIGHT / 2) - wallHeight;
-        y = (HEIGHT / 2) + wallHeight;
-        drawline(cub->i, x, cub->i, HEIGHT / 2, cub);
-        drawline(cub->i, (HEIGHT / 2), cub->i, y, cub);
-        while (x <= y)
-        {
-            color = pixelcolor(cub);
-            mlx_put_pixel(cub->mlx.img_ptr, cub->i, x, color);
-            x++;
-        }
-        rayangle += ANGLE_INCREMENT;
-        cub->i++;
-    }
-}
 void load_textures(t_cub *cub)
 {
 
@@ -393,7 +432,9 @@ int main(int ac, char **av)
         load_textures(&cub);
         mlx_loop_hook(cub.mlx.init_ptr, loop_hook, &cub);
         mlx_loop_hook(cub.mlx.init_ptr, draw_minimap, &cub);
-        mlx_loop_hook(cub.mlx.init_ptr, draw_map, &cub);
+        draw_fc(&cub);
+    // draw_view(&cub);
+        // mlx_loop_hook(cub.mlx.init_ptr, draw_map, &cub);
         mlx_loop_hook(cub.mlx.init_ptr, draw_minimap, &cub);
 		mlx_loop(cub.mlx.init_ptr);
 		mlx_terminate(cub.mlx.init_ptr);
