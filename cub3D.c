@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/23 12:24:35 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/24 15:08:52 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,19 +251,19 @@ int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
 }
 int32_t pixelcolor(t_cub *cub, double x, double y)
 {
-    static int i;
+    static unsigned int i;
     static unsigned int factor;
     int32_t color;
     
     color = 0;
-    if (factor < cub->txt->width)
+    if (i < cub->txt->width * cub->txt->height * 4)
     {
         color = ft_pixel(cub->txt->pixels[i], cub->txt->pixels[i + 1], cub->txt->pixels[i + 2], cub->txt->pixels[i + 3]);
         i += cub->txt->width * 4;
         if (x == y)
         {
-            i = factor;
             factor += 4;
+            i = factor;
         }
     }
     else
@@ -274,88 +274,13 @@ int32_t pixelcolor(t_cub *cub, double x, double y)
     return(color);
     
 }
-void    draw_view( t_cub *cub)
-{
-    double wallHeight;
-    double x;
-    double y;
-    double distance;
-    double correctdistance;
-    int32_t color;
 
-    int i = 0;
+// y   -   x
+// 1120 - 350 = 770 
+// 770 < 1024
+// 770 / 770
 
-    double rayangle = cub->ray.first_angle - (DEGREE / 2);
-    while (i < WIDTH)
-    {
-        distance = sqrt((pow((cub->point[i].x_end / 30) - (cub->par.x / 30), 2)) + (pow((cub->point[i].y_end/30) - (cub->par.y / 30), 2)));
-        correctdistance = distance * cos(rayangle - cub->ray.first_angle);
-        wallHeight = floor((HEIGHT / 2) / (correctdistance));
-        x = (HEIGHT / 2) - wallHeight;
-        y = (HEIGHT / 2) + wallHeight;
-        // drawline(i, x, i, HEIGHT / 2, cub);
-        // drawline(i, (HEIGHT / 2), i, y, cub);
-        while (x <= y)
-        {
-            if (x > 0 && x < WIDTH)
-            {
-                color = pixelcolor(cub, x, y);
-                mlx_put_pixel(cub->mlx.img_ptr, i, x, color);}
-            x++;
-        }
-        rayangle += ANGLE_INCREMENT;
-        i++;
-    }
-}
-void    loop_hook( void *cub)
-{
-    t_cub *cu = (t_cub *)cub;
-    if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_A)  
-        && check_wall(cub, cu->par.x + cos(cu->ray.first_angle -(M_PI / 2)), 
-            cu->par.y + sin(cu->ray.first_angle -(M_PI / 2))) != 0)
-        {
-        key_ad(cu, 0);
-            draw_fc(cub);
-            draw_view(cub);
-        }
-    else if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_W) 
-        && check_wall(cub, cu->par.x + cos(cu->ray.first_angle),
-             cu->par.y + sin(cu->ray.first_angle)) != 0)
-            {
-        key_ws(cu, 0);
-        draw_fc(cub);
-            draw_view(cub);}
-    else if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_D) 
-        && check_wall(cub, cu->par.x - cos(cu->ray.first_angle 
-            -(M_PI / 2)), cu->par.y - sin(cu->ray.first_angle -(M_PI / 2))) != 0)
-            {
-        key_ad(cu, 1);
-        draw_fc(cub);
-            draw_view(cub);}
-    else if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_S) 
-        && check_wall(cub, cu->par.x - 
-            cos(cu->ray.first_angle), cu->par.y - sin(cu->ray.first_angle)) != 0)
-            {
-        key_ws(cu, 1);
-        draw_fc(cub);
-            draw_view(cub);}
-    else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_LEFT))
-    {
-        key_lr(cu, 0);
-        draw_fc(cub);
-            draw_view(cub);}
-    else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_RIGHT))
-    {
-        key_lr(cu, 1);
-        draw_fc(cub);
-            draw_view(cub);}
-    if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_ESCAPE))
-        mlx_close_window(cu->mlx.init_ptr);
-}
-
-
-
-
+// 1024 - 770 = 254 / 4
 
 
 
@@ -384,6 +309,105 @@ void	drawline(int x0, int y0, int x1, int y1, t_cub *game)
 		i++;
 	}
 }
+void    draw_view( t_cub *cub)
+{
+    double wallHeight;
+    double x;
+    double y;
+    double distance;
+    double correctdistance;
+    int32_t color;
+
+    int i = 0;
+
+    double rayangle = cub->ray.first_angle - (DEGREE / 2);
+    while (i < WIDTH)
+    {
+        distance = sqrt((pow((cub->point[i].x_end / 30) - (cub->par.x / 30), 2)) + (pow((cub->point[i].y_end/30) - (cub->par.y / 30), 2)));
+        correctdistance = distance * cos(rayangle - cub->ray.first_angle);
+        wallHeight = floor((HEIGHT / 2) / (correctdistance));
+        x = (HEIGHT / 2) - wallHeight;
+        y = (HEIGHT / 2) + wallHeight;
+        // printf("x%lf----y%lf---wallheight%lf\n", x,y, wallHeight);
+        // drawline(i, x, i, HEIGHT / 2, cub);
+        // drawline(i, (HEIGHT / 2), i, y, cub);
+        
+        // while (x <= y)
+        // {
+        //     if (x > 0 && x < HEIGHT)
+        //     {
+        //         color = pixelcolor(cub, x, y);
+        //         mlx_put_pixel(cub->mlx.img_ptr, i, x, color);
+        //     }
+        //     x++;
+        // }
+        double text_pos = (int)cub->point[i].x_end % 30;
+        (void)text_pos;
+        float y_inc = wallHeight / 1024;
+        int k = 0;
+        while(k < 1024)
+        {
+            double tmp_x = x;
+            color = ft_pixel(cub->txt->pixels[(int)text_pos + (k)], cub->txt->pixels[(int)text_pos +(k)+ 1], cub->txt->pixels[(int)text_pos +(k) + 2], cub->txt->pixels[(int)text_pos +(k) + 3]);
+            while(tmp_x < x + y_inc)
+            {
+                mlx_put_pixel(cub->mlx.img_ptr, i, tmp_x, color);
+                tmp_x++;
+            }
+            x += y_inc;
+            k++;
+        }
+        rayangle += ANGLE_INCREMENT;
+        i++;
+    }
+    
+}
+void    draw_map(void *cu)
+{
+    t_cub *cub = (t_cub *)cu;
+    draw_fc(cub);
+    draw_view(cub);
+}
+void    loop_hook( void *cub)
+{
+    t_cub *cu = (t_cub *)cub;
+    if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_A)  
+        && check_wall(cub, cu->par.x + cos(cu->ray.first_angle -(M_PI / 2)), 
+            cu->par.y + sin(cu->ray.first_angle -(M_PI / 2))) != 0)
+        {
+        key_ad(cu, 0);
+            draw_map(cu);
+        }
+    else if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_W) 
+        && check_wall(cub, cu->par.x + cos(cu->ray.first_angle),
+             cu->par.y + sin(cu->ray.first_angle)) != 0)
+            {
+        key_ws(cu, 0);
+        draw_map(cu);}
+    else if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_D) 
+        && check_wall(cub, cu->par.x - cos(cu->ray.first_angle 
+            -(M_PI / 2)), cu->par.y - sin(cu->ray.first_angle -(M_PI / 2))) != 0)
+            {
+        key_ad(cu, 1);
+        draw_map(cu);}
+    else if(mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_S) 
+        && check_wall(cub, cu->par.x - 
+            cos(cu->ray.first_angle), cu->par.y - sin(cu->ray.first_angle)) != 0)
+            {
+        key_ws(cu, 1);
+        draw_map(cu);}
+    else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_LEFT))
+    {
+        key_lr(cu, 0);
+        draw_map(cu);}
+    else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_RIGHT))
+    {
+        key_lr(cu, 1);
+        draw_map(cu);}
+    if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_ESCAPE))
+        mlx_close_window(cu->mlx.init_ptr);
+}
+
 
 
 void load_textures(t_cub *cub)
@@ -396,12 +420,7 @@ void load_textures(t_cub *cub)
     if (!cub->img)
         return; 
 }
-void    draw_map(void *cu)
-{
-    t_cub *cub = (t_cub *)cu;
-    draw_fc(cub);
-    draw_view(cub);
-}
+
 
 void    draw_minimap (void *cub)
 {
@@ -432,10 +451,10 @@ int main(int ac, char **av)
 			return (EXIT_FAILURE);
         load_textures(&cub);
         mlx_loop_hook(cub.mlx.init_ptr, loop_hook, &cub);
-        mlx_loop_hook(cub.mlx.init_ptr, draw_minimap, &cub);
-        draw_fc(&cub);
-    // draw_view(&cub);
+        // mlx_loop_hook(cub.mlx.init_ptr, draw_minimap, &cub);
         // mlx_loop_hook(cub.mlx.init_ptr, draw_map, &cub);
+        draw_minimap(&cub);
+        draw_map(&cub);
         mlx_loop_hook(cub.mlx.init_ptr, draw_minimap, &cub);
 		mlx_loop(cub.mlx.init_ptr);
 		mlx_terminate(cub.mlx.init_ptr);
