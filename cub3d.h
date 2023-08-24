@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/23 12:12:01 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/24 12:25:56 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #ifndef CUB3D_H
 #define CUB3D_H
 
+#include <stdint.h>
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -90,6 +91,7 @@ typedef struct s_cub
     t_parser par;
     t_mlx mlx;
     mlx_texture_t *txt;
+    int32_t **color_texture;
     mlx_image_t* img;
 } t_cub;
 
