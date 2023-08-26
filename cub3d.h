@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/23 12:12:01 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/25 18:57:51 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #ifndef CUB3D_H
 #define CUB3D_H
 
+#include <stdint.h>
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -29,6 +30,12 @@
 #define ANGLE_INCREMENT (DEGREE / WIDTH)
 #define MINIMAP_SCALE_FACTOR 0.2
 #define PROJECT_PLANE  (WIDTH / tan(DEGREE / 2))
+#define LEFT_RIGHT 1
+#define TOP_BOTTOM 0
+#define LEFT    1
+#define RIGHT   0
+#define TOP    1
+#define BOTTOM   0
 
 typedef struct s_mlx
 {
@@ -43,6 +50,9 @@ typedef struct s_mlx
 typedef struct s_point{
     double x_end;
     double y_end;
+    int direction;
+    int view;
+    double angle;
 } t_point;
 
 typedef struct s_elem
@@ -90,6 +100,7 @@ typedef struct s_cub
     t_parser par;
     t_mlx mlx;
     mlx_texture_t *txt;
+    uint32_t **color_texture;
     mlx_image_t* img;
 } t_cub;
 
