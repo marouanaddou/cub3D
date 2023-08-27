@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/26 17:57:48 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/26 22:55:05 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,9 +204,9 @@ void key_ws(t_cub *cub, int sign) {
 }
 void key_lr(t_cub *cub, int sign) {
 	if (sign == 0)
-		cub->ray.first_angle -= 0.10;
+		cub->ray.first_angle -= 0.05;
 	else
-		cub->ray.first_angle += 0.10;
+		cub->ray.first_angle += 0.05;
 	if (cub->ray.first_angle > 2 * M_PI)
 		cub->ray.first_angle -= 2 * M_PI;
 	if (cub->ray.first_angle < 0)
@@ -287,46 +287,83 @@ void	drawline(int x0, int y0, int x1, int y1, t_cub *game)
 		i++;
 	}
 }
-
 void    draw_view( t_cub *cub)
 {
-		double wallHeight;
-		// double x;
-		// double y;
-		double distance;
-		double correctdistance;
-		uint32_t color;
-		double y_inc;
-		float x_pos;
-		int i = 0;
-		double rayangle = cub->ray.first_angle - (DEGREE / 2);
-		while (i < WIDTH)
-		{
-				distance = sqrt((pow((cub->point[i].x_end / 30) - (cub->par.x / 30), 2)) + (pow((cub->point[i].y_end/30) - (cub->par.y / 30), 2)));
-				correctdistance = distance * cos(rayangle - cub->ray.first_angle);
-				wallHeight = floor((HEIGHT / 2) / (correctdistance));
-				// x = (HEIGHT / 2) - wallHeight;
-				// y = (HEIGHT / 2) + wallHeight;
-				// y = abs((int)y);
-				y_inc = cub->txt->height / wallHeight;
-				if (cub->point[i].view == LEFT_RIGHT)
-				{
-					x_pos = (int)(cub->point[i].x_end / 30)  % cub->txt->width;
-					printf("%lf\n", x_pos);
-				}
-				else if (cub->point[i].view == TOP_BOTTOM)
-					x_pos = (int)(cub->point[i].y_end/30) % cub->txt->width;
-				int y = 0;
-				while (y < wallHeight)
-				{
-						color = cub->color_texture[i][(int)x_pos];
-						mlx_put_pixel(cub->mlx.img_ptr, i, x_pos, color);
-						y += y_inc;
-				}
-				i++;
-		}
-		
+    double wallHeight;
+    double x;
+    double y;
+    double distance;
+    double correctdistance;
+    int32_t color;
+
+	int i;
+    double rayangle = cub->ray.first_angle - (DEGREE / 2);
+
+	i = 0;
+    while (i < WIDTH)
+    {
+        distance = sqrt((pow((cub->point[i].x_end / 30) - (cub->par.x / 30), 2)) + (pow((cub->point[i].y_end/30) - (cub->par.y / 30), 2)));
+        correctdistance = distance * cos(rayangle - cub->ray.first_angle);
+        wallHeight = floor((HEIGHT / 2) / (correctdistance));
+		/////
+		// int ss=cub->point[i].x_end/30;
+		int pppp=(cub->point[i].x_end - (int)(cub->point[i].x_end/30) *30) / 30 * cub->txt->width;
+		//////
+        x = (HEIGHT / 2) - wallHeight;
+        y = (HEIGHT / 2) + wallHeight;
+        // drawline(i, x, i, HEIGHT / 2, cub);
+        // drawline(i, (HEIGHT / 2), i, y, cub);
+        while (x <= y)
+        {
+			if (x > 0 && x < WIDTH)
+			{
+            	color = cub->color_texture[(int)x][pppp];
+            	mlx_put_pixel(cub->mlx.img_ptr, i, x, color);
+			}
+            x++;
+        }
+        rayangle += ANGLE_INCREMENT;
+        i++;
+    }
 }
+
+
+// void    draw_view( t_cub *cub)
+// {
+// 		double wallHeight;
+// 		// double x;
+// 		double distance;
+// 		double correctdistance;
+// 		uint32_t color;
+// 		double y_inc;
+// 		int x_pos;
+// 		int i = 0;
+		
+// 		double rayangle = cub->ray.first_angle - (DEGREE / 2);
+// 		while (i < WIDTH)
+// 		{
+// 				distance = sqrt((pow((cub->point[i].x_end / 30) - (cub->par.x / 30), 2)) + (pow((cub->point[i].y_end/30) - (cub->par.y / 30), 2)));
+// 				correctdistance = distance * cos(rayangle - cub->ray.first_angle);
+// 				wallHeight = floor((HEIGHT / 2) / (correctdistance));
+// 				// x = (HEIGHT / 2) - wallHeight;
+// 				// y = (HEIGHT / 2) + wallHeight;
+// 				y_inc = cub->txt->height / wallHeight;
+// 				if (cub->point[i].view == LEFT_RIGHT)
+// 					x_pos = ((int)cub->point[i].x_end / 30 * ((int)cub->txt->width / 30)) % cub->txt->width;
+// 				else if (cub->point[i].view == TOP_BOTTOM)
+// 					x_pos = ((int)(cub->point[i].y_end/30) * ((int)cub->txt->width) / 30)  % cub->txt->width;
+// 				double y = 0;
+// 				while (y < cub->txt->height)
+// 				{
+// 					color = 0;
+// 					mlx_put_pixel(cub->mlx.img_ptr, i, x_pos, color);
+// 					y += y_inc;
+// 					x_pos++;
+// 				}
+// 				i++;
+// 		}
+		
+// }
 void    draw_map(void *cu)
 {
 		t_cub *cub = (t_cub *)cu;
