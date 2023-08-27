@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/24 13:58:00 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/27 13:48:15 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 #include <stdlib.h>
 #include <sys/syslimits.h>
 
-void allocation_map(t_cub *cub, char *map) {
+void allocation_map(t_cub *cub, char *map) 
+{
   map_len(map, cub);
   cub->par.element = malloc(sizeof(char *) * (cub->par.cnt_elmt + 1));
   if (!cub->par.element) {
@@ -39,61 +40,6 @@ void allocation_map(t_cub *cub, char *map) {
   }
 }
 
-void draw_wall_in_image(t_cub *cub) {
-  int put1;
-  int put2;
-
-  while (cub->par.map[cub->i] != NULL) {
-    cub->j = 0;
-    while (cub->par.map[cub->i][cub->j] != '\0') {
-      if (cub->par.map[cub->i][cub->j] == '1') {
-        put1 = 0;
-        while (put1 < 30) {
-          put2 = 0;
-          while (put2 < 30) {
-            mlx_put_pixel(cub->mlx.img_ptr,
-                          MINIMAP_SCALE_FACTOR * ((cub->j * 30) + put1),
-                          MINIMAP_SCALE_FACTOR * ((cub->i * 30) + put2), 0x6a);
-            put2++;
-          }
-          put1++;
-        }
-      }
-      cub->j++;
-    }
-    cub->i++;
-  }
-}
-
-void draw_white_in_image(t_cub *cub) {
-  cub->i = 0;
-  cub->j = 0;
-  while (cub->i < (cub->mlx.width * 30 * MINIMAP_SCALE_FACTOR)) {
-    cub->j = 0;
-    while (cub->j < (cub->mlx.height * 30 * MINIMAP_SCALE_FACTOR)) {
-      mlx_put_pixel(cub->mlx.img_ptr, cub->i, cub->j, 0xffffffff);
-      cub->j++;
-    }
-    cub->i++;
-  }
-  cub->i = 0;
-  cub->j = 0;
-}
-
-void player(t_cub *cub) {
-  cub->par.pyp = 0;
-  while (cub->par.map[cub->par.pyp] != NULL) {
-    cub->par.pxp = 0;
-    while (cub->par.map[cub->par.pyp][cub->par.pxp] != '\0') {
-      if (cub->par.map[cub->par.pyp][cub->par.pxp] == 'N')
-        break;
-      cub->par.pxp++;
-    }
-    if (cub->par.map[cub->par.pyp][cub->par.pxp] == 'N')
-      break;
-    cub->par.pyp++;
-  }
-}
 int check_holes(t_cub *cub, float prev_x, float prev_y) {
 
   if ((cub->par.map[((int)(cub->ray.y_ver / 30))][(int)prev_x / 30] == '1' &&
@@ -141,6 +87,7 @@ void cast_rays(t_cub *cub) {
     i++;
   }
 }
+
 void find_point(t_cub *cub) {
   int i;
   double angle;
@@ -161,51 +108,8 @@ int check_wall(t_cub *cub, double x, double y) {
     return (0);
   return (1);
 }
-void key_ad(t_cub *cub, int sign) {
-  if (sign == 0) {
-    cub->par.x += cos(cub->ray.first_angle - (M_PI / 2));
-    cub->par.y += sin(cub->ray.first_angle - (M_PI / 2));
-  } else {
-    cub->par.x -= cos(cub->ray.first_angle - (M_PI / 2));
-    cub->par.y -= sin(cub->ray.first_angle - (M_PI / 2));
-  }
-}
-void key_ws(t_cub *cub, int sign) {
-  if (sign == 0) {
-    cub->par.x += cos(cub->ray.first_angle);
-    cub->par.y += sin(cub->ray.first_angle);
-  } else {
-    cub->par.x -= cos(cub->ray.first_angle);
-    cub->par.y -= sin(cub->ray.first_angle);
-  }
-}
-void key_lr(t_cub *cub, int sign) {
-  if (sign == 0)
-    cub->ray.first_angle -= 0.10;
-  else
-    cub->ray.first_angle += 0.10;
-  if (cub->ray.first_angle > 2 * M_PI)
-    cub->ray.first_angle -= 2 * M_PI;
-  if (cub->ray.first_angle < 0)
-    cub->ray.first_angle += 2 * M_PI;
-}
-void draw_fc(t_cub *cub) {
-  cub->i = 0;
-  cub->j = 0;
-  while (cub->i < WIDTH) {
-    cub->j = 0;
-    while (cub->j < HEIGHT) {
-      if (cub->j < HEIGHT / 2)
-        mlx_put_pixel(cub->mlx.img_ptr, cub->i, cub->j, cub->par.ceiling);
-      else
-        mlx_put_pixel(cub->mlx.img_ptr, cub->i, cub->j, cub->par.floor);
-      cub->j++;
-    }
-    cub->i++;
-  }
-  cub->i = 0;
-  cub->j = 0;
-}
+
+
 void pixel_draw(int x0, int y0, t_cub *game, int color) {
   if (x0 >= 0 && x0 < WIDTH && y0 >= 0 && y0 < HEIGHT)
     mlx_put_pixel(game->mlx.img_ptr, x0, y0, color);
@@ -273,45 +177,6 @@ void draw_view(t_cub *cub) {
     rayangle += ANGLE_INCREMENT;
     i++;
   }
-}
-void loop_hook(void *cub) {
-  t_cub *cu = (t_cub *)cub;
-  if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_A) &&
-      check_wall(cub, cu->par.x + cos(cu->ray.first_angle - (M_PI / 2)),
-                 cu->par.y + sin(cu->ray.first_angle - (M_PI / 2))) != 0) {
-    key_ad(cu, 0);
-    draw_fc(cub);
-    draw_view(cub);
-  } else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_W) &&
-             check_wall(cub, cu->par.x + cos(cu->ray.first_angle),
-                        cu->par.y + sin(cu->ray.first_angle)) != 0) {
-    key_ws(cu, 0);
-    draw_fc(cub);
-    draw_view(cub);
-  } else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_D) &&
-             check_wall(cub, cu->par.x - cos(cu->ray.first_angle - (M_PI / 2)),
-                        cu->par.y - sin(cu->ray.first_angle - (M_PI / 2))) !=
-                 0) {
-    key_ad(cu, 1);
-    draw_fc(cub);
-    draw_view(cub);
-  } else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_S) &&
-             check_wall(cub, cu->par.x - cos(cu->ray.first_angle),
-                        cu->par.y - sin(cu->ray.first_angle)) != 0) {
-    key_ws(cu, 1);
-    draw_fc(cub);
-    draw_view(cub);
-  } else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_LEFT)) {
-    key_lr(cu, 0);
-    draw_fc(cub);
-    draw_view(cub);
-  } else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_RIGHT)) {
-    key_lr(cu, 1);
-    draw_fc(cub);
-    draw_view(cub);
-  }
-  if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_ESCAPE))
-    mlx_close_window(cu->mlx.init_ptr);
 }
 
 void drawline(int x0, int y0, int x1, int y1, t_cub *game) {
@@ -387,19 +252,6 @@ void load_textures(t_cub *cub)
 //   draw_view(cub);
 // }
 
-void draw_minimap(void *cub) {
-  t_cub *cu;
-
-  cu = (t_cub *)cub;
-  draw_white_in_image(cu);
-  draw_wall_in_image(cu);
-  mlx_put_pixel(cu->mlx.img_ptr, MINIMAP_SCALE_FACTOR * (cu->par.x),
-                MINIMAP_SCALE_FACTOR * (cu->par.y), 0xC41E3A);
-  find_point(cu);
-  cast_rays(cu);
-//   
-//     draw_view(cub);
-}
 
 int main(int ac, char **av) {
   t_cub cub;
@@ -415,7 +267,6 @@ int main(int ac, char **av) {
     if (!(cub.mlx.init_ptr || cub.mlx.img_ptr))
       return (EXIT_FAILURE);
     load_textures(&cub);
-    
     mlx_loop_hook(cub.mlx.init_ptr, loop_hook, &cub);
     mlx_loop_hook(cub.mlx.init_ptr, draw_minimap, &cub);
     // mlx_loop_hook(cub.mlx.init_ptr, draw_map, &cub);

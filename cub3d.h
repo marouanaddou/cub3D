@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/24 12:25:56 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/26 20:45:32 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,43 @@ char	*ft_copier(char add, char *new_data);
 
 void    check_line(char *line, t_cub *cub);
 void    fill_line(t_cub *cub);
+
+void    check_error_information(t_cub *cub);
+void    split_newline_information(t_cub *cub);
+void    check_double_coma(t_cub *cub, char *color);
+void    check_rgb(char **color, t_cub *cub, int atoi);
+void	check_double(t_cub *cub, int i);
+
+void    check_valid_map(t_cub *cub);
 //-----------------------end parsing-------------------------//
+
+//---minimap && draw (floor - ceiling)---------------//
+void draw_minimap(void *cub) ;
+void draw_fc(t_cub *cub);
+//---minimap && draw (floor - ceiling)---------------//
+
+//---------------key-----------------//
+void loop_hook(void *cub);
+//---------------key-----------------//
+
+//------------------------reacsting--------------------------//
+void find_point(t_cub *cub);
+void cast_rays(t_cub *cub);
+
+//------------------------reacsting--------------------------//
+//----------draw maze----------------//
+void draw_view(t_cub *cub);
+//----------draw maze----------------//
+
+int check_wall(t_cub *cub, double x, double y);
+
+
+
+
+
+//---------------loud map---------------//
+
+int open_file(char *map, int fd);
+
+//---------------loud map---------------//
 #endif
