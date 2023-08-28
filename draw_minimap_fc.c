@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 11:45:31 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/26 12:52:07 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/27 14:53:04 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,8 @@ void	draw_minimap(void *cub)
 	cu = (t_cub *)cub;
 	draw_white_in_image(cu);
 	wall_in_image(cu);
-	mlx_put_pixel(cu->mlx.img_ptr, MINIMAP_SCALE_FACTOR * (cu->par.x),
-		MINIMAP_SCALE_FACTOR * (cu->par.y), 0xC41E3A);
 	find_point(cu);
 	cast_rays(cu);
-	draw_view(cub);
+	mlx_put_pixel(cu->mlx.img_ptr, MINIMAP_SCALE_FACTOR * (cu->par.x),
+		MINIMAP_SCALE_FACTOR * (cu->par.y), 0xC41E3A);
 }

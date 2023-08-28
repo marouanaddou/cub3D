@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/26 20:45:32 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/28 13:27:48 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@
 #define ANGLE_INCREMENT (DEGREE / WIDTH)
 #define MINIMAP_SCALE_FACTOR 0.2
 #define PROJECT_PLANE  (WIDTH / tan(DEGREE / 2))
+#define LEFT_RIGHT 1
+#define TOP_BOTTOM 0
+#define LEFT    1
+#define RIGHT   0
+#define TOP    1
+#define BOTTOM   0
 
 typedef struct s_mlx
 {
@@ -44,6 +50,9 @@ typedef struct s_mlx
 typedef struct s_point{
     double x_end;
     double y_end;
+    int direction;
+    int view;
+    double angle;
 } t_point;
 
 typedef struct s_elem
@@ -91,8 +100,10 @@ typedef struct s_cub
     t_parser par;
     t_mlx mlx;
     mlx_texture_t *txt;
-    int32_t **color_texture;
+    uint32_t **color_texture;
     mlx_image_t* img;
+    int mouse_x;
+    int mouse_y;
 } t_cub;
 
 void free_double_pointer(char **result);
