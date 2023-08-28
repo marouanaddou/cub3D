@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/28 16:41:38 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/28 20:46:46 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@
 #define ANGLE_INCREMENT (DEGREE / WIDTH)
 #define MINIMAP_SCALE_FACTOR 0.2
 #define PROJECT_PLANE  (WIDTH / tan(DEGREE / 2))
-#define LEFT_RIGHT 1
-#define TOP_BOTTOM 0
-#define LEFT    1
-#define RIGHT   0
-#define TOP    1
-#define BOTTOM   0
+#define LEFT_RIGHT 0
+#define TOP_BOTTOM 1
+#define LEFT    2
+#define RIGHT   3
+#define TOP    4
+#define BOTTOM   5
 
 typedef struct s_mlx
 {
@@ -88,6 +88,13 @@ typedef struct s_parser
     int cnt_elmt;
 } t_parser;
 
+typedef struct s_texture
+{
+    uint32_t **left_texture;
+    uint32_t **right_texture;
+    uint32_t **top_texture;
+    uint32_t **bottom_texture;
+}   t_tex;
 
 typedef struct s_cub
 {
@@ -101,8 +108,14 @@ typedef struct s_cub
     t_parser par;
     t_mlx mlx;
     mlx_texture_t *txt;
-    uint32_t **color_texture;
+    uint32_t **left_texture;
+    uint32_t **right_texture;
+    uint32_t **top_texture;
+    uint32_t **bottom_texture;
     mlx_image_t* img;
+    // t_tex *texture;
+    int mouse_x;
+    int mouse_y;
 } t_cub;
 
 void free_double_pointer(char **result);
@@ -122,5 +135,43 @@ char	*ft_copier(char add, char *new_data);
 
 void    check_line(char *line, t_cub *cub);
 void    fill_line(t_cub *cub);
+
+void    check_error_information(t_cub *cub);
+void    split_newline_information(t_cub *cub);
+void    check_double_coma(t_cub *cub, char *color);
+void    check_rgb(char **color, t_cub *cub, int atoi);
+void	check_double(t_cub *cub, int i);
+
+void    check_valid_map(t_cub *cub);
 //-----------------------end parsing-------------------------//
+
+//---minimap && draw (floor - ceiling)---------------//
+void draw_minimap(void *cub) ;
+void draw_fc(t_cub *cub);
+//---minimap && draw (floor - ceiling)---------------//
+
+//---------------key-----------------//
+void loop_hook(void *cub);
+//---------------key-----------------//
+
+//------------------------reacsting--------------------------//
+void find_point(t_cub *cub);
+void cast_rays(t_cub *cub);
+
+//------------------------reacsting--------------------------//
+//----------draw maze----------------//
+void draw_view(t_cub *cub);
+//----------draw maze----------------//
+
+int check_wall(t_cub *cub, double x, double y, char c);
+
+
+
+
+
+//---------------loud map---------------//
+
+int open_file(char *map, int fd);
+
+//---------------loud map---------------//
 #endif

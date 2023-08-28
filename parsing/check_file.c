@@ -21,7 +21,7 @@ void	print(int i)
 	}
 }
 
-void check_file_ext(char *name)
+void	check_file_ext(char *name)
 {
 	int	i;
 
