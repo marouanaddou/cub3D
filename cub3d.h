@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/25 18:57:51 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/28 16:41:38 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_parser
     char *hexceiling;
     int cnt_elmt;
 } t_parser;
+
 
 typedef struct s_cub
 {

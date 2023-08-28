@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/26 22:55:05 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/28 16:35:30 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,19 +106,31 @@ int check_holes(t_cub *cub, float prev_x, float prev_y) {
 	return (0);
 }
 void calculate_slope(int i, t_cub *cub) {
-	double dx;
-	double dy;
-	float steps;
+	
+	// double dx;
+	// double dy;
+	// double steps;
 
-	dx = cub->point[i].x_end;
-	dy = cub->point[i].y_end;
-	if (fabs(dx) > fabs(dy))
-		steps = fabs(dx);
-	else
-		steps = fabs(dy);
-	// steps = (fabs(dx) + fabs(dy)) * 0.08;
-	cub->ray.x_inc = dx / steps;
-	cub->ray.y_inc = dy / steps;
+	// dx = cub->point[i].x_end;
+	// dy = cub->point[i].y_end;
+	// if (fabs(dx) > fabs(dy))
+	// 	steps = fabs(dx);
+	// else
+	// 	steps = fabs(dy);
+	// // steps = fabs(dx) + fabs(dy);
+	// cub->ray.x_inc = dx / steps;
+	// cub->ray.y_inc = dy / steps;
+	
+	///////////////
+	float dx;
+    float dy;
+    int step;
+
+    dx = cub->point[i].x_end;
+    dy = cub->point[i].y_end;
+    step = (int)(fabs(dx) + fabs(dy));
+	cub->ray.x_inc = dx / step;
+	cub->ray.y_inc = dy / step;
 }
 
 void cast_rays(t_cub *cub) {
@@ -262,31 +274,31 @@ uint32_t pixelcolor(t_cub *cub, double x, double y)
 	return (color);
 }
 
-void	drawline(int x0, int y0, int x1, int y1, t_cub *game)
-{
-	int		dx;
-	int		dy;
-	int		i;
-	int		steps;
-		int     x_inc, y_inc;
+// void	drawline(int x0, int y0, int x1, int y1, t_cub *game)
+// {
+// 	int		dx;
+// 	int		dy;
+// 	int		i;
+// 	int		steps;
+// 	int     x_inc, y_inc;
 
-	i = 0;
-	dx = x1 - x0;
-	dy = y1 - y0;
-	if (abs(dx) > abs(dy))
-		steps = abs(dx);
-	else
-		steps = abs(dy);
-	x_inc = dx / (float)steps;
-	y_inc = dy / (float)steps;
-	while (i <= steps)
-	{
-		pixel_draw(x0, y0, game, ft_pixel(25, 50, 20, 1));
-		x0 += x_inc;
-		y0 += y_inc;
-		i++;
-	}
-}
+// 	i = 0;
+// 	dx = x1 - x0;
+// 	dy = y1 - y0;
+// 	if (abs(dx) > abs(dy))
+// 		steps = abs(dx);
+// 	else
+// 		steps = abs(dy);
+// 	x_inc = dx / (float)steps;
+// 	y_inc = dy / (float)steps;
+// 	while (i <= steps)
+// 	{
+// 		pixel_draw(x0, y0, game, ft_pixel(25, 50, 20, 1));
+// 		x0 += x_inc;
+// 		y0 += y_inc;
+// 		i++;
+// 	}
+// }
 void    draw_view( t_cub *cub)
 {
     double wallHeight;
@@ -295,30 +307,36 @@ void    draw_view( t_cub *cub)
     double distance;
     double correctdistance;
     int32_t color;
-
+	int x_pos;
 	int i;
-    double rayangle = cub->ray.first_angle - (DEGREE / 2);
-
+    double rayangle;
+	
 	i = 0;
+	rayangle = cub->ray.first_angle - (DEGREE / 2);
     while (i < WIDTH)
     {
         distance = sqrt((pow((cub->point[i].x_end / 30) - (cub->par.x / 30), 2)) + (pow((cub->point[i].y_end/30) - (cub->par.y / 30), 2)));
         correctdistance = distance * cos(rayangle - cub->ray.first_angle);
         wallHeight = floor((HEIGHT / 2) / (correctdistance));
-		/////
-		// int ss=cub->point[i].x_end/30;
-		int pppp=(cub->point[i].x_end - (int)(cub->point[i].x_end/30) *30) / 30 * cub->txt->width;
-		//////
+		if (cub->point[i].view == LEFT_RIGHT)
+			x_pos=(cub->point[i].y_end - (int)(cub->point[i].y_end/30) *30) / 30 * cub->txt->width;
+		else if (cub->point[i].view == TOP_BOTTOM)
+			x_pos=(cub->point[i].x_end - (int)(cub->point[i].x_end/30) *30) / 30 * cub->txt->width;
         x = (HEIGHT / 2) - wallHeight;
         y = (HEIGHT / 2) + wallHeight;
+
         // drawline(i, x, i, HEIGHT / 2, cub);
         // drawline(i, (HEIGHT / 2), i, y, cub);
         while (x <= y)
         {
-			if (x > 0 && x < WIDTH)
+			if (x > 0 && x < HEIGHT)
 			{
-            	color = cub->color_texture[(int)x][pppp];
-            	mlx_put_pixel(cub->mlx.img_ptr, i, x, color);
+				int y_inc = (2 * wallHeight - (y - x)) * cub->txt->height / (wallHeight * 2);
+				if (y_inc < (int)cub->txt->height)
+				{	
+            		color = cub->color_texture[(int)y_inc][x_pos];
+            		mlx_put_pixel(cub->mlx.img_ptr, i, x, color);
+				}
 			}
             x++;
         }
@@ -327,43 +345,6 @@ void    draw_view( t_cub *cub)
     }
 }
 
-
-// void    draw_view( t_cub *cub)
-// {
-// 		double wallHeight;
-// 		// double x;
-// 		double distance;
-// 		double correctdistance;
-// 		uint32_t color;
-// 		double y_inc;
-// 		int x_pos;
-// 		int i = 0;
-		
-// 		double rayangle = cub->ray.first_angle - (DEGREE / 2);
-// 		while (i < WIDTH)
-// 		{
-// 				distance = sqrt((pow((cub->point[i].x_end / 30) - (cub->par.x / 30), 2)) + (pow((cub->point[i].y_end/30) - (cub->par.y / 30), 2)));
-// 				correctdistance = distance * cos(rayangle - cub->ray.first_angle);
-// 				wallHeight = floor((HEIGHT / 2) / (correctdistance));
-// 				// x = (HEIGHT / 2) - wallHeight;
-// 				// y = (HEIGHT / 2) + wallHeight;
-// 				y_inc = cub->txt->height / wallHeight;
-// 				if (cub->point[i].view == LEFT_RIGHT)
-// 					x_pos = ((int)cub->point[i].x_end / 30 * ((int)cub->txt->width / 30)) % cub->txt->width;
-// 				else if (cub->point[i].view == TOP_BOTTOM)
-// 					x_pos = ((int)(cub->point[i].y_end/30) * ((int)cub->txt->width) / 30)  % cub->txt->width;
-// 				double y = 0;
-// 				while (y < cub->txt->height)
-// 				{
-// 					color = 0;
-// 					mlx_put_pixel(cub->mlx.img_ptr, i, x_pos, color);
-// 					y += y_inc;
-// 					x_pos++;
-// 				}
-// 				i++;
-// 		}
-		
-// }
 void    draw_map(void *cu)
 {
 		t_cub *cub = (t_cub *)cu;
