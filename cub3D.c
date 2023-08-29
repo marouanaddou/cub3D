@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/28 20:45:08 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/29 20:48:03 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,22 +95,22 @@ void cast_rays(t_cub *cub) {
 			if (check_holes(cub, cub->ray.x_hor - cub->ray.x_inc,
 											cub->ray.y_ver - cub->ray.y_inc) == 1)
 				break;
-			mlx_put_pixel(cub->mlx.img_ptr, MINIMAP_SCALE_FACTOR * cub->ray.x_hor,
-										MINIMAP_SCALE_FACTOR * cub->ray.y_ver, 0xAA4A44);
+			mlx_put_pixel(cub->mlx.img_ptr, MINIMAP_SCALE_FACTOR *cub->ray.x_hor,
+										MINIMAP_SCALE_FACTOR *cub->ray.y_ver, 0xAA4A44);
 			cub->ray.x_hor += cub->ray.x_inc;
 			cub->point[i].x_end = cub->ray.x_hor;
 			if (cub->par.map[(int)floor(cub->point[i].y_end) / 30][(int)floor(cub->point[i].x_end) / 30] == '1')
 			{
 				check = true;
 				cub->point[i].view = LEFT_RIGHT;
-				if (cos(cub->point[i].angle ) >= 0)
+				if (cos(cub->point[i].angle) >= 0)
 					cub->point[i].direction = RIGHT;
 				else
 					cub->point[i].direction = LEFT;
 			}
 			cub->ray.y_ver += cub->ray.y_inc;
 			cub->point[i].y_end = cub->ray.y_ver;
-			if (cub->par.map[(int)floor(cub->point[i].y_end )/ 30][(int)floor(cub->point[i].x_end) / 30] == '1' && check == false)
+			if (cub->par.map[(int)floor(cub->point[i].y_end)/ 30][(int)floor(cub->point[i].x_end) / 30] == '1' && check == false)
 			{
 				cub->point[i].view = TOP_BOTTOM;
 				if (sin(cub->point[i].angle) >= 0)
@@ -149,30 +149,30 @@ void pixel_draw(int x0, int y0, t_cub *game, int color) {
 uint32_t ft_pixel(uint32_t r, uint32_t g, uint32_t b, uint32_t a) {
 	return (r << 24 | g << 16 | b << 8 | a);
 }
-uint32_t pixelcolor(t_cub *cub, double x, double y)
-{
-		static unsigned int i;
-		static unsigned int factor;
-		uint32_t color;
+// uint32_t pixelcolor(t_cub *cub, double x, double y)
+// {
+// 		static unsigned int i;
+// 		static unsigned int factor;
+// 		uint32_t color;
 		
-		color = 0;
-		if (i < cub->txt->width * cub->txt->height * 4)
-		{
-				color = ft_pixel(cub->txt->pixels[i], cub->txt->pixels[i + 1], cub->txt->pixels[i + 2], cub->txt->pixels[i + 3]);
-				i += cub->txt->width * 4;
-				if (x == y)
-				{
-						factor += 4;
-						i = factor;
-				}
-		}
-		else
-		{
-				factor = 0;
-				i = 0;
-		}
-	return (color);
-}
+// 		color = 0;
+// 		if (i < cub->txt->width * cub->txt->height * 4)
+// 		{
+// 				color = ft_pixel(cub->txt->pixels[i], cub->txt->pixels[i + 1], cub->txt->pixels[i + 2], cub->txt->pixels[i + 3]);
+// 				i += cub->txt->width * 4;
+// 				if (x == y)
+// 				{
+// 					factor += 4;
+// 					i = factor;
+// 				}
+// 		}
+// 		else
+// 		{
+// 				factor = 0;
+// 				i = 0;
+// 		}
+// 	return (color);
+// }
 
 void    draw_view( t_cub *cub)
 {
@@ -317,10 +317,10 @@ int main(int ac, char **av)
     if (!(cub.mlx.init_ptr || cub.mlx.img_ptr))
       return (EXIT_FAILURE);
     load_textures(&cub);
-	mlx_set_cursor_mode(cub.mlx.init_ptr, MLX_MOUSE_DISABLED);
-	mlx_get_mouse_pos(cub.mlx.init_ptr, &cub.mouse_x, &cub.mouse_y);
+	// mlx_set_cursor_mode(cub.mlx.init_ptr, MLX_MOUSE_DISABLED);
+	// mlx_get_mouse_pos(cub.mlx.init_ptr, &cub.mouse_x, &cub.mouse_y);
     mlx_loop_hook(cub.mlx.init_ptr, loop_hook, &cub);
-    // mlx_loop_hook(cub.mlx.init_ptr, draw_minimap, &cub);
+    mlx_loop_hook(cub.mlx.init_ptr, draw_minimap, &cub);
     // mlx_loop_hook(cub.mlx.init_ptr, draw_map, &cub);
     draw_minimap(&cub);
     draw_fc(&cub);

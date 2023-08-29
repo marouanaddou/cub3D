@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/28 20:46:46 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/29 16:41:35 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ void cast_rays(t_cub *cub);
 void draw_view(t_cub *cub);
 //----------draw maze----------------//
 
-int check_wall(t_cub *cub, double x, double y, char c);
+int check_wall(t_cub *cub,char c);
 
 
 
