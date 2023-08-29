@@ -6,9 +6,10 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/29 18:10:03 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/29 23:21:35 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 #ifndef CUB3D_H
@@ -105,6 +106,17 @@ typedef struct s_cub
     double angle_increment;
     double angle;
     double degree;
+    //////
+    double wallHeight;
+    double x_start;
+    double y_end;
+    double distance;
+    double correctdistance;
+    int32_t color;
+	int x_pos;
+    int y_inc;
+    double rayangle;
+    //////
     t_parser par;
     t_mlx mlx;
     mlx_texture_t *txt;
@@ -163,7 +175,7 @@ void cast_rays(t_cub *cub);
 void draw_view(t_cub *cub);
 //----------draw maze----------------//
 int check_holes(t_cub *cub, float prev_x, float prev_y);
-int check_wall(t_cub *cub, double x, double y, char c);
+int check_wall(t_cub *cub,char c);
 
 
 //--------------texture---------------//

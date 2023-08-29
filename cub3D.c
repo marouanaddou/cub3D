@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/29 21:42:45 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/30 00:17:44 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,53 +35,46 @@ void allocation_map(t_cub *cub, char *map)
   }
 }
 
+void  draw_ver_line(t_cub *cub, int i)
+{
+  	cub->y_inc = (2 * cub->wallHeight - (cub->y_end - cub->x_start)) * cub->txt->height / (cub->wallHeight * 2);
+	if (cub->y_inc < (int)cub->txt->height)
+	{
+		if (cub->point[i].direction == LEFT)
+			cub->color = cub->left_texture[(int)cub->y_inc][cub->x_pos];
+		else if (cub->point[i].direction == RIGHT)
+			cub->color = cub->right_texture[(int)cub->y_inc][cub->x_pos];
+		else if (cub->point[i].direction == TOP)
+			cub->color = cub->top_texture[(int)cub->y_inc][cub->x_pos];
+		else if (cub->point[i].direction == BOTTOM)
+			cub->color = cub->bottom_texture[(int)cub->y_inc][cub->x_pos];
+		mlx_put_pixel(cub->mlx.img_ptr, i, cub->x_start, cub->color);
+	}
+}
 void    draw_view( t_cub *cub)
 {
-    double wallHeight;
-    double x;
-    double y;
-    double distance;
-    double correctdistance;
-    int32_t color;
-	int x_pos;
-    int y_inc;
-	int i;
-    double rayangle;
+	  int i;
 	
-	i = 0;
-	rayangle = cub->ray.first_angle - (DEGREE / 2); 
+	  i = 0;
+	  cub->rayangle = cub->ray.first_angle - (DEGREE / 2); 
     while (i < WIDTH)
     {
-    	distance = sqrt((pow((cub->point[i].x_end / 30) - (cub->par.x / 30), 2)) + (pow((cub->point[i].y_end/30) - (cub->par.y / 30), 2)));
-      	correctdistance = distance * cos(rayangle - cub->ray.first_angle);
-      	wallHeight = floor((HEIGHT / 2) / (correctdistance));
+    	cub->distance = sqrt((pow((cub->point[i].x_end / 30) - (cub->par.x / 30), 2)) + (pow((cub->point[i].y_end/30) - (cub->par.y / 30), 2)));
+      cub->correctdistance = cub->distance * cos(cub->rayangle - cub->ray.first_angle);
+      cub->wallHeight = floor((HEIGHT / 2) / (cub->correctdistance));
 		if (cub->point[i].view == LEFT_RIGHT)
-			x_pos=(cub->point[i].y_end - (int)(cub->point[i].y_end/30) *30) / 30 * cub->txt->width;
+			cub->x_pos=(cub->point[i].y_end - (int)(cub->point[i].y_end/30) *30) / 30 * cub->txt->width;
 		else if (cub->point[i].view == TOP_BOTTOM)
-			x_pos=(cub->point[i].x_end - (int)(cub->point[i].x_end/30) *30) / 30 * cub->txt->width;
-    	x = (HEIGHT / 2) - wallHeight;
-    	y = (HEIGHT / 2) + wallHeight;
-      	while (x <= y)
+			cub->x_pos=(cub->point[i].x_end - (int)(cub->point[i].x_end/30) *30) / 30 * cub->txt->width;
+    	cub->x_start = (HEIGHT / 2) - cub->wallHeight;
+    	cub->y_end = (HEIGHT / 2) + cub->wallHeight;
+      	while (cub->x_start <= cub->y_end)
       	{
-			if (x > 0 && x < HEIGHT)
-			{
-				y_inc = (2 * wallHeight - (y - x)) * cub->txt->height / (wallHeight * 2);
-				if (y_inc < (int)cub->txt->height)
-				{
-					if (cub->point[i].direction == LEFT)
-            			color = cub->left_texture[(int)y_inc][x_pos];
-			  		else if (cub->point[i].direction == RIGHT)
-			  			color = cub->right_texture[(int)y_inc][x_pos];
-			  		else if (cub->point[i].direction == TOP)
-			  			color = cub->top_texture[(int)y_inc][x_pos];
-			  		else if (cub->point[i].direction == BOTTOM)
-			  			color = cub->bottom_texture[(int)y_inc][x_pos];
-            		mlx_put_pixel(cub->mlx.img_ptr, i, x, color);
-				}
-			}
-            x++;
-    	}
-    	rayangle += ANGLE_INCREMENT;
+			    if (cub->x_start > 0 && cub->x_start < HEIGHT)
+        		draw_ver_line(cub, i);
+            cub->x_start++;
+		    }
+    	cub->rayangle += ANGLE_INCREMENT;
     	i++;
     }
 }

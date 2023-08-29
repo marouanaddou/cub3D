@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:42:13 by mel-gand          #+#    #+#             */
-/*   Updated: 2023/08/29 20:27:29 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/29 22:07:05 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void cast_rays(t_cub *cub) {
 			if (check_holes(cub, cub->ray.x_hor - cub->ray.x_inc,
 											cub->ray.y_ver - cub->ray.y_inc) == 1)
 				break;
-			mlx_put_pixel(cub->mlx.img_ptr, MINIMAP_SCALE_FACTOR * (cub->ray.x_hor - cub->ray.x_inc),
-										MINIMAP_SCALE_FACTOR * (cub->ray.y_ver - cub->ray.y_inc), 0xAA4A44);
+			mlx_put_pixel(cub->mlx.img_ptr, MINIMAP_SCALE_FACTOR * cub->ray.x_hor,
+						MINIMAP_SCALE_FACTOR * cub->ray.y_ver, 0xAA4A44);
 			cub->ray.x_hor += cub->ray.x_inc;
 			cub->point[i].x_end = cub->ray.x_hor;
 			if (cub->par.map[(int)floor(cub->point[i].y_end) / 30][(int)floor(cub->point[i].x_end) / 30] == '1')
