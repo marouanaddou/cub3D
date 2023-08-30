@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 12:01:19 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/30 00:41:03 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/30 15:11:15 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ void	key_right_escape(t_cub *cub, int x)
 		key_lr(cub, 1);
 		cub->mouse_x = x;
 	}
-	else if (mlx_is_key_down(cub->mlx.init_ptr, MLX_KEY_LEFT) 
-		 || x < cub->mouse_x)
+	else if (mlx_is_key_down(cub->mlx.init_ptr, MLX_KEY_LEFT)
+		|| x < cub->mouse_x)
 	{
 		key_lr(cub, 0);
 		cub->mouse_x = x;
@@ -77,40 +77,12 @@ void	key_right_escape(t_cub *cub, int x)
 		mlx_close_window(cub->mlx.init_ptr);
 }
 
-int check_wall(t_cub *cub, char c) 
+int	check_wall(t_cub *cub, double y, double x)
 {
-	if (c == 'A')
-	{
-		if (cub->par.map[(int)((cub->par.y + sin(cub->ray.first_angle - (M_PI / 2)))/ 30)][(int)((cub->par.x + cos(cub->ray.first_angle - (M_PI / 2)))/ 30)] == '1')
-			return 0;
-		if (cub->par.map[(int)(cub->par.y / 30)][(int)((cub->par.x + cos(cub->ray.first_angle - (M_PI / 2)))/ 30)] == '1'
-			&& cub->par.map[(int)((cub->par.y + sin(cub->ray.first_angle - (M_PI / 2)))/ 30)][(int)(cub->par.x / 30)] == '1')
-				return (0);
-	}
-	else if (c == 'D')
-	{
-		if (cub->par.map[(int)((cub->par.y - sin(cub->ray.first_angle - (M_PI / 2)))/ 30)][(int)((cub->par.x - cos(cub->ray.first_angle - (M_PI / 2)))/ 30)] == '1')
-			return 0;
-		if (cub->par.map[(int)(cub->par.y / 30)][(int)((cub->par.x - cos(cub->ray.first_angle - (M_PI / 2)))/ 30)] == '1'
-			&& cub->par.map[(int)((cub->par.y - sin(cub->ray.first_angle - (M_PI / 2)))/ 30)][(int)(cub->par.x / 30)] == '1')
-				return (0);
-	}
-	else if (c == 'W')
-	{
-		if (cub->par.map[(int)((cub->par.y + sin(cub->ray.first_angle))/ 30)][(int)((cub->par.x + cos(cub->ray.first_angle))/ 30)] == '1')
-			return 0;
-		if (cub->par.map[(int)(cub->par.y / 30)][(int)((cub->par.x + cos(cub->ray.first_angle))/ 30)] == '1'
-			&& cub->par.map[(int)((cub->par.y + sin(cub->ray.first_angle))/ 30)][(int)(cub->par.x / 30)] == '1')
-				return (0);
-	}
-	else if (c == 'S')
-	{
-		if (cub->par.map[(int)((cub->par.y - sin(cub->ray.first_angle))/ 30)][(int)((cub->par.x - cos(cub->ray.first_angle))/ 30)] == '1')
-			return 0;
-		if (cub->par.map[(int)(cub->par.y / 30)][(int)((cub->par.x - cos(cub->ray.first_angle)))/ 30] == '1'
-			&& cub->par.map[(int)((cub->par.y - sin(cub->ray.first_angle ))/ 30)][(int)(cub->par.x / 30)] == '1')
-				return (0);
-	}
+	if (cub->par.map[(int)y][(int)x] == '1'
+		|| (cub->par.map[(int)y][(int)(cub->par.x / 30)] == '1'
+			&& cub->par.map[(int)(cub->par.y / 30)][(int)x] == '1'))
+		return (0);
 	return (1);
 }
 
@@ -121,17 +93,23 @@ void	loop_hook(void *cub)
 
 	cu = (t_cub *)cub;
 	mlx_get_mouse_pos(cu->mlx.init_ptr, &x, &cu->mouse_y);
-	if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_A)
-		&& check_wall(cub, 'A') != 0)
+	if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_A) && check_wall(cub,
+			(cu->par.y + (sin(cu->ray.first_angle - (M_PI / 2)) * 10)) / 30,
+			((cu->par.x + (cos(cu->ray.first_angle - (M_PI / 2)) * 10))
+				/ 30)) != 0)
 		key_ad(cu, 0);
-	else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_W) 
-		&& check_wall(cub, 'W') != 0)
+	else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_W) && check_wall(cu,
+			(cu->par.y + (sin(cu->ray.first_angle) * 10)) / 30, ((cu->par.x
+					+ (cos(cu->ray.first_angle) * 10)) / 30)) != 0)
 		key_ws(cu, 0);
-	else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_D)
-		&& check_wall(cub, 'D') != 0)
+	else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_D) && check_wall(cub,
+			(cu->par.y - (sin(cu->ray.first_angle - (M_PI / 2)) * 10)) / 30,
+			((cu->par.x - (cos(cu->ray.first_angle - (M_PI / 2)) * 10))
+				/ 30)) != 0)
 		key_ad(cu, 1);
-	else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_S) 
-		&& check_wall(cub, 'S') != 0)
+	else if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_S) && check_wall(cub,
+			(cu->par.y - (sin(cu->ray.first_angle) * 10)) / 30, (cu->par.x
+				- (cos(cu->ray.first_angle) * 10)) / 30) != 0)
 		key_ws(cu, 1);
 	key_right_escape(cub, x);
 }

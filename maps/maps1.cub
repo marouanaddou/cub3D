@@ -1,14 +1,14 @@
-NO ./path_to_the_north_texture
-SO ./path_to_the_south_texture
-WE ./path_to_the_west_texture
-EA ./path_to_the_east_texture
+NO textures/BRICK_3B.PNG
+SO textures/BRICK_3D.PNG
+WE textures/BRICK_2B.PNG
+EA textures/BRICK_1A.PNG
 
 
 
 
 
-C       30,144,255   
-F 160,82,45
+C       0,25,51   
+F       102,51,0
 
         1111111111111111111111111
         10000000001111110000000001

@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/30 00:17:44 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/30 15:26:47 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ void    draw_view( t_cub *cub)
 	  cub->rayangle = cub->ray.first_angle - (DEGREE / 2); 
     while (i < WIDTH)
     {
-    	cub->distance = sqrt((pow((cub->point[i].x_end / 30) - (cub->par.x / 30), 2)) + (pow((cub->point[i].y_end/30) - (cub->par.y / 30), 2)));
+    	cub->distance = sqrt((pow((cub->point[i].x_end / 30) - (cub->par.x / 30), 2)) 
+        + (pow((cub->point[i].y_end / 30) - (cub->par.y / 30), 2)));
       cub->correctdistance = cub->distance * cos(cub->rayangle - cub->ray.first_angle);
       cub->wallHeight = floor((HEIGHT / 2) / (cub->correctdistance));
 		if (cub->point[i].view == LEFT_RIGHT)

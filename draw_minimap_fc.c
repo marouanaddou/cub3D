@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 11:45:31 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/29 21:52:35 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/30 15:36:40 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ void	draw_wall(t_cub *cub)
 	int	put2;
 
 	put1 = 0;
-	while (put1 < 30)
+	while (put1 <= 30)
 	{
 		put2 = 0;
-		while (put2 < 30)
+		while (put2 <= 30)
 		{
 			mlx_put_pixel(cub->mlx.img_ptr,
 				MINIMAP_SCALE_FACTOR * ((cub->j * 30) + put1),
@@ -74,7 +74,7 @@ void	draw_white_in_image(t_cub *cub)
 {
 	cub->i = 0;
 	cub->j = 0;
-	while (cub->i < (cub->mlx.width * 30  * MINIMAP_SCALE_FACTOR))
+	while (cub->i < (cub->mlx.width * 30 * MINIMAP_SCALE_FACTOR))
 	{
 		cub->j = 0;
 		while (cub->j < (cub->mlx.height * 30 * MINIMAP_SCALE_FACTOR))
