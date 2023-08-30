@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/29 20:48:03 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/30 13:25:47 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ void cast_rays(t_cub *cub) {
 			if (check_holes(cub, cub->ray.x_hor - cub->ray.x_inc,
 											cub->ray.y_ver - cub->ray.y_inc) == 1)
 				break;
-			mlx_put_pixel(cub->mlx.img_ptr, MINIMAP_SCALE_FACTOR *cub->ray.x_hor,
-										MINIMAP_SCALE_FACTOR *cub->ray.y_ver, 0xAA4A44);
+			mlx_put_pixel(cub->mlx.img_ptr, /*MINIMAP_SCALE_FACTOR **/cub->ray.x_hor,
+										/*MINIMAP_SCALE_FACTOR **/cub->ray.y_ver, 0xAA4A44);
 			cub->ray.x_hor += cub->ray.x_inc;
 			cub->point[i].x_end = cub->ray.x_hor;
 			if (cub->par.map[(int)floor(cub->point[i].y_end) / 30][(int)floor(cub->point[i].x_end) / 30] == '1')
@@ -323,8 +323,8 @@ int main(int ac, char **av)
     mlx_loop_hook(cub.mlx.init_ptr, draw_minimap, &cub);
     // mlx_loop_hook(cub.mlx.init_ptr, draw_map, &cub);
     draw_minimap(&cub);
-    draw_fc(&cub);
-    draw_view(&cub);
+    // draw_fc(&cub);
+    // draw_view(&cub);
     mlx_loop_hook(cub.mlx.init_ptr, draw_minimap, &cub);
     mlx_loop(cub.mlx.init_ptr);
     mlx_terminate(cub.mlx.init_ptr);

@@ -39,8 +39,8 @@ void	initialisation_fa(char *line, t_cub *cub, int i)
 		if (line[i] == 'N' || line[i] == 'W' || line[i] == 'S'
 			|| line[i] == 'E')
 		{
-			cub->par.x = (i * 30);
-			cub->par.y = (cub->j * 30);
+			cub->par.x = (i * 30) + CENTER;
+			cub->par.y = (cub->j * 30) + CENTER;
 		}
 		i++;
 	}

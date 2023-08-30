@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/29 16:41:35 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/30 13:33:19 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 #define RIGHT   3
 #define TOP    4
 #define BOTTOM   5
+#define CENTER  15
 
 typedef struct s_mlx
 {
@@ -163,7 +164,7 @@ void cast_rays(t_cub *cub);
 void draw_view(t_cub *cub);
 //----------draw maze----------------//
 
-int check_wall(t_cub *cub,char c);
+int	check_wall(t_cub *cub, double y, double x);
 
 
 
