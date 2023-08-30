@@ -6,9 +6,10 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/30 13:33:19 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/30 14:50:30 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 #ifndef CUB3D_H
@@ -106,6 +107,17 @@ typedef struct s_cub
     double angle_increment;
     double angle;
     double degree;
+    //////
+    double wallHeight;
+    double x_start;
+    double y_end;
+    double distance;
+    double correctdistance;
+    int32_t color;
+	int x_pos;
+    int y_inc;
+    double rayangle;
+    //////
     t_parser par;
     t_mlx mlx;
     mlx_texture_t *txt;
@@ -164,15 +176,14 @@ void cast_rays(t_cub *cub);
 void draw_view(t_cub *cub);
 //----------draw maze----------------//
 
-int	check_wall(t_cub *cub, double y, double x);
+int check_wall(t_cub *cub, double y, double x);
 
 
-
-
-
-//---------------loud map---------------//
+//--------------texture---------------//
+void load_textures(t_cub *cub);
+//---------------load map---------------//
 
 int open_file(char *map, int fd);
 
-//---------------loud map---------------//
+//---------------load map---------------//
 #endif

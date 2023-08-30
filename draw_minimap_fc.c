@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 11:45:31 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/30 13:25:00 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/30 14:58:52 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ void	draw_wall(t_cub *cub)
 	int	put2;
 
 	put1 = 0;
-	while (put1 < 30)
+	while (put1 <= 30)
 	{
 		put2 = 0;
-		while (put2 < 30)
+		while (put2 <= 30)
 		{
 			mlx_put_pixel(cub->mlx.img_ptr,
-				/*MINIMAP_SCALE_FACTOR **/ ((cub->j * 30) + put1),
-				/*MINIMAP_SCALE_FACTOR **/ ((cub->i * 30) + put2),
+				MINIMAP_SCALE_FACTOR * ((cub->j * 30) + put1),
+				MINIMAP_SCALE_FACTOR * ((cub->i * 30) + put2),
 				0x6a);
 			put2++;
 		}
@@ -74,10 +74,11 @@ void	draw_white_in_image(t_cub *cub)
 {
 	cub->i = 0;
 	cub->j = 0;
-	while (cub->i < (cub->mlx.width * 30  /** MINIMAP_SCALE_FACTOR)*/))
+	// printf ("")
+	while (cub->i < (cub->mlx.width * 30 * MINIMAP_SCALE_FACTOR))
 	{
 		cub->j = 0;
-		while (cub->j < (cub->mlx.height * 30/* * MINIMAP_SCALE_FACTOR*/))
+		while (cub->j < (cub->mlx.height * 30 * MINIMAP_SCALE_FACTOR))
 		{
 			mlx_put_pixel(cub->mlx.img_ptr, cub->i, cub->j, 0xffffffff);
 			cub->j++;
@@ -97,6 +98,6 @@ void	draw_minimap(void *cub)
 	wall_in_image(cu);
 	find_point(cu);
 	cast_rays(cu);
-	mlx_put_pixel(cu->mlx.img_ptr, /*MINIMAP_SCALE_FACTOR **/ (cu->par.x),
-		/*MINIMAP_SCALE_FACTOR * */(cu->par.y), 0xC41E3A);
+	mlx_put_pixel(cu->mlx.img_ptr, MINIMAP_SCALE_FACTOR * (cu->par.x),
+		MINIMAP_SCALE_FACTOR * (cu->par.y), 0xC41E3A);
 }
