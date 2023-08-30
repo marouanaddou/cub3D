@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 12:01:19 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/30 00:30:39 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/30 00:41:03 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ int check_wall(t_cub *cub, char c)
 	}
 	return (1);
 }
+
 void	loop_hook(void *cub)
 {
 	t_cub	*cu;
