@@ -6,12 +6,12 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 15:08:53 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/10 22:28:01 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/30 23:23:58 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "get_next_line.h"
+
 int	ft_chek_newline(char *str)
 {
 	int	i;

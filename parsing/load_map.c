@@ -102,4 +102,5 @@ void	load_map(char *map, t_cub *cub)
 	cub->par.map[cub->j] = NULL;
 	cub->par.element[cub->par.cnt_elmt] = NULL;
 	close(fd);
+	free_double_pointer(cub->par.file);
 }

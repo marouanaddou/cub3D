@@ -16,7 +16,7 @@ void	print(int i)
 {
 	if (i == 0)
 	{
-		write(1, "Error name \n", 15);
+		write(2, "Invalid Extension\n", 18);
 		exit(1);
 	}
 }
@@ -40,5 +40,4 @@ void	check_file_ext(char *name)
 		print(0);
 	if (name[i + 4] != '\0')
 		print(0);
-	print(1);
 }

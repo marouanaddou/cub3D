@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 12:01:19 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/30 15:11:15 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/30 22:07:39 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,7 @@ void	key_lr(t_cub *cub, int sign)
 
 void	key_right_escape(t_cub *cub, int x)
 {
-	if (mlx_is_key_down(cub->mlx.init_ptr, MLX_KEY_RIGHT) 
-		|| x > cub->mouse_x)
+	if (mlx_is_key_down(cub->mlx.init_ptr, MLX_KEY_RIGHT) || x > cub->mouse_x)
 	{
 		key_lr(cub, 1);
 		cub->mouse_x = x;
@@ -77,20 +76,11 @@ void	key_right_escape(t_cub *cub, int x)
 		mlx_close_window(cub->mlx.init_ptr);
 }
 
-int	check_wall(t_cub *cub, double y, double x)
-{
-	if (cub->par.map[(int)y][(int)x] == '1'
-		|| (cub->par.map[(int)y][(int)(cub->par.x / 30)] == '1'
-			&& cub->par.map[(int)(cub->par.y / 30)][(int)x] == '1'))
-		return (0);
-	return (1);
-}
-
 void	loop_hook(void *cub)
 {
 	t_cub	*cu;
 	int		x;
-
+	
 	cu = (t_cub *)cub;
 	mlx_get_mouse_pos(cu->mlx.init_ptr, &x, &cu->mouse_y);
 	if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_A) && check_wall(cub,

@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   check_error_information.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 17:45:49 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/27 13:07:38 by maddou           ###   ########.fr       */
+/*   Updated: 2023/08/31 01:48:34 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-// hna khasna free .....!
 void	comparaison(char *direction)
 {
 	if (ft_strcmp(direction, "NO") != 0 && ft_strcmp(direction, "WE") != 0
@@ -24,34 +23,34 @@ void	comparaison(char *direction)
 	}
 }
 
-void	tream_path(t_cub *cub, int i)
+void	trim_path(t_cub *cub, int i)
 {
-	char	*tream;
+	char	*trim;
 	
 	if (cub->par.elm[i].path[0] != '\0')
 	{
-		tream = ft_strdup(ft_strtrim(cub->par.elm[i].path, "\n"));
+		trim = ft_strdup(ft_strtrim(cub->par.elm[i].path, "\n"));
 		free(cub->par.elm[i].path);
-		cub->par.elm[i].path = ft_strdup(tream);
-		free(tream);
+		cub->par.elm[i].path = ft_strdup(trim);
+		free(trim);
 	}
 	if (cub->par.elm[i].path[0] != '\0')
 	{
-		tream = ft_strdup(ft_strtrim(cub->par.elm[i].path, " "));
+		trim = ft_strdup(ft_strtrim(cub->par.elm[i].path, " "));
 		free(cub->par.elm[i].path);
-		cub->par.elm[i].path = ft_strdup(tream);
-		free(tream);
+		cub->par.elm[i].path = ft_strdup(trim);
+		free(trim);
 	}
 }
 
 void	check_color(t_cub *cub, int i)
 {
 	char	**color;
-	char	*tream;
+	char	*trim;
 	int		atoi;
 
 	atoi = 0;
-	tream = NULL;
+	trim = NULL;
 	check_double_coma(cub, cub->par.elm[i].path);
 	color = ft_split(cub->par.elm[i].path, ',');
 	check_rgb(color, cub, atoi);
@@ -69,7 +68,7 @@ void	fill_color(t_cub *cub, char **color, int i)
 	if (ft_strcmp(cub->par.elm[i].direction, "F") == 0)
 	{
 		color = ft_split(cub->par.elm[i].path, ',');
-		cub->par.floor = (atoi(color[0]) << 24 | atoi(color[1]) << 16 
+		cub->par.floor = (atoi(color[0]) << 24 | atoi(color[1]) << 16
 				| atoi(color[2]) >> 8 | 255);
 	}
 	else
@@ -78,6 +77,7 @@ void	fill_color(t_cub *cub, char **color, int i)
 		cub->par.ceiling = (atoi(color[0]) << 24 | atoi(color[1]) << 16 
 				| atoi(color[2]) << 8 | 255);
 	}
+	free_double_pointer(color);
 }
 
 void	check_error_information(t_cub *cub)
@@ -95,12 +95,14 @@ void	check_error_information(t_cub *cub)
 		if (ft_strcmp(cub->par.elm[i].direction, "F") == 0
 			|| ft_strcmp(cub->par.elm[i].direction, "C") == 0)
 		{
-			tream_path(cub, i);
+			trim_path(cub, i);
 			check_color(cub, i);
 			fill_color(cub, color, i);
 		}
 		else
-			tream_path(cub, i);
+			trim_path(cub, i);
+		free(cub->par.elm[i].path);
+		free(cub->par.elm[i].direction);
 		i++;
 	}
 }
