@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_minimap_fc.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 11:45:31 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/30 20:57:33 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/09/01 18:34:29 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	draw_minimap(void *cub)
 	wall_in_image(cu);
 	find_point(cu);
 	cast_rays(cu);
+	free (cu->point);
 	mlx_put_pixel(cu->mlx.img_ptr, MINIMAP_SCALE_FACTOR * (cu->par.x),
 		MINIMAP_SCALE_FACTOR * (cu->par.y), 0xC41E3A);
 }

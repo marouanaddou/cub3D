@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   map_len.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 10:52:20 by maddou            #+#    #+#             */
-/*   Updated: 2023/09/01 13:17:04 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/09/01 18:39:32 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+
+void	check_2d_map(char **av, t_cub *cub)
+{
+	check_file_ext(av[1]);
+	allocation_map(cub, av[1]);
+	load_map(av[1], cub);
+	check_information(cub);
+	check_map(cub);
+}
 
 void	count(t_cub *cub, int *bol, char *line)
 {

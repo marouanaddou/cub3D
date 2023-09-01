@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 12:01:19 by maddou            #+#    #+#             */
-/*   Updated: 2023/09/01 13:08:02 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/09/01 18:26:00 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include "mlx42/include/MLX42/MLX42.h"
 
 void	key_ad(t_cub *cub, int sign)
 {

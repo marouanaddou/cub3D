@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/09/01 13:08:52 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/09/01 18:39:53 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ typedef struct s_mlx
 	int				height;
 	void			*init_ptr;
 	void			*img_ptr;
-	void			*fullimg_ptr;
 	mlx_t			*mlx;
 }					t_mlx;
 
@@ -79,8 +78,6 @@ typedef struct s_parser
 	char			**file;
 	int				cnt_map;
 	t_elem			*elm;
-	char			*hexfloor;
-	char			*hexceiling;
 	int				cnt_elmt;
 	char			*texture_path[5];
 	int				check_line;
@@ -106,12 +103,12 @@ typedef struct s_cub
 	double			rayangle;
 	t_parser		par;
 	t_mlx			mlx;
-	mlx_texture_t	*txt;
+	mlx_texture_t	*txt[4];
 	uint32_t		**left_texture;
 	uint32_t		**right_texture;
 	uint32_t		**top_texture;
 	uint32_t		**bottom_texture;
-	mlx_image_t		*img;
+	mlx_image_t		*img[4];
 	int				mouse_x;
 	int				mouse_y;
 }					t_cub;
@@ -135,6 +132,7 @@ void				check_double_coma(t_cub *cub, char *color);
 void				check_rgb(char **color, t_cub *cub, int atoi);
 void				check_double(t_cub *cub, int i);
 void				check_valid_map(t_cub *cub);
+void				check_2d_map(char **av, t_cub *cub);
 void				draw_minimap(void *cub);
 void				draw_fc(t_cub *cub);
 void				loop_hook(void *cub);
