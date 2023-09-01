@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/31 18:14:18 by maddou           ###   ########.fr       */
+/*   Updated: 2023/09/01 12:43:32 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ typedef struct s_parser
 	char			**map;
 	double			x;
 	double			y;
-	// int				pxp;
-	// int				pyp;
 	char			**element;
 	char			**file;
 	int				cnt_map;

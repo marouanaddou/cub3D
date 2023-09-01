@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/31 22:44:05 by maddou           ###   ########.fr       */
+/*   Updated: 2023/09/01 11:39:51 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,12 @@ int	main(int ac, char **av)
 		cub.mlx.img_ptr = mlx_new_image(cub.mlx.init_ptr, WIDTH, HEIGHT);
 		mlx_image_to_window(cub.mlx.init_ptr, cub.mlx.img_ptr, 0, 0);
 		if (!(cub.mlx.init_ptr || cub.mlx.img_ptr))
+		{
+			free_double_pointer(cub.par.element);
+			free_double_pointer(cub.par.map);
+			free_element(cub.par.elm);
 			return (EXIT_FAILURE);
+		}
 		load_textures(&cub);
 		mlx_set_cursor_mode(cub.mlx.init_ptr, MLX_MOUSE_DISABLED);
 		mlx_get_mouse_pos(cub.mlx.init_ptr, &cub.mouse_x, &cub.mouse_y);
