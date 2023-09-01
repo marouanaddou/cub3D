@@ -6,7 +6,7 @@
 /*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 20:44:13 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/27 13:15:29 by maddou           ###   ########.fr       */
+/*   Updated: 2023/09/01 10:13:25 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,17 @@ void	check_element(char *str)
 	}
 }
 
+void	free_valid_map(t_cub *cub, char **map, char *str)
+{
+	free_double_pointer(map);
+	free_double_pointer(cub->par.map);
+	free_double_pointer(cub->par.element);
+	free_element(cub->par.elm);
+	// printf ("xxx\n");
+	// while(1);
+	print_error(str);
+}
+
 char	**copy_map(t_cub *cub, char **map)
 {
 	map = malloc(sizeof(char *) * (cub->par.cnt_map + 1));
@@ -49,12 +60,16 @@ char	**copy_map(t_cub *cub, char **map)
 void	valid_map(t_cub *cub, char **map, int y, int x)
 {
 	if (map[y][x] != '1' && (x == 0 || y == 0 || y == cub->mlx.height - 1))
-		print_error("FOUND ERROR\n");
-	if ((unsigned int)y == ft_strlen(map[y]) - 1 && map[y][ft_strlen(map[x])
-		- 1] != '1')
-		print_error("FOUND ERRR OUT BOUND\n");
+		free_valid_map(cub, map, "ERROR: map1\n");
+	// if (y == (int)ft_strlen(map[y]) - 1 && map[y][ft_strlen(map[x])
+	// 	- 1] != '1')
+		// free_valid_map(cub, map, "ERROR: map2\n");
 	if (map[y][x] <= 32)
-		print_error("FOUND ERRR OUT BOUND\n");
+	{
+		// map[y][x] = '*';
+		printf ("%s\n",map[y]);
+		free_valid_map(cub, map, "ERROR: map3\n");
+	}
 	if (map[y][x] == '1' || map[y][x] == 'Z')
 		return ;
 	map[y][x] = 'Z';
@@ -75,6 +90,8 @@ void	check_valid_map(t_cub *cub)
 	x = (cub->par.x) / 30;
 	y = (cub->par.y) / 30;
 	cub->i = 0;
+	// printf ("%d %d \n", x, y);
+	// printf ("%c", map[y][x]);
 	valid_map(cub, map, y, x);
 	free_double_pointer(map);
 }

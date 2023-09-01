@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:53:14 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/30 18:24:24 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/31 19:14:05 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,18 @@ void	free_double_pointer(char **result)
 		i++;
 	}
 	free(result);
+}
+
+void	free_element(t_elem *elm)
+{
+	int	i;
+	
+	i = 0;
+	while(i < 6)
+	{
+		free(elm[i].path);
+		free(elm[i].direction);
+		i++;
+	}
+	free(elm);
 }

@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   split_newline_information.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 17:51:00 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/31 00:42:00 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/31 15:09:59 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
-// hna khasna free .....!
 
 char	**number_element_without_newlen(t_cub *cub, char **result)
 {
@@ -25,8 +24,9 @@ char	**number_element_without_newlen(t_cub *cub, char **result)
 	}
 	if (cub->par.cnt_elmt != 6)
 	{
-		printf("ERROR: information\n");
-		exit(1);
+		free_double_pointer(cub->par.element);
+		free_double_pointer(cub->par.map);
+		print_error("ERROR: information\n");
 	}
 	result = malloc(sizeof(char *) * (cub->par.cnt_elmt + 1));
 	cub->i = 0;

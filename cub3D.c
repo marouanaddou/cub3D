@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/31 01:49:19 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/31 22:44:05 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,9 @@ int	main(int ac, char **av)
 	if (ac == 2)
 	{
 		check_file_ext(av[1]);
-		allocation_map(&cub, av[1]); /// get next line ymkn fiha leaks
+		allocation_map(&cub, av[1]);
 		load_map(av[1], &cub);
-		check_information(&cub); ///// kemel hna
-				// while(1){};
+		check_information(&cub);
 		check_map(&cub);
 		cub.mlx.init_ptr = mlx_init(WIDTH, HEIGHT, "cub3D", 1);
 		cub.mlx.img_ptr = mlx_new_image(cub.mlx.init_ptr, WIDTH, HEIGHT);

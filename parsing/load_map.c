@@ -23,37 +23,50 @@ int	open_file(char *map, int fd)
 	return (fd);
 }
 
-void	initialisation_fa(char *line, t_cub *cub, int i)
+void	initialisation_fa( t_cub *cub, int i, int j)
 {
 	i = 0;
-	while (line[i] != '\0')
+	while (i < cub->par.cnt_map)
 	{
-		if (line[i] == 'N')
-			cub->ray.first_angle = -(M_PI / 2);
-		else if (line[i] == 'W')
-			cub->ray.first_angle = M_PI;
-		else if (line[i] == 'S')
-			cub->ray.first_angle = (M_PI / 2);
-		else if (line[i] == 'E')
-			cub->ray.first_angle = 0;
-		if (line[i] == 'N' || line[i] == 'W' || line[i] == 'S'
-			|| line[i] == 'E')
+		j = 0;
+		while (cub->par.map[i][j] != '\0')
 		{
-			cub->par.x = (i * 30) + CENTER;
-			cub->par.y = (cub->j * 30) + CENTER;
+			if (cub->par.map[i][j] == 'N')
+				cub->ray.first_angle = -(M_PI / 2);
+			else if (cub->par.map[i][j] == 'W')
+				cub->ray.first_angle = M_PI;
+			else if (cub->par.map[i][j] == 'S')
+				cub->ray.first_angle = (M_PI / 2);
+			else if (cub->par.map[i][j] == 'E')
+				cub->ray.first_angle = 0;
+			if (cub->par.map[i][j] == 'N' || cub->par.map[i][j] == 'W' 
+				|| cub->par.map[i][j] == 'S' || cub->par.map[i][j] == 'E')
+			{
+				cub->par.x = (cub->j * 30) + CENTER;
+				cub->par.y = (i * 30) + CENTER;
+			}
+			j++;
 		}
 		i++;
 	}
 }
 
-void	check_line(char *line, t_cub *cub)
+void	check_line(t_cub *cub)
 {
 	int	i;
+	int j;
 
 	i = 0;
-	if (line[i] == '\n')
-		print_error("ERROR");
-	initialisation_fa(line, cub, i);
+	if (cub->par.check_line != 0)
+	{
+		free_double_pointer(cub->par.element);
+		free_double_pointer(cub->par.file);
+		free_double_pointer(cub->par.map);
+		print_error("1ERROR");
+	}
+	i = 0;
+	j = 0;
+	initialisation_fa( cub, i, j);
 }
 
 void	fill_line(t_cub *cub)
@@ -86,13 +99,15 @@ void	load_map(char *map, t_cub *cub)
 	while (1)
 	{
 		cub->par.file[cub->i] = get_next_line(fd);
-		if (cub->par.file[0] == NULL)
-			print_error("ERROR");
+		// if (cub->par.file[0] == NULL)
+		// 	print_error("ERROR");
 		if (cub->i < cub->par.cnt_elmt)
 			cub->par.element[cub->i] = ft_strdup(cub->par.file[cub->i]);
 		else if (cub->j < cub->par.cnt_map)
 		{
-			check_line(cub->par.file[cub->i], cub);
+			if (cub->par.file[cub->i][0] == '\n')
+				cub->par.check_line += 1;
+			cub->par.element[cub->par.cnt_elmt] = NULL;
 			fill_line(cub);
 		}
 		if (cub->par.file[cub->i] == NULL)
@@ -100,7 +115,7 @@ void	load_map(char *map, t_cub *cub)
 		cub->i++;
 	}
 	cub->par.map[cub->j] = NULL;
-	cub->par.element[cub->par.cnt_elmt] = NULL;
-	close(fd);
+	check_line(cub);
 	free_double_pointer(cub->par.file);
+	close(fd);
 }

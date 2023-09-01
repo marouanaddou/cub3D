@@ -3,43 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   check_error_information.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 17:45:49 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/31 01:48:34 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/31 22:42:48 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-void	comparaison(char *direction)
+void	comparaison(char *direction, t_cub *cub)
 {
 	if (ft_strcmp(direction, "NO") != 0 && ft_strcmp(direction, "WE") != 0
 		&& ft_strcmp(direction, "SO") != 0 && ft_strcmp(direction, "EA") != 0
 		&& ft_strcmp(direction, "F") != 0 && ft_strcmp(direction, "C") != 0)
 	{
-		printf("ERROR: information\n");
-		exit(1);
+		free_double_pointer(cub->par.element);
+		free_double_pointer(cub->par.map);
+		free_element(cub->par.elm);
+		print_error("ERROR: information\n");
 	}
 }
 
 void	trim_path(t_cub *cub, int i)
 {
 	char	*trim;
+	char	*tr;
 	
 	if (cub->par.elm[i].path[0] != '\0')
 	{
-		trim = ft_strdup(ft_strtrim(cub->par.elm[i].path, "\n"));
+		tr = ft_strtrim(cub->par.elm[i].path, "\n");
+		trim = ft_strdup(tr);
 		free(cub->par.elm[i].path);
 		cub->par.elm[i].path = ft_strdup(trim);
 		free(trim);
+		free(tr);
 	}
 	if (cub->par.elm[i].path[0] != '\0')
 	{
-		trim = ft_strdup(ft_strtrim(cub->par.elm[i].path, " "));
+		tr = ft_strtrim(cub->par.elm[i].path, " ");
+		trim = ft_strdup(tr);
 		free(cub->par.elm[i].path);
 		cub->par.elm[i].path = ft_strdup(trim);
 		free(trim);
+		free(tr);
 	}
 }
 
@@ -56,8 +63,11 @@ void	check_color(t_cub *cub, int i)
 	check_rgb(color, cub, atoi);
 	if (cub->j != 3)
 	{
-		printf("ERROR: color\n");
-		exit(1);
+		free_double_pointer(cub->par.element);
+		free_double_pointer(cub->par.map);
+		free_double_pointer(color);
+		free_element(cub->par.elm);
+		print_error("ERROR: color\n");
 	}
 	free_double_pointer(color);
 	cub->j = 0;
@@ -88,10 +98,10 @@ void	check_error_information(t_cub *cub)
 	i = 0;
 	cub->j = 0;
 	color = NULL;
+	check_double(cub, i);
 	while (i < cub->par.cnt_elmt)
 	{
-		comparaison(cub->par.elm[i].direction);
-		check_double(cub, i);
+		comparaison(cub->par.elm[i].direction, cub);
 		if (ft_strcmp(cub->par.elm[i].direction, "F") == 0
 			|| ft_strcmp(cub->par.elm[i].direction, "C") == 0)
 		{
@@ -101,8 +111,6 @@ void	check_error_information(t_cub *cub)
 		}
 		else
 			trim_path(cub, i);
-		free(cub->par.elm[i].path);
-		free(cub->par.elm[i].direction);
 		i++;
 	}
 }

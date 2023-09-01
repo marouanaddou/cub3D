@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/30 20:56:09 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/31 18:14:18 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ typedef struct s_parser
 	char			**map;
 	double			x;
 	double			y;
-	int				pxp;
-	int				pyp;
+	// int				pxp;
+	// int				pyp;
 	char			**element;
 	char			**file;
 	int				cnt_map;
@@ -84,6 +84,8 @@ typedef struct s_parser
 	char			*hexfloor;
 	char			*hexceiling;
 	int				cnt_elmt;
+	char 			*texture_path[5];
+	int				check_line;
 }					t_parser;
 
 typedef struct s_cub
@@ -127,7 +129,7 @@ void				check_information(t_cub *cub);
 void				print_error(char *str);
 void				player(t_cub *cub);
 char				*ft_copier(char add, char *new_data);
-void				check_line(char *line, t_cub *cub);
+void				check_line(t_cub *cub);
 void				fill_line(t_cub *cub);
 void				check_error_information(t_cub *cub);
 void				split_newline_information(t_cub *cub);
@@ -146,5 +148,6 @@ void				draw_view(t_cub *cub);
 int					check_wall(t_cub *cub, double y, double x);
 void				load_textures(t_cub *cub);
 int					open_file(char *map, int fd);
+void				free_element(t_elem *elm);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_information.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 18:51:35 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/31 00:43:21 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/08/31 17:55:50 by maddou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,35 @@ void	fill_information(t_cub *cub)
 	}
 }
 
+void	fill_texture_path(t_cub *cub)
+{
+	int	i;
+
+	i = 0;
+	while (i < 6)
+	{
+		if (ft_strcmp(cub->par.elm[i].direction, "NO") == 0)
+			cub->par.texture_path[0] = ft_strdup(cub->par.elm[i].path);
+		else if (ft_strcmp(cub->par.elm[i].direction, "SO") == 0)
+			cub->par.texture_path[1] = ft_strdup(cub->par.elm[i].path);
+		else if (ft_strcmp(cub->par.elm[i].direction, "WE") == 0)
+			cub->par.texture_path[2] = ft_strdup(cub->par.elm[i].path);
+		else if (ft_strcmp(cub->par.elm[i].direction, "EA") == 0)
+			cub->par.texture_path[3] = ft_strdup(cub->par.elm[i].path);
+		i++;
+	}
+	cub->par.texture_path[4] = NULL;
+}
+
 void	check_information(t_cub *cub)
 {
 	split_newline_information(cub);
 	fill_information(cub);
+	// free_element(cub);
+	// exit(1);
 	check_error_information(cub);
+	
+	fill_texture_path(cub);
 	cub->i = 0;
 	cub->j = 0;
 }
