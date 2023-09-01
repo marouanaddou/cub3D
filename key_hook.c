@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 12:01:19 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/30 22:07:39 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/09/01 13:08:02 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	loop_hook(void *cub)
 {
 	t_cub	*cu;
 	int		x;
-	
+
 	cu = (t_cub *)cub;
 	mlx_get_mouse_pos(cu->mlx.init_ptr, &x, &cu->mouse_y);
 	if (mlx_is_key_down(cu->mlx.init_ptr, MLX_KEY_A) && check_wall(cub,

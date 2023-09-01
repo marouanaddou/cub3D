@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/09/01 12:43:32 by maddou           ###   ########.fr       */
+/*   Updated: 2023/09/01 13:08:52 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ typedef struct s_parser
 	char			*hexfloor;
 	char			*hexceiling;
 	int				cnt_elmt;
-	char 			*texture_path[5];
+	char			*texture_path[5];
 	int				check_line;
 }					t_parser;
 

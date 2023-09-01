@@ -3,23 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   check_error_information_utils.c                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 17:52:57 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/31 22:31:37 by maddou           ###   ########.fr       */
+/*   Updated: 2023/09/01 13:13:10 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
-//free hna !.......!
 
 void	check_argument(char **color, t_cub *cub)
 {
 	int	i;
-	int j;
+	int	j;
 
 	i = 0;
-	while(color[i] != NULL)
+	while (color[i] != NULL)
 	{
 		j = 0;
 		while (color[i][j] != '\0')
@@ -45,7 +44,6 @@ void	check_rgb(char **color, t_cub *cub, int atoi)
 	check_argument(color, cub);
 	while (color[cub->j] != NULL)
 	{
-		
 		atoi = ft_atoi(color[cub->j]);
 		if (atoi < 0 || atoi > 255)
 		{
@@ -59,19 +57,19 @@ void	check_rgb(char **color, t_cub *cub, int atoi)
 	}
 }
 
-// hna khasna free .....!
 void	check_double(t_cub *cub, int i)
 {
 	cub->j = 0;
 	while (cub->j < cub->par.cnt_elmt)
 	{
 		i = cub->j + 1;
-		while(i < cub->par.cnt_elmt)
+		while (i < cub->par.cnt_elmt)
 		{
-			if (ft_strcmp(cub->par.elm[cub->j].direction, cub->par.elm[i].direction) == 0)
+			if (ft_strcmp(cub->par.elm[cub->j].direction, 
+					cub->par.elm[i].direction) == 0)
 			{
 				free_double_pointer(cub->par.map);
-				free_double_pointer(cub->par.element);  
+				free_double_pointer(cub->par.element);
 				free_element(cub->par.elm);
 				print_error("ERROR: double information\n");
 			}

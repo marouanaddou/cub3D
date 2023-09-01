@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_information.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 18:51:35 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/31 17:55:50 by maddou           ###   ########.fr       */
+/*   Updated: 2023/09/01 13:13:55 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,7 @@ void	check_information(t_cub *cub)
 {
 	split_newline_information(cub);
 	fill_information(cub);
-	// free_element(cub);
-	// exit(1);
 	check_error_information(cub);
-	
 	fill_texture_path(cub);
 	cub->i = 0;
 	cub->j = 0;

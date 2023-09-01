@@ -54,7 +54,7 @@ void	initialisation_fa( t_cub *cub, int i, int j)
 void	check_line(t_cub *cub)
 {
 	int	i;
-	int j;
+	int	j;
 
 	i = 0;
 	if (cub->par.check_line != 0)
@@ -66,7 +66,7 @@ void	check_line(t_cub *cub)
 	}
 	i = 0;
 	j = 0;
-	initialisation_fa( cub, i, j);
+	initialisation_fa(cub, i, j);
 }
 
 void	fill_line(t_cub *cub)
@@ -99,8 +99,6 @@ void	load_map(char *map, t_cub *cub)
 	while (1)
 	{
 		cub->par.file[cub->i] = get_next_line(fd);
-		// if (cub->par.file[0] == NULL)
-		// 	print_error("ERROR");
 		if (cub->i < cub->par.cnt_elmt)
 			cub->par.element[cub->i] = ft_strdup(cub->par.file[cub->i]);
 		else if (cub->j < cub->par.cnt_map)

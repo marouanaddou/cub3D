@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_len.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 10:52:20 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/31 14:34:33 by maddou           ###   ########.fr       */
+/*   Updated: 2023/09/01 13:17:04 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	initialisation_varible(t_cub *cub, int *bol, int *fd)
 	cub->j = 0;
 	cub->par.check_line = 0;
 }
+
 void	map_len(char *map, t_cub *cub)
 {
 	int		fd;
@@ -48,7 +49,7 @@ void	map_len(char *map, t_cub *cub)
 	fd = open_file(map, fd);
 	while (1)
 	{
-		line = get_next_line(fd); //get next line fiha leaks ymkn
+		line = get_next_line(fd);
 		if (!line)
 			break ;
 		count(cub, &bol, line);
@@ -61,6 +62,7 @@ void	map_len(char *map, t_cub *cub)
 	cub->mlx.width--;
 	close(fd);
 }
+
 void	allocation_map(t_cub *cub, char *map)
 {
 	map_len(map, cub);
@@ -82,5 +84,3 @@ void	allocation_map(t_cub *cub, char *map)
 		exit(1);
 	}
 }
-
-

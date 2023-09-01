@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   valid_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 20:44:13 by maddou            #+#    #+#             */
-/*   Updated: 2023/09/01 11:02:56 by maddou           ###   ########.fr       */
+/*   Updated: 2023/09/01 13:19:25 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
-// free /......!
 
 void	free_valid_map(t_cub *cub, char **map, char *str)
 {
@@ -28,10 +27,10 @@ void	check_element(char **map, t_cub *cub)
 	int	j;
 
 	i = 0;
-	while(map[i] != NULL)
+	while (map[i] != NULL)
 	{
 		j = 0;
-		while(map[i][j] != '\0')
+		while (map[i][j] != '\0')
 		{
 			if (map[i][j] != 'N' && map[i][j] != 'W' && map[i][j] != 'S' 
 				&& map[i][j] != 'E'
@@ -42,7 +41,6 @@ void	check_element(char **map, t_cub *cub)
 		i++;
 	}
 }
-
 
 char	**copy_map(t_cub *cub, char **map)
 {

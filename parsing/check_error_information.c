@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_error_information.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 17:45:49 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/31 22:42:48 by maddou           ###   ########.fr       */
+/*   Updated: 2023/09/01 13:11:05 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	trim_path(t_cub *cub, int i)
 {
 	char	*trim;
 	char	*tr;
-	
+
 	if (cub->par.elm[i].path[0] != '\0')
 	{
 		tr = ft_strtrim(cub->par.elm[i].path, "\n");

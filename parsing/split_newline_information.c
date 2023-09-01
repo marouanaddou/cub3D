@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_newline_information.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 17:51:00 by maddou            #+#    #+#             */
-/*   Updated: 2023/08/31 15:09:59 by maddou           ###   ########.fr       */
+/*   Updated: 2023/09/01 13:17:32 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ char	**number_element_without_newlen(t_cub *cub, char **result)
 void	split_newline_information(t_cub *cub)
 {
 	char	**result;
+
 	result = NULL;
 	result = number_element_without_newlen(cub, result);
 	while (cub->par.element[cub->i] != NULL)
