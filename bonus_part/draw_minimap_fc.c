@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   draw_minimap_fc.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 11:45:31 by maddou            #+#    #+#             */
-/*   Updated: 2023/09/01 18:34:29 by maddou           ###   ########.fr       */
+/*   Updated: 2023/09/02 12:50:04 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 void	draw_fc(t_cub *cub)
 {

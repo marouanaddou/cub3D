@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:42:13 by mel-gand          #+#    #+#             */
-/*   Updated: 2023/09/01 18:31:37 by maddou           ###   ########.fr       */
+/*   Updated: 2023/09/02 10:30:19 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 #include <math.h>
 
 void	calculate_slope(int i, t_cub *cub)
@@ -43,9 +43,6 @@ void	cast_rays(t_cub *cub)
 			if (check_holes(cub, cub->ray.x_hor - cub->ray.x_inc, cub->ray.y_ver
 					- cub->ray.y_inc) == 1)
 				break ;
-			mlx_put_pixel(cub->mlx.img_ptr, MINIMAP_SCALE_FACTOR
-				* cub->ray.x_hor, MINIMAP_SCALE_FACTOR * cub->ray.y_ver,
-				0xAA4A44);
 			cast_rays_utils(cub, i, check);
 		}
 		i++;

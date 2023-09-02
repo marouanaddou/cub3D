@@ -42,7 +42,7 @@ void	initialisation_fa( t_cub *cub, int i, int j)
 			if (cub->par.map[i][j] == 'N' || cub->par.map[i][j] == 'W' 
 				|| cub->par.map[i][j] == 'S' || cub->par.map[i][j] == 'E')
 			{
-				cub->par.x = (cub->j * 30) + CENTER;
+				cub->par.x = (j * 30) + CENTER;
 				cub->par.y = (i * 30) + CENTER;
 			}
 			j++;
@@ -62,7 +62,7 @@ void	check_line(t_cub *cub)
 		free_double_pointer(cub->par.element);
 		free_double_pointer(cub->par.file);
 		free_double_pointer(cub->par.map);
-		print_error("1ERROR");
+		print_error("ERROR");
 	}
 	i = 0;
 	j = 0;
@@ -78,6 +78,10 @@ void	fill_line(t_cub *cub)
 	while (cub->par.file[cub->i][j] != '\0')
 	{
 		if (j != (int)ft_strlen(cub->par.file[cub->i]) - 1)
+			cub->par.map[cub->j] = ft_copier(cub->par.file[cub->i][j],
+					cub->par.map[cub->j]);
+		else if (cub->par.file[cub->i]
+			[(int)ft_strlen(cub->par.file[cub->i]) - 1] != '\n')
 			cub->par.map[cub->j] = ft_copier(cub->par.file[cub->i][j],
 					cub->par.map[cub->j]);
 		j++;

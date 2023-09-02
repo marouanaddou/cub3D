@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:24:04 by maddou            #+#    #+#             */
-/*   Updated: 2023/09/01 18:39:53 by maddou           ###   ########.fr       */
+/*   Updated: 2023/09/02 13:00:51 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "get_next_line/get_next_line.h"
 # include "libft/libft.h"
-# include "mlx42/include/MLX42/MLX42.h"
+# include "../mlx42/include/MLX42/MLX42.h"
 # include <fcntl.h>
 # include <math.h>
 # include <stdint.h>

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 14:51:55 by maddou            #+#    #+#             */
-/*   Updated: 2023/09/01 18:38:59 by maddou           ###   ########.fr       */
+/*   Updated: 2023/09/02 10:25:42 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 void	draw_ver_line(t_cub *cub, int i)
 {

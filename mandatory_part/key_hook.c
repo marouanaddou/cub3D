@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 12:01:19 by maddou            #+#    #+#             */
-/*   Updated: 2023/09/01 18:26:00 by maddou           ###   ########.fr       */
+/*   Updated: 2023/09/02 11:47:44 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 void	key_ad(t_cub *cub, int sign)
 {
@@ -72,7 +72,12 @@ void	key_right_escape(t_cub *cub, int x)
 		cub->mouse_x = x;
 	}
 	if (mlx_is_key_down(cub->mlx.init_ptr, MLX_KEY_ESCAPE))
+	{
+		free_double_pointer(cub->par.map);
+		free_double_pointer(cub->par.element);
+		free_element(cub->par.elm);
 		mlx_close_window(cub->mlx.init_ptr);
+	}
 }
 
 void	loop_hook(void *cub)

@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 17:52:57 by maddou            #+#    #+#             */
-/*   Updated: 2023/09/01 13:13:10 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/09/02 12:54:28 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	check_argument(char **color, t_cub *cub)
 				free_double_pointer(cub->par.map);
 				free_double_pointer(color);
 				free_element(cub->par.elm);
-				print_error("ERROR: color2\n");
+				print_error("ERROR: color\n");
 			}
 			j++;
 		}
@@ -51,7 +51,7 @@ void	check_rgb(char **color, t_cub *cub, int atoi)
 			free_double_pointer(cub->par.element);
 			free_element(cub->par.elm);
 			free_double_pointer(color);
-			print_error("ERROR: color3\n");
+			print_error("ERROR: color\n");
 		}
 		cub->j++;
 	}
@@ -89,7 +89,7 @@ void	check_double_coma(t_cub *cub, char *color)
 		free_double_pointer(cub->par.element);
 		free_double_pointer(cub->par.map);
 		free_element(cub->par.elm);
-		print_error("ERROR: color4\n");
+		print_error("ERROR: color\n");
 	}
 	while (color[cub->i] != '\0')
 	{
@@ -98,7 +98,7 @@ void	check_double_coma(t_cub *cub, char *color)
 			free_double_pointer(cub->par.element);
 			free_double_pointer(cub->par.map);
 			free_element(cub->par.elm);
-			print_error("ERROR: color5\n");
+			print_error("ERROR: color\n");
 		}
 		cub->i++;
 	}

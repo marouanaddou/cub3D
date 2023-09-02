@@ -6,11 +6,11 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 16:25:29 by mel-gand          #+#    #+#             */
-/*   Updated: 2023/08/30 20:57:29 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/09/02 10:27:02 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 int	check_wall(t_cub *cub, double y, double x)
 {

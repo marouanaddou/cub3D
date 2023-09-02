@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   textels.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maddou <maddou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:41 by mel-gand          #+#    #+#             */
-/*   Updated: 2023/09/01 18:42:51 by maddou           ###   ########.fr       */
+/*   Updated: 2023/09/02 10:42:22 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 uint32_t	ft_pixel(uint32_t r, uint32_t g, uint32_t b, uint32_t a)
 {

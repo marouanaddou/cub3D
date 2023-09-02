@@ -6,11 +6,11 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:53:14 by maddou            #+#    #+#             */
-/*   Updated: 2023/09/01 13:08:19 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/09/02 10:42:47 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 void	free_double_pointer(char **result)
 {

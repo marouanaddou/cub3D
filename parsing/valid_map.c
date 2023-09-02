@@ -6,7 +6,7 @@
 /*   By: mel-gand <mel-gand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 20:44:13 by maddou            #+#    #+#             */
-/*   Updated: 2023/09/01 13:19:25 by mel-gand         ###   ########.fr       */
+/*   Updated: 2023/09/02 12:56:03 by mel-gand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ char	**copy_map(t_cub *cub, char **map)
 void	valid_map(t_cub *cub, char **map, int y, int x)
 {
 	if (map[y][x] != '1' && (x == 0 || y == 0 || y == cub->mlx.height - 1))
-		free_valid_map(cub, map, "ERROR: map1\n");
+		free_valid_map(cub, map, "ERROR: map\n");
 	if (x == (int)ft_strlen(map[y]) - 1 && map[y][x] != '1')
-		free_valid_map(cub, map, "ERROR: map2\n");
+		free_valid_map(cub, map, "ERROR: map\n");
 	if (map[y][x] <= 32)
-		free_valid_map(cub, map, "ERROR: map3\n");
+		free_valid_map(cub, map, "ERROR: map\n");
 	if (map[y][x] == '1' || map[y][x] == 'Z')
 		return ;
 	map[y][x] = 'Z';
